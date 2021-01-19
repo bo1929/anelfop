@@ -1,0 +1,113 @@
+Setting stack size to unlimited...
+core file size          (blocks, -c) 0
+data seg size           (kbytes, -d) unlimited
+scheduling priority             (-e) 0
+file size               (blocks, -f) unlimited
+pending signals                 (-i) 1029297
+max locked memory       (kbytes, -l) unlimited
+max memory size         (kbytes, -m) 16777216
+open files                      (-n) 1024
+pipe size            (512 bytes, -p) 8
+POSIX message queues     (bytes, -q) 819200
+real-time priority              (-r) 0
+stack size              (kbytes, -s) unlimited
+cpu time               (seconds, -t) unlimited
+max user processes              (-u) 1029297
+virtual memory          (kbytes, -v) unlimited
+file locks                      (-x) unlimited
+  0%|          | 0/50 [00:00<?, ?it/s]100%|██████████| 50/50 [00:00<00:00, 2001.61it/s]
+  0%|          | 0/50 [00:00<?, ?it/s]100%|██████████| 50/50 [00:00<00:00, 2945.89it/s]
+  0%|          | 0/50 [00:00<?, ?it/s]100%|██████████| 50/50 [00:00<00:00, 2621.90it/s]
+  0%|          | 0/50 [00:00<?, ?it/s]100%|██████████| 50/50 [00:00<00:00, 3749.47it/s]
+  0%|          | 0/50 [00:00<?, ?it/s]
+  0%|          | 0/1 [00:00<?, ?it/s][A100%|██████████| 1/1 [00:00<00:00, 38.91it/s]
+debug_CONLL2003
+Tokenization -->
+Extracting pretrained embeddings -->
+embeddings are loaded
+
+
+
+
+----------------
+last layer shape:  torch.Size([10, 768])
+embedding dimension:  768
+pretrained_tknzd shape: [0]   50 12
+embeddings shape: [0]    50 10
+tags shape: [0]          50 9
+tknzd_sent shape: [0]    50 9
+----------------
+
+
+
+
+After summing embeddings of subwords; 
+pretrained_tknzd shape: [0]   50 12
+embeddings shape: [0]    50 9
+tags shape: [0]           50 9
+tknzd_sent shape: [0]     50 9
+Tokenization -->
+Extracting pretrained embeddings -->
+embeddings are loaded
+
+
+
+
+----------------
+last layer shape:  torch.Size([35, 768])
+embedding dimension:  768
+pretrained_tknzd shape: [0]   50 37
+embeddings shape: [0]    50 35
+tags shape: [0]          50 11
+tknzd_sent shape: [0]    50 11
+----------------
+
+
+
+
+After summing embeddings of subwords; 
+pretrained_tknzd shape: [0]   50 37
+embeddings shape: [0]    50 11
+tags shape: [0]           50 11
+tknzd_sent shape: [0]     50 11
+Variance Explained: [0.23979849, 0.2994648, 0.33874127, 0.37203765, 0.39913073, 0.41869628, 0.43574062, 0.45110306, 0.46394834, 0.47584203, 0.48593664, 0.4949481, 0.5034187, 0.5114878, 0.51921684, 0.5267531, 0.53381467, 0.54043996, 0.5470185, 0.5533693, 0.559397, 0.5651319, 0.57081485, 0.5763727, 0.58175987, 0.58686346, 0.5918803, 0.59672165, 0.6015209, 0.606201, 0.6108071, 0.6152294, 0.61959004, 0.6237879, 0.6279325, 0.6320064, 0.6359951, 0.6399415, 0.64378375, 0.6475061, 0.6511701, 0.6547545, 0.6582728, 0.661706, 0.66507494, 0.6683633, 0.6715879, 0.6747816, 0.67794555, 0.68104035, 0.68410355, 0.68710244, 0.6900426, 0.69293797, 0.69577026, 0.6985739, 0.70131844, 0.7040421, 0.70674735, 0.7093917, 0.7120157, 0.71463376, 0.7171679, 0.71965295, 0.7220851, 0.72451276, 0.7269048, 0.72927314, 0.7316063, 0.73392063, 0.73618203, 0.738422, 0.7406294, 0.742816, 0.7449769, 0.7471051, 0.7492278, 0.7513022, 0.75335836, 0.7554039, 0.7574315, 0.75942224, 0.76140535, 0.76338035, 0.7653105, 0.76720476, 0.7690841, 0.7709344, 0.7727704, 0.77458614, 0.77638173, 0.7781637, 0.77991843, 0.78164935, 0.783361, 0.7850614, 0.7867343, 0.78839964, 0.79003924, 0.7916481, 0.7932374, 0.79482573, 0.79639864, 0.7979327, 0.79946053, 0.8009697, 0.8024663, 0.80394876, 0.80542237, 0.806884, 0.80831593, 0.8097467, 0.81116664, 0.8125685, 0.8139413, 0.81531274, 0.8166709, 0.81801647, 0.8193437, 0.8206482, 0.8219415, 0.82322544, 0.8245017, 0.82575876, 0.8270023, 0.82823724, 0.82946, 0.8306696, 0.8318692, 0.83306545, 0.83424467, 0.83541363, 0.83657354, 0.83772314, 0.83886456, 0.8399949, 0.8411221, 0.84222996, 0.8433288, 0.8444166, 0.845496, 0.8465624, 0.84762406, 0.8486731, 0.84972113, 0.85076123, 0.85178834, 0.8528059, 0.853816, 0.8548146, 0.85580724, 0.8567962, 0.85777587, 0.8587421, 0.85970235, 0.86065215, 0.8615942, 0.8625254, 0.8634447, 0.8643572, 0.86526245, 0.8661643, 0.86705726, 0.86794347, 0.86882305, 0.86969614, 0.87055635, 0.8714114, 0.8722618, 0.8731064, 0.87394744, 0.8747844, 0.87560517, 0.87642217, 0.87723464, 0.8780441, 0.87884223, 0.8796334, 0.8804192, 0.8811996, 0.8819716, 0.88274026, 0.883498, 0.88425314, 0.88500285, 0.8857464, 0.8864875, 0.8872206, 0.8879508, 0.88866353, 0.8893729, 0.8900773, 0.89077514, 0.8914703, 0.892164, 0.89284855, 0.89352775, 0.8942054, 0.894878, 0.8955479, 0.8962062, 0.8968576, 0.897507, 0.89814776, 0.89878476, 0.89941585, 0.90004414, 0.9006672, 0.9012887, 0.90190893, 0.90252537, 0.9031377, 0.9037454, 0.9043478, 0.9049436, 0.90553504, 0.9061228, 0.9067058, 0.90728045, 0.9078504, 0.9084169, 0.9089811, 0.9095405, 0.91009665, 0.91064763, 0.911198, 0.9117472, 0.9122879, 0.91282403, 0.91335446, 0.91388416, 0.91441023, 0.91493195, 0.91545075, 0.915968, 0.9164785, 0.91698545, 0.9174904, 0.9179905, 0.91848594, 0.9189776, 0.91946757, 0.91995114, 0.92043424, 0.9209143, 0.92139226, 0.9218658, 0.9223368, 0.92280287, 0.92326516, 0.923724, 0.9241813, 0.9246364, 0.9250893, 0.9255403, 0.9259861, 0.9264306, 0.9268697, 0.92730373, 0.9277359, 0.9281666, 0.9285935, 0.929018, 0.929441, 0.9298603, 0.9302773, 0.9306919, 0.9311043, 0.9315136, 0.93191916, 0.93232226, 0.93271786, 0.9331126, 0.93350625, 0.93389505, 0.93428224, 0.9346663, 0.9350432, 0.9354185, 0.93579155, 0.9361627, 0.93653274, 0.9369006, 0.9372638, 0.937624, 0.9379802, 0.93833494, 0.93868643, 0.9390338, 0.93938094, 0.93972594, 0.94006747, 0.94040614, 0.9407384, 0.9410668, 0.941394, 0.941719, 0.9420412, 0.94236135, 0.94267994]
+embeddings vector dimension: 300
+initial size: 1
+Initial training CRF with annotated sentences...
+
+
+Feature generation
+type: CRF1d
+feature.minfreq: 0.000000
+feature.possible_states: 1
+feature.possible_transitions: 1
+0....1....2....3....4....5....6....7....8....9....10
+Number of features: 673
+Seconds required: 0.003
+
+L-BFGS optimization
+c1: 0.100000
+c2: 0.100000
+num_memories: 6
+max_iterations: 100
+epsilon: 0.000010
+stop: 10
+delta: 0.000010
+linesearch: MoreThuente
+linesearch.max_iterations: 20
+
+L-BFGS terminated with error code (2)
+Traceback (most recent call last):
+  File "/cta/users/aosman/alNER/al_experiment.py", line 105, in <module>
+    crf_trained = crf_.train_crf(cfg, Xi_train, y_ann)
+  File "/cta/users/aosman/alNER/utils/wrapper_CRF.py", line 126, in train_crf
+    return crf.fit(X_train, y_train)
+  File "/cta/users/aosman/anaconda3/lib/python3.7/site-packages/sklearn_crfsuite/estimator.py", line 331, in fit
+    trainer.train(self.modelfile.name, holdout=-1 if X_dev is None else 1)
+  File "pycrfsuite/_pycrfsuite.pyx", line 359, in pycrfsuite._pycrfsuite.BaseTrainer.train
+  File "pycrfsuite/_pycrfsuite.pyx", line 272, in pycrfsuite._pycrfsuite.BaseTrainer._on_message
+  File "pycrfsuite/_pycrfsuite.pyx", line 518, in pycrfsuite._pycrfsuite.Trainer.message
+  File "/cta/users/aosman/anaconda3/lib/python3.7/site-packages/sklearn_crfsuite/trainer.py", line 37, in on_optimization_end
+    if last_iter.get('scores', None):
+AttributeError: 'NoneType' object has no attribute 'get'
+  0%|          | 0/50 [00:00<?, ?it/s]

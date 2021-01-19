@@ -1,0 +1,18 @@
+Setting stack size to unlimited...
+core file size          (blocks, -c) 0
+data seg size           (kbytes, -d) unlimited
+scheduling priority             (-e) 0
+file size               (blocks, -f) unlimited
+pending signals                 (-i) 1029297
+max locked memory       (kbytes, -l) unlimited
+max memory size         (kbytes, -m) 65536
+open files                      (-n) 1024
+pipe size            (512 bytes, -p) 8
+POSIX message queues     (bytes, -q) 819200
+real-time priority              (-r) 0
+stack size              (kbytes, -s) unlimited
+cpu time               (seconds, -t) unlimited
+max user processes              (-u) 1029297
+virtual memory          (kbytes, -v) unlimited
+file locks                      (-x) unlimited
+slurmstepd: error: *** JOB 95559 ON cn06 CANCELLED AT 2021-01-19T17:23:53 ***
