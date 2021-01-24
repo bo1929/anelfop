@@ -14,22 +14,22 @@ cpu time               (seconds, -t) unlimited
 max user processes              (-u) 1029297
 virtual memory          (kbytes, -v) unlimited
 file locks                      (-x) unlimited
-  0%|          | 0/50 [00:00<?, ?it/s]100%|██████████| 50/50 [00:00<00:00, 1953.02it/s]
-  0%|          | 0/50 [00:00<?, ?it/s]100%|██████████| 50/50 [00:00<00:00, 3027.50it/s]
-  0%|          | 0/50 [00:00<?, ?it/s]100%|██████████| 50/50 [00:00<00:00, 2613.73it/s]
-  0%|          | 0/50 [00:00<?, ?it/s]100%|██████████| 50/50 [00:00<00:00, 3808.64it/s]
+  0%|          | 0/50 [00:00<?, ?it/s]100%|██████████| 50/50 [00:00<00:00, 1993.41it/s]
+  0%|          | 0/50 [00:00<?, ?it/s]100%|██████████| 50/50 [00:00<00:00, 2957.19it/s]
+  0%|          | 0/50 [00:00<?, ?it/s]100%|██████████| 50/50 [00:00<00:00, 2591.12it/s]
+  0%|          | 0/50 [00:00<?, ?it/s]100%|██████████| 50/50 [00:00<00:00, 3695.16it/s]
   0%|          | 0/50 [00:00<?, ?it/s]
   0%|          | 0/16 [00:00<?, ?it/s][A
- 31%|███▏      | 5/16 [00:00<00:00, 49.51it/s][A
- 56%|█████▋    | 9/16 [00:00<00:00, 45.67it/s][A
- 88%|████████▊ | 14/16 [00:00<00:00, 43.65it/s][A100%|██████████| 16/16 [00:00<00:00, 42.18it/s]
-  2%|▏         | 1/50 [00:00<00:41,  1.18it/s] 10%|█         | 5/50 [00:00<00:27,  1.65it/s] 16%|█▌        | 8/50 [00:01<00:18,  2.30it/s] 22%|██▏       | 11/50 [00:01<00:12,  3.16it/s] 28%|██▊       | 14/50 [00:01<00:08,  4.31it/s] 46%|████▌     | 23/50 [00:01<00:04,  5.99it/s] 54%|█████▍    | 27/50 [00:01<00:02,  7.94it/s] 68%|██████▊   | 34/50 [00:01<00:01, 10.81it/s]100%|██████████| 50/50 [00:01<00:00, 14.97it/s]100%|██████████| 50/50 [00:01<00:00, 28.04it/s]
-  0%|          | 0/34 [00:00<?, ?it/s] 15%|█▍        | 5/34 [00:00<00:00, 36.92it/s] 29%|██▉       | 10/34 [00:00<00:00, 38.46it/s] 38%|███▊      | 13/34 [00:00<00:00, 32.70it/s] 50%|█████     | 17/34 [00:00<00:00, 33.37it/s] 59%|█████▉    | 20/34 [00:00<00:00, 30.83it/s] 71%|███████   | 24/34 [00:00<00:00, 30.28it/s] 79%|███████▉  | 27/34 [00:00<00:00, 28.81it/s]100%|██████████| 34/34 [00:00<00:00, 34.46it/s]100%|██████████| 34/34 [00:00<00:00, 35.07it/s]
-  0%|          | 0/33 [00:00<?, ?it/s] 12%|█▏        | 4/33 [00:00<00:00, 38.93it/s] 27%|██▋       | 9/33 [00:00<00:00, 41.18it/s] 42%|████▏     | 14/33 [00:00<00:00, 40.60it/s] 55%|█████▍    | 18/33 [00:00<00:00, 36.67it/s] 73%|███████▎  | 24/33 [00:00<00:00, 41.26it/s] 85%|████████▍ | 28/33 [00:00<00:00, 33.89it/s] 97%|█████████▋| 32/33 [00:00<00:00, 31.54it/s]100%|██████████| 33/33 [00:00<00:00, 36.72it/s]
-  0%|          | 0/50 [00:00<?, ?it/s]  8%|▊         | 4/50 [00:00<00:01, 39.34it/s] 14%|█▍        | 7/50 [00:00<00:01, 34.76it/s] 20%|██        | 10/50 [00:00<00:01, 29.58it/s] 26%|██▌       | 13/50 [00:00<00:01, 29.13it/s] 40%|████      | 20/50 [00:00<00:00, 34.85it/s] 50%|█████     | 25/50 [00:00<00:00, 36.53it/s] 58%|█████▊    | 29/50 [00:00<00:00, 35.36it/s] 84%|████████▍ | 42/50 [00:00<00:00, 45.20it/s]100%|██████████| 50/50 [00:00<00:00, 52.29it/s]
-  0%|          | 0/17 [00:00<?, ?it/s] 24%|██▎       | 4/17 [00:00<00:00, 31.54it/s] 53%|█████▎    | 9/17 [00:00<00:00, 34.12it/s] 71%|███████   | 12/17 [00:00<00:00, 30.23it/s] 94%|█████████▍| 16/17 [00:00<00:00, 31.61it/s]100%|██████████| 17/17 [00:00<00:00, 33.96it/s]
-  0%|          | 0/50 [00:00<?, ?it/s]  8%|▊         | 4/50 [00:00<00:01, 39.19it/s] 18%|█▊        | 9/50 [00:00<00:00, 41.34it/s] 28%|██▊       | 14/50 [00:00<00:00, 40.48it/s] 36%|███▌      | 18/50 [00:00<00:00, 36.65it/s] 48%|████▊     | 24/50 [00:00<00:00, 41.23it/s] 56%|█████▌    | 28/50 [00:00<00:00, 33.70it/s] 64%|██████▍   | 32/50 [00:00<00:00, 31.68it/s] 74%|███████▍  | 37/50 [00:01<00:00, 32.39it/s] 84%|████████▍ | 42/50 [00:01<00:00, 34.18it/s] 92%|█████████▏| 46/50 [00:01<00:00, 29.54it/s]100%|██████████| 50/50 [00:01<00:00, 34.85it/s]
-  0%|          | 0/50 [00:00<?, ?it/s]  8%|▊         | 4/50 [00:00<00:01, 38.88it/s] 14%|█▍        | 7/50 [00:00<00:01, 34.36it/s] 20%|██        | 10/50 [00:00<00:01, 29.21it/s] 26%|██▌       | 13/50 [00:00<00:01, 28.71it/s] 40%|████      | 20/50 [00:00<00:00, 34.39it/s] 50%|█████     | 25/50 [00:00<00:00, 35.79it/s] 58%|█████▊    | 29/50 [00:00<00:00, 34.76it/s] 84%|████████▍ | 42/50 [00:00<00:00, 44.46it/s]100%|██████████| 50/50 [00:00<00:00, 51.47it/s]
+ 31%|███▏      | 5/16 [00:00<00:00, 49.56it/s][A
+ 56%|█████▋    | 9/16 [00:00<00:00, 45.92it/s][A
+ 88%|████████▊ | 14/16 [00:00<00:00, 43.72it/s][A100%|██████████| 16/16 [00:00<00:00, 42.32it/s]
+  2%|▏         | 1/50 [00:00<00:41,  1.18it/s] 10%|█         | 5/50 [00:00<00:27,  1.65it/s] 16%|█▌        | 8/50 [00:01<00:18,  2.31it/s] 22%|██▏       | 11/50 [00:01<00:12,  3.16it/s] 28%|██▊       | 14/50 [00:01<00:08,  4.31it/s] 46%|████▌     | 23/50 [00:01<00:04,  5.99it/s] 54%|█████▍    | 27/50 [00:01<00:02,  7.94it/s] 68%|██████▊   | 34/50 [00:01<00:01, 10.82it/s]100%|██████████| 50/50 [00:01<00:00, 14.98it/s]100%|██████████| 50/50 [00:01<00:00, 28.04it/s]
+  0%|          | 0/34 [00:00<?, ?it/s] 15%|█▍        | 5/34 [00:00<00:00, 37.22it/s] 29%|██▉       | 10/34 [00:00<00:00, 38.75it/s] 38%|███▊      | 13/34 [00:00<00:00, 32.92it/s] 50%|█████     | 17/34 [00:00<00:00, 33.77it/s] 59%|█████▉    | 20/34 [00:00<00:00, 31.21it/s] 71%|███████   | 24/34 [00:00<00:00, 30.62it/s] 79%|███████▉  | 27/34 [00:00<00:00, 28.96it/s]100%|██████████| 34/34 [00:00<00:00, 34.61it/s]100%|██████████| 34/34 [00:00<00:00, 35.34it/s]
+  0%|          | 0/34 [00:00<?, ?it/s] 12%|█▏        | 4/34 [00:00<00:00, 38.37it/s] 26%|██▋       | 9/34 [00:00<00:00, 40.57it/s] 41%|████      | 14/34 [00:00<00:00, 40.07it/s] 53%|█████▎    | 18/34 [00:00<00:00, 36.21it/s] 71%|███████   | 24/34 [00:00<00:00, 40.74it/s] 82%|████████▏ | 28/34 [00:00<00:00, 33.38it/s] 94%|█████████▍| 32/34 [00:00<00:00, 31.40it/s]100%|██████████| 34/34 [00:00<00:00, 35.72it/s]
+  0%|          | 0/50 [00:00<?, ?it/s]  8%|▊         | 4/50 [00:00<00:01, 39.00it/s] 14%|█▍        | 7/50 [00:00<00:01, 34.58it/s] 20%|██        | 10/50 [00:00<00:01, 29.38it/s] 26%|██▌       | 13/50 [00:00<00:01, 28.95it/s] 40%|████      | 20/50 [00:00<00:00, 34.66it/s] 50%|█████     | 25/50 [00:00<00:00, 36.37it/s] 58%|█████▊    | 29/50 [00:00<00:00, 35.16it/s] 84%|████████▍ | 42/50 [00:00<00:00, 44.91it/s]100%|██████████| 50/50 [00:00<00:00, 51.97it/s]
+  0%|          | 0/16 [00:00<?, ?it/s] 25%|██▌       | 4/16 [00:00<00:00, 31.32it/s] 56%|█████▋    | 9/16 [00:00<00:00, 33.89it/s] 75%|███████▌  | 12/16 [00:00<00:00, 30.22it/s]100%|██████████| 16/16 [00:00<00:00, 34.87it/s]
+  0%|          | 0/50 [00:00<?, ?it/s]  8%|▊         | 4/50 [00:00<00:01, 38.75it/s] 18%|█▊        | 9/50 [00:00<00:00, 41.00it/s] 28%|██▊       | 14/50 [00:00<00:00, 40.25it/s] 36%|███▌      | 18/50 [00:00<00:00, 36.42it/s] 48%|████▊     | 24/50 [00:00<00:00, 40.87it/s] 56%|█████▌    | 28/50 [00:00<00:00, 33.54it/s] 64%|██████▍   | 32/50 [00:00<00:00, 31.53it/s] 74%|███████▍  | 37/50 [00:01<00:00, 32.63it/s] 82%|████████▏ | 41/50 [00:01<00:00, 31.52it/s] 90%|█████████ | 45/50 [00:01<00:00, 31.56it/s] 98%|█████████▊| 49/50 [00:01<00:00, 31.36it/s]100%|██████████| 50/50 [00:01<00:00, 34.67it/s]
+  0%|          | 0/50 [00:00<?, ?it/s]  8%|▊         | 4/50 [00:00<00:01, 39.21it/s] 14%|█▍        | 7/50 [00:00<00:01, 34.56it/s] 20%|██        | 10/50 [00:00<00:01, 29.32it/s] 26%|██▌       | 13/50 [00:00<00:01, 28.82it/s] 40%|████      | 20/50 [00:00<00:00, 34.47it/s] 50%|█████     | 25/50 [00:00<00:00, 35.93it/s] 58%|█████▊    | 29/50 [00:00<00:00, 34.67it/s] 84%|████████▍ | 42/50 [00:00<00:00, 44.32it/s]100%|██████████| 50/50 [00:00<00:00, 51.41it/s]
 debug_CONLL2003
 Tokenization -->
 Extracting pretrained embeddings -->
@@ -92,7 +92,7 @@ feature.possible_states: 1
 feature.possible_transitions: 1
 0....1....2....3....4....5....6....7....8....9....10
 Number of features: 9095
-Seconds required: 0.153
+Seconds required: 0.155
 
 L-BFGS optimization
 c1: 0.100000
@@ -176,7 +176,7 @@ Iter 68  time=0.00  loss=9.92     active=361   feature_norm=4.66
 Iter 69  time=0.00  loss=9.92     active=361   feature_norm=4.66
 Iter 70  time=0.00  loss=9.92     active=361   feature_norm=4.66
 L-BFGS terminated with the stopping criteria
-Total seconds required for training: 0.303
+Total seconds required for training: 0.302
 
 Storing the model
 Number of active features: 361 (9095)
@@ -192,10 +192,10 @@ CRF test sentences predictions...
 
            precision    recall  f1-score   support
 
-      ORG       0.11      0.12      0.11        51
       LOC       0.13      0.52      0.21        27
       PER       0.06      0.05      0.05        40
      MISC       0.04      0.25      0.07         8
+      ORG       0.11      0.12      0.11        51
 
 micro avg       0.10      0.19      0.13       126
 macro avg       0.09      0.19      0.11       126
@@ -205,8 +205,8 @@ Iteration 1 is running...
 
 pte  1 query 
 
-Batch size:  17 at iteration  1
-Elapsed Time query 1:  17.78754186630249 ...
+Batch size:  18 at iteration  1
+Elapsed Time query 1:  17.74367594718933 ...
 Training CRF with annotated sentences...
 
 
@@ -216,8 +216,8 @@ feature.minfreq: 0.000000
 feature.possible_states: 1
 feature.possible_transitions: 1
 0....1....2....3....4....5....6....7....8....9....10
-Number of features: 13739
-Seconds required: 0.361
+Number of features: 14147
+Seconds required: 0.387
 
 L-BFGS optimization
 c1: 0.100000
@@ -230,100 +230,87 @@ delta: 0.000010
 linesearch: MoreThuente
 linesearch.max_iterations: 20
 
-Iter 1   time=0.02  loss=356.18   active=13681 feature_norm=1.00
-Iter 2   time=0.01  loss=271.07   active=13407 feature_norm=1.20
-Iter 3   time=0.01  loss=214.42   active=9935  feature_norm=1.37
-Iter 4   time=0.01  loss=146.63   active=9079  feature_norm=1.70
-Iter 5   time=0.01  loss=95.09    active=7166  feature_norm=2.56
-Iter 6   time=0.01  loss=46.13    active=6791  feature_norm=3.10
-Iter 7   time=0.01  loss=39.05    active=6624  feature_norm=3.35
-Iter 8   time=0.01  loss=26.40    active=5301  feature_norm=4.16
-Iter 9   time=0.01  loss=23.99    active=3826  feature_norm=4.64
-Iter 10  time=0.01  loss=21.40    active=3272  feature_norm=4.93
-Iter 11  time=0.01  loss=20.94    active=3075  feature_norm=5.03
-Iter 12  time=0.01  loss=19.61    active=2357  feature_norm=5.32
-Iter 13  time=0.01  loss=18.61    active=1884  feature_norm=5.33
-Iter 14  time=0.02  loss=17.75    active=1504  feature_norm=5.35
-Iter 15  time=0.01  loss=17.25    active=1198  feature_norm=5.39
-Iter 16  time=0.01  loss=17.08    active=1140  feature_norm=5.44
-Iter 17  time=0.01  loss=16.73    active=916   feature_norm=5.68
-Iter 18  time=0.01  loss=16.59    active=865   feature_norm=5.68
-Iter 19  time=0.01  loss=16.48    active=831   feature_norm=5.72
-Iter 20  time=0.01  loss=16.34    active=766   feature_norm=5.74
-Iter 21  time=0.01  loss=16.23    active=688   feature_norm=5.81
-Iter 22  time=0.01  loss=16.17    active=687   feature_norm=5.84
-Iter 23  time=0.01  loss=16.13    active=658   feature_norm=5.87
-Iter 24  time=0.01  loss=16.09    active=640   feature_norm=5.90
-Iter 25  time=0.01  loss=16.07    active=621   feature_norm=5.94
-Iter 26  time=0.01  loss=16.05    active=619   feature_norm=5.95
-Iter 27  time=0.01  loss=16.04    active=603   feature_norm=5.97
-Iter 28  time=0.01  loss=16.02    active=598   feature_norm=5.98
-Iter 29  time=0.01  loss=16.01    active=589   feature_norm=6.00
-Iter 30  time=0.01  loss=16.00    active=574   feature_norm=6.00
-Iter 31  time=0.01  loss=15.99    active=578   feature_norm=6.01
-Iter 32  time=0.01  loss=15.98    active=570   feature_norm=6.01
-Iter 33  time=0.01  loss=15.97    active=572   feature_norm=6.01
-Iter 34  time=0.01  loss=15.96    active=566   feature_norm=6.01
-Iter 35  time=0.01  loss=15.96    active=571   feature_norm=6.02
-Iter 36  time=0.01  loss=15.95    active=567   feature_norm=6.03
-Iter 37  time=0.01  loss=15.95    active=561   feature_norm=6.03
-Iter 38  time=0.01  loss=15.95    active=561   feature_norm=6.04
-Iter 39  time=0.01  loss=15.94    active=556   feature_norm=6.04
-Iter 40  time=0.01  loss=15.94    active=552   feature_norm=6.05
-Iter 41  time=0.01  loss=15.94    active=545   feature_norm=6.05
-Iter 42  time=0.01  loss=15.94    active=544   feature_norm=6.05
-Iter 43  time=0.01  loss=15.94    active=547   feature_norm=6.06
-Iter 44  time=0.01  loss=15.93    active=544   feature_norm=6.06
-Iter 45  time=0.01  loss=15.93    active=543   feature_norm=6.06
-Iter 46  time=0.01  loss=15.93    active=539   feature_norm=6.06
-Iter 47  time=0.01  loss=15.93    active=540   feature_norm=6.06
-Iter 48  time=0.01  loss=15.93    active=537   feature_norm=6.06
-Iter 49  time=0.01  loss=15.93    active=537   feature_norm=6.06
-Iter 50  time=0.01  loss=15.93    active=536   feature_norm=6.06
-Iter 51  time=0.01  loss=15.93    active=537   feature_norm=6.06
-Iter 52  time=0.01  loss=15.93    active=534   feature_norm=6.06
-Iter 53  time=0.01  loss=15.93    active=537   feature_norm=6.06
-Iter 54  time=0.01  loss=15.93    active=536   feature_norm=6.06
-Iter 55  time=0.01  loss=15.92    active=533   feature_norm=6.05
-Iter 56  time=0.02  loss=15.92    active=530   feature_norm=6.05
-Iter 57  time=0.01  loss=15.92    active=532   feature_norm=6.05
-Iter 58  time=0.01  loss=15.92    active=531   feature_norm=6.05
-Iter 59  time=0.01  loss=15.92    active=529   feature_norm=6.06
-Iter 60  time=0.01  loss=15.92    active=529   feature_norm=6.05
-Iter 61  time=0.01  loss=15.92    active=528   feature_norm=6.05
-Iter 62  time=0.01  loss=15.92    active=527   feature_norm=6.05
-Iter 63  time=0.01  loss=15.92    active=527   feature_norm=6.05
-Iter 64  time=0.01  loss=15.92    active=526   feature_norm=6.05
-Iter 65  time=0.02  loss=15.92    active=526   feature_norm=6.05
-Iter 66  time=0.01  loss=15.92    active=525   feature_norm=6.05
-Iter 67  time=0.01  loss=15.92    active=526   feature_norm=6.05
-Iter 68  time=0.01  loss=15.92    active=526   feature_norm=6.05
-Iter 69  time=0.01  loss=15.92    active=526   feature_norm=6.05
-Iter 70  time=0.01  loss=15.92    active=526   feature_norm=6.05
-Iter 71  time=0.01  loss=15.92    active=526   feature_norm=6.04
-Iter 72  time=0.01  loss=15.92    active=526   feature_norm=6.04
-Iter 73  time=0.01  loss=15.92    active=526   feature_norm=6.04
-Iter 74  time=0.01  loss=15.92    active=526   feature_norm=6.04
-Iter 75  time=0.01  loss=15.92    active=526   feature_norm=6.04
-Iter 76  time=0.01  loss=15.92    active=525   feature_norm=6.04
-Iter 77  time=0.01  loss=15.92    active=525   feature_norm=6.04
-Iter 78  time=0.01  loss=15.92    active=525   feature_norm=6.04
-Iter 79  time=0.01  loss=15.92    active=526   feature_norm=6.04
-Iter 80  time=0.01  loss=15.92    active=526   feature_norm=6.04
-Iter 81  time=0.01  loss=15.92    active=526   feature_norm=6.04
-Iter 82  time=0.01  loss=15.92    active=526   feature_norm=6.04
-Iter 83  time=0.01  loss=15.92    active=526   feature_norm=6.04
-Iter 84  time=0.01  loss=15.92    active=525   feature_norm=6.04
-Iter 85  time=0.01  loss=15.92    active=525   feature_norm=6.04
-Iter 86  time=0.01  loss=15.92    active=524   feature_norm=6.04
-Iter 87  time=0.01  loss=15.92    active=524   feature_norm=6.04
-Iter 88  time=0.01  loss=15.92    active=525   feature_norm=6.04
+Iter 1   time=0.02  loss=376.88   active=14064 feature_norm=1.00
+Iter 2   time=0.01  loss=296.34   active=13787 feature_norm=1.18
+Iter 3   time=0.01  loss=231.33   active=10200 feature_norm=1.36
+Iter 4   time=0.01  loss=153.60   active=9288  feature_norm=1.77
+Iter 5   time=0.01  loss=87.13    active=7667  feature_norm=2.54
+Iter 6   time=0.01  loss=47.98    active=6762  feature_norm=3.26
+Iter 7   time=0.01  loss=39.51    active=6447  feature_norm=3.55
+Iter 8   time=0.01  loss=27.60    active=5075  feature_norm=4.30
+Iter 9   time=0.01  loss=25.00    active=3720  feature_norm=4.83
+Iter 10  time=0.01  loss=22.68    active=3470  feature_norm=5.04
+Iter 11  time=0.01  loss=22.10    active=3193  feature_norm=5.14
+Iter 12  time=0.01  loss=21.09    active=2549  feature_norm=5.39
+Iter 13  time=0.01  loss=20.24    active=2093  feature_norm=5.43
+Iter 14  time=0.01  loss=19.27    active=1661  feature_norm=5.50
+Iter 15  time=0.01  loss=18.60    active=1193  feature_norm=5.42
+Iter 16  time=0.01  loss=18.32    active=1220  feature_norm=5.49
+Iter 17  time=0.01  loss=18.18    active=1233  feature_norm=5.57
+Iter 18  time=0.01  loss=17.91    active=1079  feature_norm=5.68
+Iter 19  time=0.01  loss=17.68    active=988   feature_norm=5.79
+Iter 20  time=0.01  loss=17.58    active=951   feature_norm=5.80
+Iter 21  time=0.01  loss=17.42    active=866   feature_norm=5.86
+Iter 22  time=0.01  loss=17.39    active=772   feature_norm=5.94
+Iter 23  time=0.01  loss=17.29    active=768   feature_norm=6.00
+Iter 24  time=0.01  loss=17.26    active=763   feature_norm=5.99
+Iter 25  time=0.01  loss=17.19    active=725   feature_norm=5.99
+Iter 26  time=0.01  loss=17.17    active=662   feature_norm=6.05
+Iter 27  time=0.01  loss=17.12    active=694   feature_norm=6.03
+Iter 28  time=0.01  loss=17.10    active=690   feature_norm=6.03
+Iter 29  time=0.01  loss=17.08    active=666   feature_norm=6.06
+Iter 30  time=0.01  loss=17.06    active=651   feature_norm=6.08
+Iter 31  time=0.01  loss=17.04    active=634   feature_norm=6.11
+Iter 32  time=0.01  loss=17.04    active=612   feature_norm=6.14
+Iter 33  time=0.01  loss=17.02    active=614   feature_norm=6.14
+Iter 34  time=0.01  loss=17.01    active=607   feature_norm=6.15
+Iter 35  time=0.01  loss=17.00    active=583   feature_norm=6.18
+Iter 36  time=0.01  loss=17.00    active=581   feature_norm=6.19
+Iter 37  time=0.01  loss=16.99    active=584   feature_norm=6.20
+Iter 38  time=0.01  loss=16.99    active=581   feature_norm=6.20
+Iter 39  time=0.01  loss=16.98    active=576   feature_norm=6.19
+Iter 40  time=0.01  loss=16.98    active=578   feature_norm=6.19
+Iter 41  time=0.01  loss=16.98    active=580   feature_norm=6.19
+Iter 42  time=0.01  loss=16.98    active=577   feature_norm=6.19
+Iter 43  time=0.01  loss=16.97    active=576   feature_norm=6.20
+Iter 44  time=0.01  loss=16.97    active=574   feature_norm=6.19
+Iter 45  time=0.01  loss=16.97    active=574   feature_norm=6.20
+Iter 46  time=0.01  loss=16.97    active=573   feature_norm=6.20
+Iter 47  time=0.01  loss=16.97    active=572   feature_norm=6.20
+Iter 48  time=0.01  loss=16.97    active=573   feature_norm=6.20
+Iter 49  time=0.01  loss=16.97    active=574   feature_norm=6.20
+Iter 50  time=0.01  loss=16.97    active=572   feature_norm=6.20
+Iter 51  time=0.01  loss=16.97    active=570   feature_norm=6.20
+Iter 52  time=0.01  loss=16.97    active=570   feature_norm=6.20
+Iter 53  time=0.01  loss=16.97    active=568   feature_norm=6.20
+Iter 54  time=0.01  loss=16.96    active=567   feature_norm=6.20
+Iter 55  time=0.01  loss=16.96    active=566   feature_norm=6.20
+Iter 56  time=0.01  loss=16.96    active=563   feature_norm=6.20
+Iter 57  time=0.01  loss=16.96    active=567   feature_norm=6.20
+Iter 58  time=0.01  loss=16.96    active=565   feature_norm=6.20
+Iter 59  time=0.01  loss=16.96    active=565   feature_norm=6.20
+Iter 60  time=0.01  loss=16.96    active=564   feature_norm=6.20
+Iter 61  time=0.01  loss=16.96    active=565   feature_norm=6.20
+Iter 62  time=0.01  loss=16.96    active=565   feature_norm=6.20
+Iter 63  time=0.01  loss=16.96    active=565   feature_norm=6.20
+Iter 64  time=0.01  loss=16.96    active=565   feature_norm=6.20
+Iter 65  time=0.01  loss=16.96    active=565   feature_norm=6.20
+Iter 66  time=0.01  loss=16.96    active=565   feature_norm=6.20
+Iter 67  time=0.01  loss=16.96    active=562   feature_norm=6.20
+Iter 68  time=0.01  loss=16.96    active=562   feature_norm=6.20
+Iter 69  time=0.01  loss=16.96    active=562   feature_norm=6.20
+Iter 70  time=0.01  loss=16.96    active=562   feature_norm=6.20
+Iter 71  time=0.01  loss=16.96    active=562   feature_norm=6.20
+Iter 72  time=0.01  loss=16.96    active=562   feature_norm=6.20
+Iter 73  time=0.01  loss=16.96    active=562   feature_norm=6.20
+Iter 74  time=0.01  loss=16.96    active=563   feature_norm=6.20
+Iter 75  time=0.01  loss=16.96    active=562   feature_norm=6.20
 L-BFGS terminated with the stopping criteria
-Total seconds required for training: 0.863
+Total seconds required for training: 0.753
 
 Storing the model
-Number of active features: 525 (13739)
-Number of active attributes: 383 (3192)
+Number of active features: 562 (14147)
+Number of active attributes: 408 (3274)
 Number of active labels: 5 (5)
 Writing labels
 Writing attributes
@@ -331,21 +318,21 @@ Writing feature references for transitions
 Writing feature references for attributes
 Seconds required: 0.001
 
-Elapsed Time training 1:  2.1254990100860596
+Elapsed Time training 1:  2.095360040664673
 CRF test sentences predictions...
 
            precision    recall  f1-score   support
 
-      ORG       0.03      0.02      0.02        51
-      LOC       0.15      0.52      0.23        27
-      PER       0.41      0.50      0.45        40
-     MISC       0.08      0.38      0.13         8
+      LOC       0.15      0.56      0.24        27
+      PER       0.35      0.42      0.39        40
+     MISC       0.07      0.38      0.11         8
+      ORG       0.02      0.02      0.02        51
 
-micro avg       0.17      0.30      0.22       126
-macro avg       0.18      0.30      0.21       126
+micro avg       0.15      0.29      0.20       126
+macro avg       0.16      0.29      0.19       126
 
-pool_sent 17
-total number of annotated sentences:  33
+pool_sent 16
+total number of annotated sentences:  34
 ######################################
 
 
@@ -355,8 +342,8 @@ Iteration 2 is running...
 
 pte  2 query 
 
-Batch size:  17 at iteration  2
-Elapsed Time query 2:  11.843734502792358 ...
+Batch size:  16 at iteration  2
+Elapsed Time query 2:  11.863176107406616 ...
 Training CRF with annotated sentences...
 
 
@@ -367,7 +354,7 @@ feature.possible_states: 1
 feature.possible_transitions: 1
 0....1....2....3....4....5....6....7....8....9....10
 Number of features: 17720
-Seconds required: 0.579
+Seconds required: 0.593
 
 L-BFGS optimization
 c1: 0.100000
@@ -387,7 +374,7 @@ Iter 4   time=0.01  loss=219.32   active=11301 feature_norm=1.88
 Iter 5   time=0.01  loss=126.71   active=9196  feature_norm=2.56
 Iter 6   time=0.01  loss=71.94    active=7289  feature_norm=3.42
 Iter 7   time=0.01  loss=46.89    active=6317  feature_norm=4.18
-Iter 8   time=0.02  loss=38.71    active=5956  feature_norm=4.57
+Iter 8   time=0.01  loss=38.71    active=5956  feature_norm=4.57
 Iter 9   time=0.01  loss=31.72    active=5093  feature_norm=5.23
 Iter 10  time=0.01  loss=29.35    active=3957  feature_norm=5.74
 Iter 11  time=0.01  loss=27.82    active=3470  feature_norm=6.00
@@ -403,7 +390,7 @@ Iter 20  time=0.01  loss=22.38    active=1005  feature_norm=6.79
 Iter 21  time=0.01  loss=22.17    active=993   feature_norm=6.78
 Iter 22  time=0.01  loss=22.06    active=932   feature_norm=6.84
 Iter 23  time=0.01  loss=21.94    active=839   feature_norm=6.95
-Iter 24  time=0.01  loss=21.86    active=836   feature_norm=6.98
+Iter 24  time=0.02  loss=21.86    active=836   feature_norm=6.98
 Iter 25  time=0.01  loss=21.82    active=829   feature_norm=7.00
 Iter 26  time=0.01  loss=21.77    active=805   feature_norm=7.00
 Iter 27  time=0.01  loss=21.72    active=773   feature_norm=7.03
@@ -423,7 +410,7 @@ Iter 40  time=0.01  loss=21.52    active=685   feature_norm=7.13
 Iter 41  time=0.01  loss=21.52    active=686   feature_norm=7.14
 Iter 42  time=0.01  loss=21.52    active=684   feature_norm=7.14
 Iter 43  time=0.01  loss=21.51    active=677   feature_norm=7.14
-Iter 44  time=0.01  loss=21.51    active=668   feature_norm=7.15
+Iter 44  time=0.02  loss=21.51    active=668   feature_norm=7.15
 Iter 45  time=0.01  loss=21.50    active=674   feature_norm=7.15
 Iter 46  time=0.01  loss=21.50    active=672   feature_norm=7.15
 Iter 47  time=0.01  loss=21.50    active=666   feature_norm=7.15
@@ -463,7 +450,7 @@ Iter 80  time=0.01  loss=21.48    active=651   feature_norm=7.16
 Iter 81  time=0.01  loss=21.48    active=651   feature_norm=7.16
 Iter 82  time=0.01  loss=21.48    active=651   feature_norm=7.16
 Iter 83  time=0.01  loss=21.48    active=651   feature_norm=7.16
-Iter 84  time=0.01  loss=21.48    active=650   feature_norm=7.16
+Iter 84  time=0.02  loss=21.48    active=650   feature_norm=7.16
 Iter 85  time=0.01  loss=21.48    active=651   feature_norm=7.16
 Iter 86  time=0.01  loss=21.48    active=651   feature_norm=7.16
 Iter 87  time=0.01  loss=21.48    active=651   feature_norm=7.16
@@ -479,7 +466,7 @@ Iter 96  time=0.01  loss=21.48    active=650   feature_norm=7.15
 Iter 97  time=0.01  loss=21.48    active=650   feature_norm=7.15
 Iter 98  time=0.01  loss=21.48    active=650   feature_norm=7.15
 L-BFGS terminated with the stopping criteria
-Total seconds required for training: 1.426
+Total seconds required for training: 1.451
 
 Storing the model
 Number of active features: 650 (17720)
@@ -491,15 +478,15 @@ Writing feature references for transitions
 Writing feature references for attributes
 Seconds required: 0.001
 
-Elapsed Time training 2:  3.443600654602051
+Elapsed Time training 2:  3.4887099266052246
 CRF test sentences predictions...
 
            precision    recall  f1-score   support
 
-      ORG       0.03      0.02      0.02        51
       LOC       0.17      0.63      0.27        27
       PER       0.42      0.60      0.49        40
      MISC       0.05      0.25      0.08         8
+      ORG       0.03      0.02      0.02        51
 
 micro avg       0.19      0.35      0.25       126
 macro avg       0.19      0.35      0.23       126
@@ -511,4 +498,4 @@ total number of annotated sentences:  50
 
 
  
-[0.13043478260869565, 0.21965317919075145, 0.24649859943977592]
+[0.13043478260869565, 0.19834710743801653, 0.24649859943977592]

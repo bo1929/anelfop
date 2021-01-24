@@ -108,11 +108,14 @@ def get_embeddings(cfg, tknzd_sent, tags, pos, part="train"):
     temp = []
     for i in tqdm(range(len(pretrained_tknzd))):
         temp_sent = [embeddings[i][0]]
-        #n = 1
+        # n = 1
         for j in range(1, len(embeddings[i])):
-            if tokenizer_.decode([pretrained_tknzd[i]["input_ids"][0][j+1]])[0] == "#":
+            if (
+                tokenizer_.decode([pretrained_tknzd[i]["input_ids"][0][j + 1]])[0]
+                == "#"
+            ):
                 temp_sent[-1] = temp_sent[-1] + embeddings[i][j]
-                #n = n + 1
+                # n = n + 1
             else:
                 """
                 if (

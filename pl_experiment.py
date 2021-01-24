@@ -18,7 +18,7 @@ from operator import itemgetter
 from sklearn.model_selection import train_test_split
 from seqeval.metrics import classification_report, f1_score
 
-path_config = sys.argv[1] 
+path_config = sys.argv[1]
 
 cfg = load_save.load_config_from(path_config, AL=False)
 [tknzd_sent_train, tags_train, pos_train], [
