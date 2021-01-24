@@ -10,7 +10,7 @@ import math
 
 
 def get_batch_size(cfg, iteration, pool_sent, total_sent):
-    const = cfg["increment_cons"]
+    increment = cfg["increment_cons"]
     init_size = cfg["initial_size"]
 
     if isinstance(init_size, str):
@@ -18,13 +18,23 @@ def get_batch_size(cfg, iteration, pool_sent, total_sent):
     else:
         init_size = init_size
 
-    if isinstance(const, str):
-        batch_size = (
-            iteration * math.ceil(float(const[1:]) * (total_sent / 100)) + init_size
-        )
+    if isinstance(increment, str):
+        if increment[:3] == "exp":
+            batch_size = int(
+                math.ceil(float(increment[3:]) * (2 ** iteration) + init_size)
+            )
+        elif increment[0] == "p":
+            batch_size = int(
+                iteration * math.ceil(float(increment[1:]) * (total_sent / 100))
+                + init_size
+            )
+        else:
+            raise ValueError("unkown type incremet")
 
+    elif isinstance(icrement, str):
+        batch_size = iteration * increment + init_size
     else:
-        batch_size = iteration * const + init_size
+        raise ValueError("Unkown increment size/ batch size")
 
     if batch_size > pool_sent:
         batch_size = pool_sent

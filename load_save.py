@@ -87,7 +87,7 @@ def load_config_from(filename="./config.yaml", AL=True):
         init_reduction_pfix = init_reduction_type + str(
             cfg_init_reduction[init_reduction_type]["dimension"]
         )
-    
+
     experiment_dir = os.path.join(
         results_dir,
         cfg["method"]
