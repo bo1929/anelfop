@@ -21,7 +21,7 @@ def get_batch_size(cfg, iteration, pool_sent, total_sent):
     if isinstance(increment, str):
         if increment[:3] == "exp":
             batch_size = int(
-                math.ceil(float(increment[3:]) * (2 ** iteration) + init_size)
+                math.ceil(float(increment[3:]) * (2 ** iteration))
             )
         elif increment[0] == "p":
             batch_size = int(
