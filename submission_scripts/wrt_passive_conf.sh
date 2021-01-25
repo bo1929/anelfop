@@ -1,0 +1,85 @@
+#!/bin/bash
+
+POSITIONAL=()
+while [[ $# -gt 0 ]]
+do
+key="$1"
+
+case $key in
+    -d|--data)
+    dataset="$2"
+    shift # past argument
+    shift # past value
+    ;;
+    -e|--embedding)
+    embedding_type="$2"
+    shift # past argument
+    shift # past value
+    ;;
+    -r|--reduction)
+    reduction="$2"
+    shift # past argument
+    shift # past value
+    ;;
+    -m|--meth)
+    method="$2"
+    shift # past argument
+    shift # past value
+    ;;
+    -p|--path)
+    main_dir="$2"
+    shift
+    shift
+    ;;
+    *)    # unknown option
+    POSITIONAL+=("$1") # save it in an array for later
+    shift # past argument
+    ;;
+esac
+done
+
+if [ $data="CONLL2003" ]; 
+then
+  pos="True"
+  pre_model="bert-base-cased"
+elif [ $data="NCBI_disease" i] || [ $data="BC5CDR" ] || [ $data="BC2GM" ] || [ $data="Genia4ER" ];
+then
+  pos="False"
+  pre_model="biobert-base-cased-v11-mnli_cl4l"
+else
+  exit 128
+fi
+
+
+echo "seed: 219
+
+increment_cons: ${increment}
+initial_size: ${init_size}
+
+generator: True
+method: ${method} 
+
+main_directory: ${main_dir}
+data_directory: ${main_dir}datasets/tokenized/
+
+data_set:
+  name: ${dataset}
+  pos: ${pos}
+
+pretrained_model: ${pre_model}
+
+embedding_type: ${embedding_type}
+
+init_reduction:
+  type: ${reduction:0:3}
+  pca:
+    dimension: ${reduction:3}
+
+CRF:
+  algorithm: lbfgs
+  c1: 0.1
+  c2: 0.1
+  max_iterations: 100
+  allow_all_states: True
+  allow_all_transitions: True
+"

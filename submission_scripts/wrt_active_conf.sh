@@ -11,6 +11,16 @@ case $key in
     shift # past argument
     shift # past value
     ;;
+    -e|--embedding)
+    embedding_type="$2"
+    shift # past argument
+    shift # past value
+    ;;
+    -r|--reduction)
+    reduction="$2"
+    shift # past argument
+    shift # past value
+    ;;
     -m|--meth)
     method="$2"
     shift # past argument
@@ -26,7 +36,7 @@ case $key in
     shift # past argument
     shift #past value
     ;;
-    -r|--mdir)
+    -p|--path)
     main_dir="$2"
     shift
     shift
@@ -38,16 +48,18 @@ case $key in
 esac
 done
 
-embedding_type="ll"
-
 if [ $data="CONLL2003" ]; 
 then
   pos="True"
   pre_model="bert-base-cased"
-else
+elif [ $data="NCBI_disease" ] || [ $data="BC5CDR" ] || [ $data="BC2GM" ] || [ $data="Genia4ER" ];
+then
   pos="False"
-  pre_model=""
+  pre_model="biobert-base-cased-v11-mnli_cl4l"
+else
+  exit 128
 fi
+
 
 echo "seed: 219
 
@@ -66,19 +78,12 @@ data_set:
 
 pretrained_model: ${pre_model}
 
-#sl4l
-#ll
-#cl4l
 embedding_type: ${embedding_type}
 
 init_reduction:
-  type: pca
+  type: ${reduction:0:3}
   pca:
-    dimension: 300
-  umap:
-    dimension: 300
-    min_dist: 0.0
-    neig: 40
+    dimension: ${reduction:3}
 
 CRF:
   algorithm: lbfgs
