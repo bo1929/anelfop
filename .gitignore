@@ -1,8 +1,0 @@
-**/results_active/
-**/results_passive/
-**/saved_embeddings/
-**/config_files/
-**/*.out
-**/__pycache__/
-**/bakup/
-**/debug*/
