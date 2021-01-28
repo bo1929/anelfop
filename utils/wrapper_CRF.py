@@ -46,14 +46,12 @@ def feature_selector(
     }
 
 
-################
-
-
 def word2features(feature_cfg, sents, i, j, **kwargs):
-    # do not pass [CLS] [SEP] tokens and their embeddings
-    # only next word and previous word are considered
-    # sent, word_embd parameters are common for all i
-
+    """
+    do not pass [CLS] [SEP] tokens and their embeddings
+    only next word and previous word are considered
+    sent, word_embd parameters are common for all i
+    """
     features = feature_selector(feature_cfg, sents[i][j], i, j, "0", **kwargs)
     features["0:bias"] = 1.0
 
