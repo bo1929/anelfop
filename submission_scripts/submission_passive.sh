@@ -6,7 +6,7 @@ rmpost="submission_scripts/"
 job_dir=${curr_dir%"submission_scripts/"}
 echo ${job_dir}
 
-data="debug_CONLL2003"
+data="s800"
 embedding_type_all=("ll" "cl4l" "sl4l")
 reduction_all=("off" "pca200" "pca256" "pca300")
 
@@ -37,12 +37,12 @@ for embedding_type  in ${embedding_type_all[@]}; do
 #
 #SBATCH --job-name=${name}
 #SBATCH --account=mdbf
-#SBATCH --ntasks-per-node=4
-#SBATCH --qos=short_mdbf
-#SBATCH --partition=short_mdbf
-#SBATCH --time=1:59:00
+#SBATCH --ntasks-per-node=8
+#SBATCH --qos=mid_mdbf
+#SBATCH --partition=mid_mdbf
+#SBATCH --time=23:59:00
 #SBATCH --output=${curr_dir}${data}_pl/${name}.out
-#SBATCH --mem-per-cpu=1G
+#SBATCH --mem-per-cpu=8G
 
 # Set stack size to unlimited
 

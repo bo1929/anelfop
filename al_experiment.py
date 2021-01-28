@@ -65,7 +65,6 @@ if isinstance(initial_size, str):
 else:
     initial_size = initial_size
 
-print("initial size:", initial_size)
 random.seed(a=random_seed, version=2)
 initial_idx_ann = random.sample(
     [i for i in range(len(embeddings_train_r))], initial_size
@@ -228,7 +227,6 @@ while not (stop_condition):
 
     iteration = iteration + 1
     print("total number of annotated sentences: ", len(idx_ann))
-    print("######################################\n\n\n\n ")
 
 
 load_save.save_results(cfg, stats_queries, f1_scores, queried_indexes, queried_sent_len)

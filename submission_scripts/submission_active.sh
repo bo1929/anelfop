@@ -8,9 +8,9 @@ echo ${job_dir}
 
 method_all=("ptp" "ptm" "pte" "pap" "rs" "lss" "tp" "ttp" "ntp" "tm" "ttm" "ntm" "te" "tte" "nte" "ap" "tap" "nap")
 
-data="debug_CONLL2003"
-embedding_type="ll"
-reduction="pca300"	#off
+data="NCBI_disease"
+embedding_type="cl4l"
+reduction="pca200"	#off
 
 increment_size="exp1"
 init_size=16
@@ -42,12 +42,12 @@ for mthd  in ${method_all[@]}; do
 #
 #SBATCH --job-name=${name}
 #SBATCH --account=mdbf
-#SBATCH --ntasks-per-node=4
-#SBATCH --qos=short_mdbf
-#SBATCH --partition=short_mdbf
-#SBATCH --time=1:59:00
+#SBATCH --ntasks-per-node=8
+#SBATCH --qos=mid_mdbf
+#SBATCH --partition=mid_mdbf
+#SBATCH --time=23:59:00
 #SBATCH --output=${curr_dir}${data}_al/${name}.out
-#SBATCH --mem-per-cpu=1G
+#SBATCH --mem-per-cpu=8G
 
 # Set stack size to unlimited
 

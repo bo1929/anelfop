@@ -56,7 +56,6 @@ embeddings_train_r, embeddings_test_r = functions.reduce_embeddings(
 )
 
 embedding_dim = embeddings_train_r[0][0].shape[0]
-print("final embedding dimension: ", embedding_dim)
 
 load_save.write_ft_config(cfg)
 feature_cfg = load_save.load_ft_config(cfg)

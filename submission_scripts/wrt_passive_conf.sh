@@ -38,23 +38,31 @@ case $key in
 esac
 done
 
-if [ $data="CONLL2003" ]; 
+if [ ${dataset} = "CONLL2003" ]; 
 then
   pos="True"
   pre_model="bert-base-cased"
-elif [ $data="NCBI_disease" i] || [ $data="BC5CDR" ] || [ $data="BC2GM" ] || [ $data="Genia4ER" ];
+elif [ ${dataset} = "BC5CDR" ] || [ ${dataset} = "BC2GM" ] || [ ${dataset} = "Genia4ER" ];
 then
   pos="False"
-  pre_model="biobert-base-cased-v11-mnli_cl4l"
+  pre_model="emilyalsentzer/Bio_ClinicalBERT"
+#  pre_model="dmis-lab/biobert-base-cased-v1.1"
+elif [ ${dataset} = "NCBI_disease" ] 
+then
+  pos="False"
+  pre_model="dmis-lab/biobert-base-cased-v1.1"
+#  pre_model="emilyalsentzer/Bio_ClinicalBERT"
+elif [ ${dataset} = "s800" ] || [ ${dataset} = "LINNAEUS" ];
+then
+  pos="False"
+#  pre_model="dmis-lab/biobert-base-cased-v1.1"
+  pre_model="emilyalsentzer/Bio_ClinicalBERT"
 else
   exit 128
 fi
 
 
 echo "seed: 219
-
-increment_cons: ${increment}
-initial_size: ${init_size}
 
 generator: True
 method: ${method} 
