@@ -6,7 +6,7 @@ rmpost="submission_scripts/"
 job_dir=${curr_dir%"submission_scripts/"}
 echo ${job_dir}
 
-data="s800"
+data="CONLL2003"
 embedding_type_all=("ll" "cl4l" "sl4l")
 reduction_all=("off" "pca200" "pca256" "pca300")
 
