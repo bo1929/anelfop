@@ -72,7 +72,7 @@ else
 fi
 
 
-echo "seed: 921
+echo "seed: 291
 
 increment_cons: ${increment}
 initial_size: ${init_size}

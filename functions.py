@@ -18,12 +18,12 @@ def get_batch_size(cfg, iteration, pool_sent, total_sent):
 
     if isinstance(increment, str):
         if increment[:3] == "exp":
-            batch_size = int(math.ceil(float(increment[3:]) * (2**iteration)))
+            batch_size = int(math.ceil(float(increment[3:]) * (2 ** iteration)))
         elif increment[0] == "p":
             batch_size = int(
-                iteration *
-                math.ceil(float(increment[1:]) *
-                          (total_sent / 100)) + init_size)
+                iteration * math.ceil(float(increment[1:]) * (total_sent / 100))
+                + init_size
+            )
         else:
             raise ValueError("unkown type incremet")
 
@@ -48,12 +48,8 @@ def stopping_criteria(cfg, iteration, pool_sent, total_sent, f1):
 
 
 def pca_r_embeddings(embeddings_ann, embeddings_pool, n_comp=200, seed=29):
-    embeddings_ann_flat = [
-        word.numpy() for sent in embeddings_ann for word in sent
-    ]
-    embeddings_pool_flat = [
-        word.numpy() for sent in embeddings_pool for word in sent
-    ]
+    embeddings_ann_flat = [word.numpy() for sent in embeddings_ann for word in sent]
+    embeddings_pool_flat = [word.numpy() for sent in embeddings_pool for word in sent]
 
     sent_len_pool = [0] + [len(sent) for sent in embeddings_pool]
     sent_len_ann = [0] + [len(sent) for sent in embeddings_ann]
@@ -73,19 +69,18 @@ def pca_r_embeddings(embeddings_ann, embeddings_pool, n_comp=200, seed=29):
     pca = PCA(n_components=n_comp, random_state=seed)
     embeddings = pca.fit_transform(X_)
 
-    c_embeddings_ann = embeddings[:len(embeddings_ann_flat)]
-    c_embeddings_pool = embeddings[len(embeddings_ann_flat):]
+    c_embeddings_ann = embeddings[: len(embeddings_ann_flat)]
+    c_embeddings_pool = embeddings[len(embeddings_ann_flat) :]
 
     pca_r_embeddings_ann = [
-        c_embeddings_ann[sent_idx_ann[i - 1]:sent_idx_ann[i]]
+        c_embeddings_ann[sent_idx_ann[i - 1] : sent_idx_ann[i]]
         for i in range(1, len(sent_idx_ann))
     ]
     pca_r_embeddings_pool = [
-        c_embeddings_pool[sent_idx_pool[i - 1]:sent_idx_pool[i]]
+        c_embeddings_pool[sent_idx_pool[i - 1] : sent_idx_pool[i]]
         for i in range(1, len(sent_idx_pool))
     ]
-    print("Variance Explained:",
-          list(accumulate(pca.explained_variance_ratio_)))
+    print("Variance Explained:", list(accumulate(pca.explained_variance_ratio_)))
 
     return pca_r_embeddings_ann, pca_r_embeddings_pool
 
@@ -140,27 +135,24 @@ def query(
     else:
         f_dict = cfg["method_dict"]
         active_learner = cfg["method"]
-        batch_size = get_batch_size(cfg, iteration, len(idx_pool),
-                                    len(y_train))
+        batch_size = get_batch_size(cfg, iteration, len(idx_pool), len(y_train))
         print("Batch size: ", batch_size, "at iteration ", iteration)
         if active_learner == "rs":
-            idx_q, idx_pool = f_dict[active_learner](idx_pool, batch_size,
-                                                     cfg["seed"])
+            idx_q, idx_pool = f_dict[active_learner](idx_pool, batch_size, cfg["seed"])
 
         elif active_learner in [
-                "te",
-                "tp",
-                "tm",
-                "tte",
-                "ttp",
-                "ttm",
-                "nte",
-                "ntp",
-                "ntm",
+            "te",
+            "tp",
+            "tm",
+            "tte",
+            "ttp",
+            "ttm",
+            "nte",
+            "ntp",
+            "ntm",
         ]:
             mi_pool = crf_trained.predict_marginals(Xi_pool)
-            idx_q, idx_pool = f_dict[active_learner](mi_pool, idx_pool,
-                                                     batch_size)
+            idx_q, idx_pool = f_dict[active_learner](mi_pool, idx_pool, batch_size)
 
         elif active_learner in ["ap", "tap", "nap"]:
             if cfg["generator"]:
@@ -170,8 +162,9 @@ def query(
 
             mi_pool = crf_trained.predict_marginals(Xi_pool)
             yi_pool = crf_trained.predict(Xi_pool_)
-            idx_q, idx_pool = f_dict[active_learner](mi_pool, yi_pool,
-                                                     idx_pool, batch_size)
+            idx_q, idx_pool = f_dict[active_learner](
+                mi_pool, yi_pool, idx_pool, batch_size
+            )
 
         elif active_learner in ["pte", "ptp", "ptm", "pap"]:
             embeddings_ann = [embeddings_train[x] for x in idx_ann]
