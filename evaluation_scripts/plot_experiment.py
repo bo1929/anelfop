@@ -11,11 +11,16 @@ from scipy.interpolate import interp1d
 
 INTPLT = False
 
-EXPERIMENTS = ["exp1_init16/experiment_no1", "exp1_init16/experiment_no2", "exp1_init16/experiment_no3"]
+EXPERIMENTS = [
+    "exp1_init16/experiment_no1", "exp1_init16/experiment_no2",
+    "exp1_init16/experiment_no3", "exp1_init16/experiment_no4"
+]
 CORPUS = "s800"
-AL__GENUS = "ap"
+AL__GENUS = "tp"
 
 BATCH_CONST = 1
+
+NAME = "example"
 
 
 def get_parent_dir(x, depth=2):
@@ -28,13 +33,12 @@ def get_parent_dir(x, depth=2):
 def plot_single_genus(results_name, results_f1, cumnum_token, INTPLT=False):
     L = len(results_f1[0])
     batch_sizes = list(
-        itertools.accumulate([16] + [BATCH_CONST * (2 ** i) for i in range(1, L)])
-    )
+        itertools.accumulate([16] +
+                             [BATCH_CONST * (2**i) for i in range(1, L)]))
     cumnum_sent = [batch_sizes for i in range(len(cumnum_token))]
 
     if INTPLT:
         results_f1_intplt = []
-        cumnum_sent_intplt = []
         cumnum_token_intplt = []
         cumnum_token_common = []
 
@@ -73,17 +77,18 @@ def plot_single_genus(results_name, results_f1, cumnum_token, INTPLT=False):
     y_labels = ["f1-score", "f1-score", "number of annotated tokens"]
 
     x_scales = ["log", "log", "log"]
-    y_scales = ["linear", "linear", "log"]
+    y_scales = ["linear", "linear", "linear"]
 
     basex = [2, 2, 2]
     basey = [10, 10, 2]
 
     marker_cyc = itertools.cycle(
-        list(matplotlib.lines.Line2D.markers.keys())[: len(results_name)]
-    )
-    palette = itertools.cycle(sns.color_palette()[: len(results_name)])
+        list(matplotlib.lines.Line2D.markers.keys())[1:len(results_name) + 1])
+    palette = itertools.cycle(sns.color_palette()[:len(results_name)])
 
-    fig = matplotlib.figure.Figure(figsize=(18, 6), constrained_layout=False, dpi=700)
+    fig = matplotlib.figure.Figure(figsize=(18, 6),
+                                   constrained_layout=False,
+                                   dpi=700)
     ax_array = fig.subplots(1, 3, squeeze=False)
 
     for i in range(ax_array.shape[1]):
@@ -113,7 +118,7 @@ def plot_single_genus(results_name, results_f1, cumnum_token, INTPLT=False):
 
     handles, labels = ax_array[0, 0].get_legend_handles_labels()
     fig.legend(handles, labels, loc="center right", prop={"size": 18})
-    fig.savefig("./here.png")
+    fig.savefig("./" + NAME + ".png")
 
 
 results_f1_all = []
@@ -137,19 +142,21 @@ for experiment in EXPERIMENTS:
         name = name_long.split("_")[0]
         if AL__GENUS in name:
             results_name.append(name)
-            f1_score_path = os.path.join(result_path_all, name_long, "f1_scores")
-            qsent_len_path = os.path.join(result_path_all, name_long, "query_sent_len")
+            f1_score_path = os.path.join(result_path_all, name_long,
+                                         "f1_scores")
+            qsent_len_path = os.path.join(result_path_all, name_long,
+                                          "query_sent_len")
 
             with (open(f1_score_path, "rb")) as openfile:
-                results_f1_.append(np.array(pickle.load(openfile)).astype(float))
+                results_f1_.append(
+                    np.array(pickle.load(openfile)).astype(float))
 
             with (open(qsent_len_path, "rb")) as openfile:
                 qsent_len = pickle.load(openfile)
                 cumnum_token_.append(
                     np.cumsum(
-                        np.array([sum(query) for query in qsent_len]).astype(float)
-                    )
-                )
+                        np.array([sum(query)
+                                  for query in qsent_len]).astype(float)))
     results_f1_all.append(np.array(results_f1_))
     cumnum_token_all.append(np.array(cumnum_token_))
 
