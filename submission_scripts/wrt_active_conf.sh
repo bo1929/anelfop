@@ -36,6 +36,11 @@ case $key in
     shift # past argument
     shift #past value
     ;;
+    -s|--stop)
+    stopping_criteria="$2"
+    shift # past argument
+    shift #past value
+    ;;
     -p|--path)
     main_dir="$2"
     shift
@@ -76,6 +81,7 @@ echo "seed: 291
 
 increment_cons: ${increment}
 initial_size: ${init_size}
+stopping_criteria: ${stopping_criteria}
 
 generator: True
 method: ${method} 

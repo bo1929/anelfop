@@ -15,7 +15,7 @@ EXPERIMENTS = [
     "exp1_init16/experiment_no1", "exp1_init16/experiment_no2",
     "exp1_init16/experiment_no3", "exp1_init16/experiment_no4"
 ]
-CORPUS = "s800"
+CORPUS = "CONLL2003"
 AL__GENUS = "tp"
 
 BATCH_CONST = 1

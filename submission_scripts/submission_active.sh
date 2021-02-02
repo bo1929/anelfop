@@ -9,12 +9,13 @@ echo ${job_dir}
 
 method_all=("ptp" "ptm" "pte" "pap" "rs" "lss" "tp" "ttp" "ntp" "tm" "ttm" "ntm" "te" "tte" "nte" "ap" "tap" "nap")
 
-data="CONLL2003"
+data="s800"
 embedding_type="cl4l"
-reduction="pca256" #off
+reduction="pca200" #off
 
-increment_size="cp8"
-init_size="p4"
+increment_size="cp3"
+init_size="p2"
+stopping_criteria="ge50"
 
 if [ -d ${job_dir}"config_files/" ]; then
     echo "File exists"
@@ -56,6 +57,6 @@ ulimit -l unlimited
 ulimit -a
 python ${job_dir}al_experiment.py ${config_path}
     " >${curr_dir}"single_active_submission.sh"
-    ${curr_dir}"wrt_active_conf.sh" -d ${data} -m ${mthd} -e ${embedding_type} -r ${reduction} -c ${increment_size} -i ${init_size} -p ${job_dir} >${config_path}
+    ${curr_dir}"wrt_active_conf.sh" -d ${data} -m ${mthd} -e ${embedding_type} -r ${reduction} -c ${increment_size} -s ${increment_size} -i ${init_size} -p ${job_dir} >${config_path}
     sbatch ${curr_dir}"single_active_submission.sh"
 done

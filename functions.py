@@ -27,10 +27,10 @@ def get_batch_size(cfg, iteration, pool_sent, total_sent):
             batch_size = int(
                 math.ceil(float(increment[2:]) * (total_sent / 100)))
         else:
-            raise ValueError("unkown type incremet")
+            raise ValueError("Unkown type incremet!")
 
     else:
-        raise ValueError("Unkown increment size/ batch size")
+        raise ValueError("Unkown type {increment size}/{batch size}!")
 
     if batch_size > pool_sent:
         batch_size = pool_sent
@@ -41,10 +41,19 @@ def get_batch_size(cfg, iteration, pool_sent, total_sent):
 def stopping_criteria(cfg, iteration, pool_sent, total_sent, f1):
     # batch_size = get_batch_size(cfg, iteration, pool_sent, total_sent)
     print("pool_sent", pool_sent)
-    if pool_sent == 0:
-        return True
+    sc = cfg["stopping_criteria"]
+    if sc == "":
+        if pool_sent == 0:
+            return True
+        else:
+            return False
+    elif sc[:2] == "ge":
+        if pool_sent <= math.ceil((total_sent * sc[2:]) / 100):
+            return True
+        else:
+            return False
     else:
-        return False
+        raise ValueError("Unkown type stopping_criteria!")
 
 
 def pca_r_embeddings(embeddings_ann, embeddings_pool, n_comp=200, seed=29):
