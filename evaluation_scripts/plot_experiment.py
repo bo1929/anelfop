@@ -4,8 +4,8 @@ import itertools
 
 import numpy as np
 
-import seaborn as sns
 import matplotlib
+import seaborn as sns
 
 from scipy.interpolate import interp1d
 

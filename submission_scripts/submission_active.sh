@@ -9,12 +9,12 @@ echo ${job_dir}
 
 method_all=("ptp" "ptm" "pte" "pap" "rs" "lss" "tp" "ttp" "ntp" "tm" "ttm" "ntm" "te" "tte" "nte" "ap" "tap" "nap")
 
-data="BC5CDR"
+data="CONLL2003"
 embedding_type="cl4l"
-reduction="pca200" #off
+reduction="pca256" #off
 
-increment_size="exp1"
-init_size=16
+increment_size="cp8"
+init_size="p4"
 
 if [ -d ${job_dir}"config_files/" ]; then
     echo "File exists"

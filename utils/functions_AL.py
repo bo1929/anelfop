@@ -2,13 +2,9 @@ import os
 import math
 import random
 import operator
-import itertools
 
 import numpy as np
 import pandas as pd
-
-from operator import itemgetter
-from collections import Counter
 
 import utils.wrapper_UMAP as umap_
 
@@ -40,7 +36,6 @@ def rs(idx_pool, batch_size, seed):
 
 
 def lss(sent_lenghts, idx_pool, batch_size):
-    num_sent = len(sent_lenghts)
     batch = np.argpartition(np.array(sent_lenghts) * (-1),
                             batch_size - 1)[:batch_size].tolist()
     idx_q = [idx_pool[i] for i in batch]
@@ -250,7 +245,7 @@ def ptp(cfg, embeddings_ann, embeddings_pool, y_ann, m_pool, idx_pool,
 
     experiment_dir = cfg["experiment_directory"]
     tag_dict = cfg["tag_dict"]
-    kwargs = z = {**cfg["umap_al"], **cfg["hdbscan_al"]}
+    kwargs = {**cfg["umap_al"], **cfg["hdbscan_al"]}
 
     (
         embeddings_ann,
@@ -273,12 +268,12 @@ def ptp(cfg, embeddings_ann, embeddings_pool, y_ann, m_pool, idx_pool,
 
     clr = [c for sent in clusters_pool for c in sent]
     coord = np.array([xy for sent in embeddings_pool for xy in sent])
-    sc = ax.scatter(coord[:, 0],
-                    coord[:, 1],
-                    c=clr,
-                    s=0.4,
-                    cmap="Spectral",
-                    alpha=0.5)
+    ax.scatter(coord[:, 0],
+               coord[:, 1],
+               c=clr,
+               s=0.4,
+               cmap="Spectral",
+               alpha=0.5)
     fig.suptitle(
         "SemiSupervisedUMAP + HDBSCAN" + str(len(y_ann)) +
         " sentences labeled",
@@ -326,7 +321,7 @@ def ptm(cfg, embeddings_ann, embeddings_pool, y_ann, m_pool, idx_pool,
 
     experiment_dir = cfg["experiment_directory"]
     tag_dict = cfg["tag_dict"]
-    kwargs = z = {**cfg["umap_al"], **cfg["hdbscan_al"]}
+    kwargs = {**cfg["umap_al"], **cfg["hdbscan_al"]}
 
     (
         embeddings_ann,
@@ -349,12 +344,12 @@ def ptm(cfg, embeddings_ann, embeddings_pool, y_ann, m_pool, idx_pool,
 
     clr = [c for sent in clusters_pool for c in sent]
     coord = np.array([xy for sent in embeddings_pool for xy in sent])
-    sc = ax.scatter(coord[:, 0],
-                    coord[:, 1],
-                    c=clr,
-                    s=0.4,
-                    cmap="Spectral",
-                    alpha=0.5)
+    ax.scatter(coord[:, 0],
+               coord[:, 1],
+               c=clr,
+               s=0.4,
+               cmap="Spectral",
+               alpha=0.5)
     fig.suptitle(
         "SemiSupervisedUMAP + HDBSCAN" + str(len(y_ann)) +
         " sentences labeled",
@@ -403,7 +398,7 @@ def pte(cfg, embeddings_ann, embeddings_pool, y_ann, m_pool, idx_pool,
 
     experiment_dir = cfg["experiment_directory"]
     tag_dict = cfg["tag_dict"]
-    kwargs = z = {**cfg["umap_al"], **cfg["hdbscan_al"]}
+    kwargs = {**cfg["umap_al"], **cfg["hdbscan_al"]}
 
     (
         embeddings_ann,
@@ -426,12 +421,12 @@ def pte(cfg, embeddings_ann, embeddings_pool, y_ann, m_pool, idx_pool,
 
     clr = [c for sent in clusters_pool for c in sent]
     coord = np.array([xy for sent in embeddings_pool for xy in sent])
-    sc = ax.scatter(coord[:, 0],
-                    coord[:, 1],
-                    c=clr,
-                    s=0.4,
-                    cmap="Spectral",
-                    alpha=0.5)
+    ax.scatter(coord[:, 0],
+               coord[:, 1],
+               c=clr,
+               s=0.4,
+               cmap="Spectral",
+               alpha=0.5)
     fig.suptitle(
         "Semi-supervised UMAP + HDBSCAN, " + str(len(y_ann)) +
         " sentences labeled.",
@@ -481,7 +476,7 @@ def pap(cfg, embeddings_ann, embeddings_pool, y_ann, y_pred, m_pool, idx_pool,
 
     experiment_dir = cfg["experiment_directory"]
     tag_dict = cfg["tag_dict"]
-    kwargs = z = {**cfg["umap_al"], **cfg["hdbscan_al"]}
+    kwargs = {**cfg["umap_al"], **cfg["hdbscan_al"]}
 
     (
         embeddings_ann,
@@ -504,12 +499,12 @@ def pap(cfg, embeddings_ann, embeddings_pool, y_ann, y_pred, m_pool, idx_pool,
 
     clr = [c for sent in clusters_pool for c in sent]
     coord = np.array([xy for sent in embeddings_pool for xy in sent])
-    sc = ax.scatter(coord[:, 0],
-                    coord[:, 1],
-                    c=clr,
-                    s=0.4,
-                    cmap="Spectral",
-                    alpha=0.5)
+    ax.scatter(coord[:, 0],
+               coord[:, 1],
+               c=clr,
+               s=0.4,
+               cmap="Spectral",
+               alpha=0.5)
     fig.suptitle(
         "Semi-supervised UMAP + HDBSCAN, " + str(len(y_ann)) +
         " sentences labeled.",
@@ -556,7 +551,7 @@ def mes(cfg, embeddings_ann, embeddings_pool, y_ann, idx_pool, batch_size):
 
     experiment_dir = cfg["experiment_directory"]
     tag_dict = cfg["tag_dict"]
-    kwargs = z = {**cfg["umap_al"], **cfg["hdbscan_al"]}
+    kwargs = {**cfg["umap_al"], **cfg["hdbscan_al"]}
 
     (
         embeddings_ann,
@@ -579,12 +574,12 @@ def mes(cfg, embeddings_ann, embeddings_pool, y_ann, idx_pool, batch_size):
 
     clr = [c for sent in clusters_pool for c in sent]
     coord = np.array([xy for sent in embeddings_pool for xy in sent])
-    sc = ax.scatter(coord[:, 0],
-                    coord[:, 1],
-                    c=clr,
-                    s=0.4,
-                    cmap="Spectral",
-                    alpha=0.5)
+    ax.scatter(coord[:, 0],
+               coord[:, 1],
+               c=clr,
+               s=0.4,
+               cmap="Spectral",
+               alpha=0.5)
     fig.suptitle(
         "Semi-supervised UMAP + HDBSCAN, " + str(len(y_ann)) +
         " sentences labeled.",
