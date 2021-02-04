@@ -48,7 +48,7 @@ def stopping_criteria(cfg, iteration, pool_sent, total_sent, f1):
         else:
             return False
     elif sc[:2] == "ge":
-        if pool_sent <= math.ceil((total_sent * sc[2:]) / 100):
+        if pool_sent <= math.ceil((total_sent * float(sc[2:])) / 100):
             return True
         else:
             return False
