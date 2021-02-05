@@ -7,14 +7,26 @@ from utils.functions_AL import *
 import math
 
 
-def get_batch_size(cfg, iteration, pool_sent, total_sent):
-    increment = cfg["increment_cons"]
-    init_size = cfg["initial_size"]
+def get_init_size(cfg, total_num_sent):
+    init_size_cfg = cfg["initial_size"]
+    print("number of initially annotated senteneces: ", init_size_cfg)
 
-    if isinstance(init_size, str):
-        init_size = math.ceil(float(init_size[1:]) * (total_sent / 100))
+    if isinstance(init_size_cfg, str):
+        if init_size_cfg[0] == "p":
+            init_size = math.ceil(
+                float(init_size_cfg[1:]) * (total_num_sent / 100))
+        else:
+            raise ValueError("Incorrect string argument!")
+    elif isinstance(init_size_cfg, int):
+        init_size = init_size_cfg
     else:
-        init_size = init_size
+        raise ValueError("Unkown type initial size!")
+
+    return init_size
+
+
+def get_batch_size(cfg, iteration, pool_sent, total_num_sent):
+    increment = cfg["increment_cons"]
 
     if isinstance(increment, str):
         if increment[:3] == "exp":
@@ -22,10 +34,10 @@ def get_batch_size(cfg, iteration, pool_sent, total_sent):
         elif increment[0] == "p":
             batch_size = int(
                 iteration *
-                math.ceil(float(increment[1:]) * (total_sent / 100)))
+                math.ceil(float(increment[1:]) * (total_num_sent / 100)))
         elif increment[:2] == "cp":
             batch_size = int(
-                math.ceil(float(increment[2:]) * (total_sent / 100)))
+                math.ceil(float(increment[2:]) * (total_num_sent / 100)))
         else:
             raise ValueError("Unkown type incremet!")
 
@@ -38,17 +50,17 @@ def get_batch_size(cfg, iteration, pool_sent, total_sent):
     return batch_size
 
 
-def stopping_criteria(cfg, iteration, pool_sent, total_sent, f1):
-    # batch_size = get_batch_size(cfg, iteration, pool_sent, total_sent)
+def stopping_criteria(cfg, iteration, pool_sent, total_num_sent, f1):
+    # batch_size = get_batch_size(cfg, iteration, pool_sent, total_num_sent)
     print("pool_sent", pool_sent)
     sc = cfg["stopping_criteria"]
-    if sc == "":
+    if sc == "full":
         if pool_sent == 0:
             return True
         else:
             return False
     elif sc[:2] == "ge":
-        if pool_sent <= math.ceil((total_sent * float(sc[2:])) / 100):
+        if pool_sent <= math.ceil((total_num_sent * float(sc[2:])) / 100):
             return True
         else:
             return False
