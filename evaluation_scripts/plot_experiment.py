@@ -12,12 +12,7 @@ from scipy.interpolate import interp1d
 INTPLT = False
 
 EXPERIMENTS = [
-    "exp1_init16/experiment_seed129",
-    "exp1_init16/experiment_seed192",
-    "exp1_init16/experiment_seed291",
-    "exp1_init16/experiment_seed291",
-    "exp1_init16/experiment_seed912",
-    "exp1_init16/experiment_seed921",
+   
 ]
 CORPUS = "CONLL2003"
 AL_GENUS = "ap"
