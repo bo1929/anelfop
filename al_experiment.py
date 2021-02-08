@@ -7,9 +7,9 @@ import random
 import time as money
 
 import numpy as np
-import utils.wrapper_CRF as crf_
-import utils.wrapper_pretrained as pretrained_
-import utils.wrapper_UMAP as umap_
+import wrappers.wrapper_CRF as crf_
+import wrappers.wrapper_pretrained as pretrained_
+import wrappers.wrapper_UMAP as umap_
 
 import functions
 import load_save
@@ -34,11 +34,9 @@ random_seed = cfg["seed"]
     tknzd_sent_train,
     y_train,
     pos_train,
-) = pretrained_.get_embeddings(cfg,
-                               tknzd_sent_train,
-                               tags_train,
-                               pos_train,
-                               part="train")
+) = pretrained_.get_embeddings(
+    cfg, tknzd_sent_train, tags_train, pos_train, part="train"
+)
 
 (
     embeddings_test,
@@ -46,14 +44,11 @@ random_seed = cfg["seed"]
     tknzd_sent_test,
     y_test,
     pos_test,
-) = pretrained_.get_embeddings(cfg,
-                               tknzd_sent_test,
-                               tags_test,
-                               pos_test,
-                               part="test")
+) = pretrained_.get_embeddings(cfg, tknzd_sent_test, tags_test, pos_test, part="test")
 
 embeddings_train_r, embeddings_test_r = functions.reduce_embeddings(
-    cfg, embeddings_train, embeddings_test)
+    cfg, embeddings_train, embeddings_test
+)
 
 embedding_dim = embeddings_train_r[0][0].shape[0]
 
@@ -63,13 +58,15 @@ feature_cfg = load_save.load_ft_config(cfg)
 initial_size = functions.get_init_size(cfg, len(y_train))
 
 random.seed(a=random_seed, version=2)
-initial_idx_ann = random.sample([i for i in range(len(embeddings_train_r))],
-                                initial_size)
+initial_idx_ann = random.sample(
+    [i for i in range(len(embeddings_train_r))], initial_size
+)
 
 idx_pool = list(
-    np.setdiff1d(np.arange(0, len(embeddings_train_r)),
-                 initial_idx_ann,
-                 assume_unique=True))
+    np.setdiff1d(
+        np.arange(0, len(embeddings_train_r)), initial_idx_ann, assume_unique=True
+    )
+)
 
 idx_ann = initial_idx_ann
 
@@ -113,13 +110,15 @@ stats_queries.append((report, start - end))
 f1_scores.append(f1_score(y_test, yi_pred))
 queried_indexes.append(initial_idx_ann)
 queried_sent_len.append(
-    [len(sent) for sent in [tknzd_sent_train[x] for x in initial_idx_ann]])
+    [len(sent) for sent in [tknzd_sent_train[x] for x in initial_idx_ann]]
+)
 
 active_learner = cfg["method"]
 
 iteration = 1
-stop_condition = functions.stopping_criteria(cfg, iteration, len(idx_pool),
-                                             len(embeddings_train_r), [])
+stop_condition = functions.stopping_criteria(
+    cfg, iteration, len(idx_pool), len(embeddings_train_r), []
+)
 
 while not (stop_condition):
     kwargs = {}
@@ -153,9 +152,17 @@ while not (stop_condition):
     crf_tagger = crf_trained.tagger_
     print(active_learner, " %d query \n" % iteration)
 
-    idx_q, idx_pool = functions.query(cfg, crf_trained, iteration, idx_pool,
-                                      idx_ann, Xi_pool, embeddings_train,
-                                      y_train, **kwargs)
+    idx_q, idx_pool = functions.query(
+        cfg,
+        crf_trained,
+        iteration,
+        idx_pool,
+        idx_ann,
+        Xi_pool,
+        embeddings_train,
+        y_train,
+        **kwargs
+    )
     idx_ann = idx_ann + idx_q
 
     end = money.time()
@@ -201,17 +208,17 @@ while not (stop_condition):
     f1_scores.append(f1_score(y_test, yi_pred))
     queried_indexes.append(idx_q)
     queried_sent_len.append(
-        [len(sent) for sent in [tknzd_sent_train[x] for x in idx_q]])
+        [len(sent) for sent in [tknzd_sent_train[x] for x in idx_q]]
+    )
 
-    stop_condition = functions.stopping_criteria(cfg, iteration, len(idx_pool),
-                                                 len(embeddings_train_r),
-                                                 f1_scores[-1])
+    stop_condition = functions.stopping_criteria(
+        cfg, iteration, len(idx_pool), len(embeddings_train_r), f1_scores[-1]
+    )
 
     load_save.save_crf_model(cfg, crf_trained, iteration)
 
     iteration = iteration + 1
     print("total number of annotated sentences: ", len(idx_ann))
 
-load_save.save_results(cfg, stats_queries, f1_scores, queried_indexes,
-                       queried_sent_len)
+load_save.save_results(cfg, stats_queries, f1_scores, queried_indexes, queried_sent_len)
 print(f1_scores)

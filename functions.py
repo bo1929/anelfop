@@ -2,8 +2,8 @@ import copy
 import numpy as np
 from itertools import accumulate
 
-import utils.wrapper_UMAP as umap_
-from utils.functions_AL import *
+import wrappers.wrapper_UMAP as umap_
+from methodsAL import *
 import math
 
 

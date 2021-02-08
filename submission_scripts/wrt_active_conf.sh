@@ -21,7 +21,7 @@ case $key in
     shift # past argument
     shift # past value
     ;;
-    -m|--meth)
+    -m|--method)
     method="$2"
     shift # past argument
     shift # past value
@@ -41,6 +41,11 @@ case $key in
     shift # past argument
     shift #past value
     ;;
+    --seed)
+    seed="$2"
+    shift # past argument
+    shift #past value
+    ;;
     -p|--path)
     main_dir="$2"
     shift
@@ -53,7 +58,7 @@ case $key in
 esac
 done
 
-if [ ${dataset} = "CONLL2003" ]; 
+if [ ${dataset} = "CONLL2003" ];
 then
   pos="True"
   pre_model="bert-base-cased"
@@ -62,7 +67,7 @@ then
   pos="False"
 #  pre_model="emilyalsentzer/Bio_ClinicalBERT"
   pre_model="dmis-lab/biobert-base-cased-v1.1"
-elif [ ${dataset} = "NCBI_disease" ] 
+elif [ ${dataset} = "NCBI_disease" ]
 then
   pos="False"
   pre_model="dmis-lab/biobert-base-cased-v1.1"
@@ -72,19 +77,23 @@ then
   pos="False"
   pre_model="dmis-lab/biobert-base-cased-v1.1"
 #  pre_model="emilyalsentzer/Bio_ClinicalBERT"
+elif [ ${dataset:0:5} = "debug" ];
+then
+  pos="False"
+  pre_model="bert-base-cased"
 else
   exit 128
 fi
 
 
-echo "seed: 291
+echo "seed: ${seed}
 
 increment_cons: ${increment}
 initial_size: ${init_size}
 stopping_criteria: ${stopping_criteria}
 
 generator: True
-method: ${method} 
+method: ${method}
 
 main_directory: ${main_dir}
 data_directory: ${main_dir}/datasets/tokenized/

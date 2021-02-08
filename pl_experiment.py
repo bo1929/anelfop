@@ -9,9 +9,9 @@ import sys
 
 import numpy as np
 
-import utils.wrapper_CRF as crf_
-import utils.wrapper_pretrained as pretrained_
-import utils.wrapper_UMAP as umap_
+import wrappers.wrapper_CRF as crf_
+import wrappers.wrapper_pretrained as pretrained_
+import wrappers.wrapper_UMAP as umap_
 import functions
 
 import load_save

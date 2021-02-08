@@ -32,6 +32,8 @@ for embedding_type  in ${embedding_type_all[@]}; do
     for reduction in ${reduction_all[@]}; do
         name="${embedding_type}_${reduction}_${data}"
         config_path="${job_dir}config_files/${data}/${name}_passive_exp_config.yaml"
+        
+        
         echo "#!/bin/bash
 # -= Resources =-
 #
@@ -51,6 +53,8 @@ ulimit -l unlimited
 ulimit -a
 python ${job_dir}pl_experiment.py ${config_path}
 "> ${curr_dir}"single_passive_submission.sh"
+        
+        
         ${curr_dir}"wrt_passive_conf.sh" -d ${data} -e ${embedding_type} -r ${reduction} -p ${job_dir} > ${config_path}
         sbatch ${curr_dir}"single_passive_submission.sh"
     done

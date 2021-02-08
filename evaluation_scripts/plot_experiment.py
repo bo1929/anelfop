@@ -12,11 +12,15 @@ from scipy.interpolate import interp1d
 INTPLT = False
 
 EXPERIMENTS = [
-    "exp1_init16/experiment_no1", "exp1_init16/experiment_no2",
-    "exp1_init16/experiment_no3", "exp1_init16/experiment_no4"
+    "exp1_init16/experiment_seed129",
+    "exp1_init16/experiment_seed192",
+    "exp1_init16/experiment_seed291",
+    "exp1_init16/experiment_seed291",
+    "exp1_init16/experiment_seed912",
+    "exp1_init16/experiment_seed921",
 ]
 CORPUS = "CONLL2003"
-AL__GENUS = "tp"
+AL_GENUS = "ap"
 
 BATCH_CONST = 1
 
@@ -33,8 +37,8 @@ def get_parent_dir(x, depth=2):
 def plot_single_genus(results_name, results_f1, cumnum_token, INTPLT=False):
     L = len(results_f1[0])
     batch_sizes = list(
-        itertools.accumulate([16] +
-                             [BATCH_CONST * (2**i) for i in range(1, L)]))
+        itertools.accumulate([16] + [BATCH_CONST * (2 ** i) for i in range(1, L)])
+    )
     cumnum_sent = [batch_sizes for i in range(len(cumnum_token))]
 
     if INTPLT:
@@ -83,12 +87,11 @@ def plot_single_genus(results_name, results_f1, cumnum_token, INTPLT=False):
     basey = [10, 10, 2]
 
     marker_cyc = itertools.cycle(
-        list(matplotlib.lines.Line2D.markers.keys())[1:len(results_name) + 1])
-    palette = itertools.cycle(sns.color_palette()[:len(results_name)])
+        list(matplotlib.lines.Line2D.markers.keys())[1 : len(results_name) + 1]
+    )
+    palette = itertools.cycle(sns.color_palette()[: len(results_name)])
 
-    fig = matplotlib.figure.Figure(figsize=(18, 6),
-                                   constrained_layout=False,
-                                   dpi=700)
+    fig = matplotlib.figure.Figure(figsize=(18, 6), constrained_layout=False, dpi=700)
     ax_array = fig.subplots(1, 3, squeeze=False)
 
     for i in range(ax_array.shape[1]):
@@ -140,23 +143,21 @@ for experiment in EXPERIMENTS:
 
     for name_long in sorted(result_name_method):
         name = name_long.split("_")[0]
-        if AL__GENUS in name:
+        if AL_GENUS in name:
             results_name.append(name)
-            f1_score_path = os.path.join(result_path_all, name_long,
-                                         "f1_scores")
-            qsent_len_path = os.path.join(result_path_all, name_long,
-                                          "query_sent_len")
+            f1_score_path = os.path.join(result_path_all, name_long, "f1_scores")
+            qsent_len_path = os.path.join(result_path_all, name_long, "query_sent_len")
 
             with (open(f1_score_path, "rb")) as openfile:
-                results_f1_.append(
-                    np.array(pickle.load(openfile)).astype(float))
+                results_f1_.append(np.array(pickle.load(openfile)).astype(float))
 
             with (open(qsent_len_path, "rb")) as openfile:
                 qsent_len = pickle.load(openfile)
                 cumnum_token_.append(
                     np.cumsum(
-                        np.array([sum(query)
-                                  for query in qsent_len]).astype(float)))
+                        np.array([sum(query) for query in qsent_len]).astype(float)
+                    )
+                )
     results_f1_all.append(np.array(results_f1_))
     cumnum_token_all.append(np.array(cumnum_token_))
 

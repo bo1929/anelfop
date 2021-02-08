@@ -2,7 +2,7 @@ import os
 import logging
 import pprint
 
-from utils.functions_AL import *
+from methodsAL import *
 
 import json
 import yaml
@@ -69,7 +69,8 @@ def load_config_from(filename="./config.yaml", AL=True):
         cfg["method"] = "passive"
         results_dir = os.path.join(cfg["main_directory"], "results_passive", "")
     else:
-        results_dir = os.path.join(cfg["main_directory"], "results_active", "")
+        results_dir = os.path.join(
+            cfg["main_directory"], "results_active" + "_" + str(cfg["seed"]), "")
 
     if not os.path.exists(results_dir):
         os.mkdir(results_dir)

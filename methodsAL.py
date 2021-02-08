@@ -6,7 +6,7 @@ import operator
 import numpy as np
 import pandas as pd
 
-import utils.wrapper_UMAP as umap_
+import wrappers.wrapper_UMAP as umap_
 
 import matplotlib.pyplot as plt
 import statsmodels.api as sm
@@ -36,8 +36,9 @@ def rs(idx_pool, batch_size, seed):
 
 
 def lss(sent_lenghts, idx_pool, batch_size):
-    batch = np.argpartition(np.array(sent_lenghts) * (-1),
-                            batch_size - 1)[:batch_size].tolist()
+    batch = np.argpartition(np.array(sent_lenghts) * (-1), batch_size - 1)[
+        :batch_size
+    ].tolist()
     idx_q = [idx_pool[i] for i in batch]
 
     return idx_q, [i for i in idx_pool if i not in idx_q]
@@ -49,8 +50,7 @@ def tp(m_pool, idx_pool, batch_size):
 
     for i in range(num_sent):
         len_sent = len(m_pool[i])
-        tp[i] = 1 - min([(max(m_pool[i][j].values()))
-                         for j in range(len_sent)])
+        tp[i] = 1 - min([(max(m_pool[i][j].values())) for j in range(len_sent)])
 
     batch = np.argpartition(tp * (-1), batch_size - 1)[:batch_size].tolist()
     idx_q = [idx_pool[i] for i in batch]
@@ -64,8 +64,7 @@ def ttp(m_pool, idx_pool, batch_size):
 
     for i in range(num_sent):
         len_sent = len(m_pool[i])
-        ttp[i] = sum(
-            [1 - (max(m_pool[i][j].values())) for j in range(len_sent)])
+        ttp[i] = sum([1 - (max(m_pool[i][j].values())) for j in range(len_sent)])
 
     batch = np.argpartition(ttp * (-1), batch_size - 1)[:batch_size].tolist()
     idx_q = [idx_pool[i] for i in batch]
@@ -80,8 +79,8 @@ def ntp(m_pool, idx_pool, batch_size):
     for i in range(num_sent):
         len_sent = len(m_pool[i])
         ntp[i] = (
-            sum([1 - (max(m_pool[i][j].values()))
-                 for j in range(len_sent)]) / len_sent)
+            sum([1 - (max(m_pool[i][j].values())) for j in range(len_sent)]) / len_sent
+        )
 
     batch = np.argpartition(ntp * (-1), batch_size - 1)[:batch_size].tolist()
     idx_q = [idx_pool[i] for i in batch]
@@ -96,10 +95,12 @@ def tm(m_pool, idx_pool, batch_size):
 
     for i in range(num_sent):
         len_sent = len(m_pool[i])
-        tm[i] = 1 - min([
-            max(m_pool[i][j].values()) - sorted(m_pool[i][j].values())[-2]
-            for j in range(len_sent)
-        ])
+        tm[i] = 1 - min(
+            [
+                max(m_pool[i][j].values()) - sorted(m_pool[i][j].values())[-2]
+                for j in range(len_sent)
+            ]
+        )
 
     batch = np.argpartition(tm * (-1), batch_size - 1)[:batch_size].tolist()
     idx_q = [idx_pool[i] for i in batch]
@@ -113,11 +114,12 @@ def ttm(m_pool, idx_pool, batch_size):
 
     for i in range(num_sent):
         len_sent = len(m_pool[i])
-        ttm[i] = sum([
-            1 -
-            (max(m_pool[i][j].values()) - sorted(m_pool[i][j].values())[-2])
-            for j in range(len_sent)
-        ])
+        ttm[i] = sum(
+            [
+                1 - (max(m_pool[i][j].values()) - sorted(m_pool[i][j].values())[-2])
+                for j in range(len_sent)
+            ]
+        )
     batch = np.argpartition(ttm * (-1), batch_size - 1)[:batch_size].tolist()
     idx_q = [idx_pool[i] for i in batch]
 
@@ -130,11 +132,15 @@ def ntm(m_pool, idx_pool, batch_size):
 
     for i in range(num_sent):
         len_sent = len(m_pool[i])
-        ntm[i] = (sum([
-            1 -
-            (max(m_pool[i][j].values()) - sorted(m_pool[i][j].values())[-2])
-            for j in range(len_sent)
-        ]) / len_sent)
+        ntm[i] = (
+            sum(
+                [
+                    1 - (max(m_pool[i][j].values()) - sorted(m_pool[i][j].values())[-2])
+                    for j in range(len_sent)
+                ]
+            )
+            / len_sent
+        )
 
     batch = np.argpartition(ntm * (-1), batch_size - 1)[:batch_size].tolist()
     idx_q = [idx_pool[i] for i in batch]
@@ -148,11 +154,12 @@ def te(m_pool, idx_pool, batch_size):
 
     for i in range(num_sent):
         len_sent = len(m_pool[i])
-        te[i] = min([
-            (-1) *
-            sum([p * math.log2(p) for p in m_pool[i][j].values() if p > 0])
-            for j in range(len_sent)
-        ])
+        te[i] = min(
+            [
+                (-1) * sum([p * math.log2(p) for p in m_pool[i][j].values() if p > 0])
+                for j in range(len_sent)
+            ]
+        )
 
     batch = np.argpartition(te * (-1), batch_size - 1)[:batch_size].tolist()
     idx_q = [idx_pool[i] for i in batch]
@@ -166,11 +173,12 @@ def tte(m_pool, idx_pool, batch_size):
 
     for i in range(num_sent):
         len_sent = len(m_pool[i])
-        tte[i] = sum([
-            (-1) *
-            sum([p * math.log2(p) for p in m_pool[i][j].values() if p > 0])
-            for j in range(len_sent)
-        ])
+        tte[i] = sum(
+            [
+                (-1) * sum([p * math.log2(p) for p in m_pool[i][j].values() if p > 0])
+                for j in range(len_sent)
+            ]
+        )
 
     batch = np.argpartition(tte * (-1), batch_size - 1)[:batch_size].tolist()
     idx_q = [idx_pool[i] for i in batch]
@@ -184,9 +192,16 @@ def nte(m_pool, idx_pool, batch_size):
 
     for i in range(num_sent):
         len_sent = len(m_pool[i])
-        nte[i] = (sum([(-1) * sum(
-            [p * math.log2(p) for p in m_pool[i][j].values() if p > 0])
-                       for j in range(len_sent)]) / len_sent)
+        nte[i] = (
+            sum(
+                [
+                    (-1)
+                    * sum([p * math.log2(p) for p in m_pool[i][j].values() if p > 0])
+                    for j in range(len_sent)
+                ]
+            )
+            / len_sent
+        )
 
     batch = np.argpartition(nte * (-1), batch_size - 1)[:batch_size].tolist()
     idx_q = [idx_pool[i] for i in batch]
@@ -200,8 +215,7 @@ def ap(m_pool, y_pred, idx_pool, batch_size):
 
     for i in range(num_sent):
         len_sent = len(m_pool[i])
-        ap[i] = 1 - min([(m_pool[i][j][y_pred[i][j]])
-                         for j in range(len_sent)])
+        ap[i] = 1 - min([(m_pool[i][j][y_pred[i][j]]) for j in range(len_sent)])
 
     batch = np.argpartition(ap * (-1), batch_size - 1)[:batch_size].tolist()
     idx_q = [idx_pool[i] for i in batch]
@@ -230,8 +244,8 @@ def nap(m_pool, y_pred, idx_pool, batch_size):
     for i in range(num_sent):
         len_sent = len(m_pool[i])
         nap[i] = (
-            sum([1 - m_pool[i][j][y_pred[i][j]]
-                 for j in range(len_sent)]) / len_sent)
+            sum([1 - m_pool[i][j][y_pred[i][j]] for j in range(len_sent)]) / len_sent
+        )
 
     batch = np.argpartition(nap * (-1), batch_size - 1)[:batch_size].tolist()
     idx_q = [idx_pool[i] for i in batch]
@@ -239,8 +253,7 @@ def nap(m_pool, y_pred, idx_pool, batch_size):
     return idx_q, [i for i in idx_pool if i not in idx_q]
 
 
-def ptp(cfg, embeddings_ann, embeddings_pool, y_ann, m_pool, idx_pool,
-        batch_size):
+def ptp(cfg, embeddings_ann, embeddings_pool, y_ann, m_pool, idx_pool, batch_size):
     PDF = fit_distribution([len(sent) for sent in embeddings_pool])
 
     experiment_dir = cfg["experiment_directory"]
@@ -254,12 +267,9 @@ def ptp(cfg, embeddings_ann, embeddings_pool, y_ann, m_pool, idx_pool,
         clusters_pool,
         clusterer,
         count_clusters,
-    ) = umap_.ss_umap_r_hdbscan_c(embeddings_ann,
-                                  embeddings_pool,
-                                  y_ann,
-                                  tag_dict,
-                                  seed=cfg["seed"],
-                                  **kwargs)
+    ) = umap_.ss_umap_r_hdbscan_c(
+        embeddings_ann, embeddings_pool, y_ann, tag_dict, seed=cfg["seed"], **kwargs
+    )
 
     sent_len_pool = [0] + [len(sent) for sent in embeddings_pool]
     sent_idx_pool = list(accumulate(sent_len_pool))
@@ -268,33 +278,27 @@ def ptp(cfg, embeddings_ann, embeddings_pool, y_ann, m_pool, idx_pool,
 
     clr = [c for sent in clusters_pool for c in sent]
     coord = np.array([xy for sent in embeddings_pool for xy in sent])
-    ax.scatter(coord[:, 0],
-               coord[:, 1],
-               c=clr,
-               s=0.4,
-               cmap="Spectral",
-               alpha=0.5)
+    ax.scatter(coord[:, 0], coord[:, 1], c=clr, s=0.4, cmap="Spectral", alpha=0.5)
     fig.suptitle(
-        "SemiSupervisedUMAP + HDBSCAN" + str(len(y_ann)) +
-        " sentences labeled",
+        "SemiSupervisedUMAP + HDBSCAN" + str(len(y_ann)) + " sentences labeled",
         fontsize=18,
     )
     plt.savefig(
-        os.path.join(experiment_dir + "ss_umap_r_hdbscan_c_" +
-                     str(len(y_ann)) + ".png"),
+        os.path.join(
+            experiment_dir + "ss_umap_r_hdbscan_c_" + str(len(y_ann)) + ".png"
+        ),
         dpi=700,
     )
 
     n_ent = max(count_clusters.items(), key=operator.itemgetter(1))[0]
-    threshold = pd.Series(
-        clusterer.outlier_scores_[len(embeddings_ann):]).quantile(
-            cfg["hdbscan_al"]["mask_outlier"])
-    outliers = np.where(
-        clusterer.outlier_scores_[len(embeddings_ann):] > threshold)[0]
-    mask_out = np.zeros(len(clusterer.outlier_scores_[len(embeddings_ann):]))
+    threshold = pd.Series(clusterer.outlier_scores_[len(embeddings_ann) :]).quantile(
+        cfg["hdbscan_al"]["mask_outlier"]
+    )
+    outliers = np.where(clusterer.outlier_scores_[len(embeddings_ann) :] > threshold)[0]
+    mask_out = np.zeros(len(clusterer.outlier_scores_[len(embeddings_ann) :]))
     mask_out[outliers] = 1
     mask_out = [
-        mask_out[sent_idx_pool[i - 1]:sent_idx_pool[i]]
+        mask_out[sent_idx_pool[i - 1] : sent_idx_pool[i]]
         for i in range(1, len(sent_idx_pool))
     ]
 
@@ -303,20 +307,23 @@ def ptp(cfg, embeddings_ann, embeddings_pool, y_ann, m_pool, idx_pool,
 
     for i in range(num_sent):
         len_sent = len(embeddings_pool[i])
-        entity_rich[i] = (sum([
-            1 - max(m_pool[i][j].values()) for j in range(len_sent)
-            if (clusters_pool[i][j] != n_ent) or (mask_out[i][j] == 1)
-        ])) * lenght_prob(PDF, len_sent)
+        entity_rich[i] = (
+            sum(
+                [
+                    1 - max(m_pool[i][j].values())
+                    for j in range(len_sent)
+                    if (clusters_pool[i][j] != n_ent) or (mask_out[i][j] == 1)
+                ]
+            )
+        ) * lenght_prob(PDF, len_sent)
 
-    batch = np.argpartition(entity_rich * (-1),
-                            batch_size - 1)[:batch_size].tolist()
+    batch = np.argpartition(entity_rich * (-1), batch_size - 1)[:batch_size].tolist()
     idx_q = [idx_pool[i] for i in batch]
 
     return idx_q, [i for i in idx_pool if i not in idx_q]
 
 
-def ptm(cfg, embeddings_ann, embeddings_pool, y_ann, m_pool, idx_pool,
-        batch_size):
+def ptm(cfg, embeddings_ann, embeddings_pool, y_ann, m_pool, idx_pool, batch_size):
     PDF = fit_distribution([len(sent) for sent in embeddings_pool])
 
     experiment_dir = cfg["experiment_directory"]
@@ -330,12 +337,9 @@ def ptm(cfg, embeddings_ann, embeddings_pool, y_ann, m_pool, idx_pool,
         clusters_pool,
         clusterer,
         count_clusters,
-    ) = umap_.ss_umap_r_hdbscan_c(embeddings_ann,
-                                  embeddings_pool,
-                                  y_ann,
-                                  tag_dict,
-                                  seed=cfg["seed"],
-                                  **kwargs)
+    ) = umap_.ss_umap_r_hdbscan_c(
+        embeddings_ann, embeddings_pool, y_ann, tag_dict, seed=cfg["seed"], **kwargs
+    )
 
     sent_len_pool = [0] + [len(sent) for sent in embeddings_pool]
     sent_idx_pool = list(accumulate(sent_len_pool))
@@ -344,33 +348,27 @@ def ptm(cfg, embeddings_ann, embeddings_pool, y_ann, m_pool, idx_pool,
 
     clr = [c for sent in clusters_pool for c in sent]
     coord = np.array([xy for sent in embeddings_pool for xy in sent])
-    ax.scatter(coord[:, 0],
-               coord[:, 1],
-               c=clr,
-               s=0.4,
-               cmap="Spectral",
-               alpha=0.5)
+    ax.scatter(coord[:, 0], coord[:, 1], c=clr, s=0.4, cmap="Spectral", alpha=0.5)
     fig.suptitle(
-        "SemiSupervisedUMAP + HDBSCAN" + str(len(y_ann)) +
-        " sentences labeled",
+        "SemiSupervisedUMAP + HDBSCAN" + str(len(y_ann)) + " sentences labeled",
         fontsize=18,
     )
     plt.savefig(
-        os.path.join(experiment_dir + "ss_umap_r_hdbscan_c_" +
-                     str(len(y_ann)) + ".png"),
+        os.path.join(
+            experiment_dir + "ss_umap_r_hdbscan_c_" + str(len(y_ann)) + ".png"
+        ),
         dpi=700,
     )
 
     n_ent = max(count_clusters.items(), key=operator.itemgetter(1))[0]
-    threshold = pd.Series(
-        clusterer.outlier_scores_[len(embeddings_ann):]).quantile(
-            cfg["hdbscan_al"]["mask_outlier"])
-    outliers = np.where(
-        clusterer.outlier_scores_[len(embeddings_ann):] > threshold)[0]
-    mask_out = np.zeros(len(clusterer.outlier_scores_[len(embeddings_ann):]))
+    threshold = pd.Series(clusterer.outlier_scores_[len(embeddings_ann) :]).quantile(
+        cfg["hdbscan_al"]["mask_outlier"]
+    )
+    outliers = np.where(clusterer.outlier_scores_[len(embeddings_ann) :] > threshold)[0]
+    mask_out = np.zeros(len(clusterer.outlier_scores_[len(embeddings_ann) :]))
     mask_out[outliers] = 1
     mask_out = [
-        mask_out[sent_idx_pool[i - 1]:sent_idx_pool[i]]
+        mask_out[sent_idx_pool[i - 1] : sent_idx_pool[i]]
         for i in range(1, len(sent_idx_pool))
     ]
 
@@ -379,21 +377,23 @@ def ptm(cfg, embeddings_ann, embeddings_pool, y_ann, m_pool, idx_pool,
 
     for i in range(num_sent):
         len_sent = len(embeddings_pool[i])
-        entity_rich[i] = (sum([
-            max(m_pool[i][j].values()) - sorted(m_pool[i][j].values())[-2]
-            for j in range(len_sent)
-            if (clusters_pool[i][j] != n_ent) or (mask_out[i][j] == 1)
-        ])) * lenght_prob(PDF, len_sent)
+        entity_rich[i] = (
+            sum(
+                [
+                    1 - max(m_pool[i][j].values()) - sorted(m_pool[i][j].values())[-2]
+                    for j in range(len_sent)
+                    if (clusters_pool[i][j] != n_ent) or (mask_out[i][j] == 1)
+                ]
+            )
+        ) * lenght_prob(PDF, len_sent)
 
-    batch = np.argpartition(entity_rich * (-1),
-                            batch_size - 1)[:batch_size].tolist()
+    batch = np.argpartition(entity_rich * (-1), batch_size - 1)[:batch_size].tolist()
     idx_q = [idx_pool[i] for i in batch]
 
     return idx_q, [i for i in idx_pool if i not in idx_q]
 
 
-def pte(cfg, embeddings_ann, embeddings_pool, y_ann, m_pool, idx_pool,
-        batch_size):
+def pte(cfg, embeddings_ann, embeddings_pool, y_ann, m_pool, idx_pool, batch_size):
     PDF = fit_distribution([len(sent) for sent in embeddings_pool])
 
     experiment_dir = cfg["experiment_directory"]
@@ -407,12 +407,9 @@ def pte(cfg, embeddings_ann, embeddings_pool, y_ann, m_pool, idx_pool,
         clusters_pool,
         clusterer,
         count_clusters,
-    ) = umap_.ss_umap_r_hdbscan_c(embeddings_ann,
-                                  embeddings_pool,
-                                  y_ann,
-                                  tag_dict,
-                                  seed=cfg["seed"],
-                                  **kwargs)
+    ) = umap_.ss_umap_r_hdbscan_c(
+        embeddings_ann, embeddings_pool, y_ann, tag_dict, seed=cfg["seed"], **kwargs
+    )
 
     sent_len_pool = [0] + [len(sent) for sent in embeddings_pool]
     sent_idx_pool = list(accumulate(sent_len_pool))
@@ -421,33 +418,27 @@ def pte(cfg, embeddings_ann, embeddings_pool, y_ann, m_pool, idx_pool,
 
     clr = [c for sent in clusters_pool for c in sent]
     coord = np.array([xy for sent in embeddings_pool for xy in sent])
-    ax.scatter(coord[:, 0],
-               coord[:, 1],
-               c=clr,
-               s=0.4,
-               cmap="Spectral",
-               alpha=0.5)
+    ax.scatter(coord[:, 0], coord[:, 1], c=clr, s=0.4, cmap="Spectral", alpha=0.5)
     fig.suptitle(
-        "Semi-supervised UMAP + HDBSCAN, " + str(len(y_ann)) +
-        " sentences labeled.",
+        "Semi-supervised UMAP + HDBSCAN, " + str(len(y_ann)) + " sentences labeled.",
         fontsize=18,
     )
     plt.savefig(
-        os.path.join(experiment_dir + "ss_umap_r_hdbscan_c_" +
-                     str(len(y_ann)) + ".png"),
+        os.path.join(
+            experiment_dir + "ss_umap_r_hdbscan_c_" + str(len(y_ann)) + ".png"
+        ),
         dpi=700,
     )
 
     n_ent = max(count_clusters.items(), key=operator.itemgetter(1))[0]
-    threshold = pd.Series(
-        clusterer.outlier_scores_[len(embeddings_ann):]).quantile(
-            cfg["hdbscan_al"]["mask_outlier"])
-    outliers = np.where(
-        clusterer.outlier_scores_[len(embeddings_ann):] > threshold)[0]
-    mask_out = np.zeros(len(clusterer.outlier_scores_[len(embeddings_ann):]))
+    threshold = pd.Series(clusterer.outlier_scores_[len(embeddings_ann) :]).quantile(
+        cfg["hdbscan_al"]["mask_outlier"]
+    )
+    outliers = np.where(clusterer.outlier_scores_[len(embeddings_ann) :] > threshold)[0]
+    mask_out = np.zeros(len(clusterer.outlier_scores_[len(embeddings_ann) :]))
     mask_out[outliers] = 1
     mask_out = [
-        mask_out[sent_idx_pool[i - 1]:sent_idx_pool[i]]
+        mask_out[sent_idx_pool[i - 1] : sent_idx_pool[i]]
         for i in range(1, len(sent_idx_pool))
     ]
 
@@ -456,22 +447,26 @@ def pte(cfg, embeddings_ann, embeddings_pool, y_ann, m_pool, idx_pool,
 
     for i in range(num_sent):
         len_sent = len(embeddings_pool[i])
-        entity_rich[i] = (sum([
-            (-1) *
-            sum([p * math.log2(p) for p in m_pool[i][j].values() if p > 0])
-            for j in range(len_sent)
-            if (clusters_pool[i][j] != n_ent) or (mask_out[i][j] == 1)
-        ])) * lenght_prob(PDF, len_sent)
+        entity_rich[i] = (
+            sum(
+                [
+                    (-1)
+                    * sum([p * math.log2(p) for p in m_pool[i][j].values() if p > 0])
+                    for j in range(len_sent)
+                    if (clusters_pool[i][j] != n_ent) or (mask_out[i][j] == 1)
+                ]
+            )
+        ) * lenght_prob(PDF, len_sent)
 
-    batch = np.argpartition(entity_rich * (-1),
-                            batch_size - 1)[:batch_size].tolist()
+    batch = np.argpartition(entity_rich * (-1), batch_size - 1)[:batch_size].tolist()
     idx_q = [idx_pool[i] for i in batch]
 
     return idx_q, [i for i in idx_pool if i not in idx_q]
 
 
-def pap(cfg, embeddings_ann, embeddings_pool, y_ann, y_pred, m_pool, idx_pool,
-        batch_size):
+def pap(
+    cfg, embeddings_ann, embeddings_pool, y_ann, y_pred, m_pool, idx_pool, batch_size
+):
     PDF = fit_distribution([len(sent) for sent in embeddings_pool])
 
     experiment_dir = cfg["experiment_directory"]
@@ -485,12 +480,9 @@ def pap(cfg, embeddings_ann, embeddings_pool, y_ann, y_pred, m_pool, idx_pool,
         clusters_pool,
         clusterer,
         count_clusters,
-    ) = umap_.ss_umap_r_hdbscan_c(embeddings_ann,
-                                  embeddings_pool,
-                                  y_ann,
-                                  tag_dict,
-                                  seed=cfg["seed"],
-                                  **kwargs)
+    ) = umap_.ss_umap_r_hdbscan_c(
+        embeddings_ann, embeddings_pool, y_ann, tag_dict, seed=cfg["seed"], **kwargs
+    )
 
     sent_len_pool = [0] + [len(sent) for sent in embeddings_pool]
     sent_idx_pool = list(accumulate(sent_len_pool))
@@ -499,33 +491,27 @@ def pap(cfg, embeddings_ann, embeddings_pool, y_ann, y_pred, m_pool, idx_pool,
 
     clr = [c for sent in clusters_pool for c in sent]
     coord = np.array([xy for sent in embeddings_pool for xy in sent])
-    ax.scatter(coord[:, 0],
-               coord[:, 1],
-               c=clr,
-               s=0.4,
-               cmap="Spectral",
-               alpha=0.5)
+    ax.scatter(coord[:, 0], coord[:, 1], c=clr, s=0.4, cmap="Spectral", alpha=0.5)
     fig.suptitle(
-        "Semi-supervised UMAP + HDBSCAN, " + str(len(y_ann)) +
-        " sentences labeled.",
+        "Semi-supervised UMAP + HDBSCAN, " + str(len(y_ann)) + " sentences labeled.",
         fontsize=18,
     )
     plt.savefig(
-        os.path.join(experiment_dir + "ss_umap_r_hdbscan_c_" +
-                     str(len(y_ann)) + ".png"),
+        os.path.join(
+            experiment_dir + "ss_umap_r_hdbscan_c_" + str(len(y_ann)) + ".png"
+        ),
         dpi=700,
     )
 
     n_ent = max(count_clusters.items(), key=operator.itemgetter(1))[0]
-    threshold = pd.Series(
-        clusterer.outlier_scores_[len(embeddings_ann):]).quantile(
-            cfg["hdbscan_al"]["mask_outlier"])
-    outliers = np.where(
-        clusterer.outlier_scores_[len(embeddings_ann):] > threshold)[0]
-    mask_out = np.zeros(len(clusterer.outlier_scores_[len(embeddings_ann):]))
+    threshold = pd.Series(clusterer.outlier_scores_[len(embeddings_ann) :]).quantile(
+        cfg["hdbscan_al"]["mask_outlier"]
+    )
+    outliers = np.where(clusterer.outlier_scores_[len(embeddings_ann) :] > threshold)[0]
+    mask_out = np.zeros(len(clusterer.outlier_scores_[len(embeddings_ann) :]))
     mask_out[outliers] = 1
     mask_out = [
-        mask_out[sent_idx_pool[i - 1]:sent_idx_pool[i]]
+        mask_out[sent_idx_pool[i - 1] : sent_idx_pool[i]]
         for i in range(1, len(sent_idx_pool))
     ]
 
@@ -534,13 +520,17 @@ def pap(cfg, embeddings_ann, embeddings_pool, y_ann, y_pred, m_pool, idx_pool,
 
     for i in range(num_sent):
         len_sent = len(embeddings_pool[i])
-        entity_rich[i] = (sum([
-            1 - m_pool[i][j][y_pred[i][j]] for j in range(len_sent)
-            if (clusters_pool[i][j] != n_ent) or (mask_out[i][j] == 1)
-        ])) * lenght_prob(PDF, len_sent)
+        entity_rich[i] = (
+            sum(
+                [
+                    1 - m_pool[i][j][y_pred[i][j]]
+                    for j in range(len_sent)
+                    if (clusters_pool[i][j] != n_ent) or (mask_out[i][j] == 1)
+                ]
+            )
+        ) * lenght_prob(PDF, len_sent)
 
-    batch = np.argpartition(entity_rich * (-1),
-                            batch_size - 1)[:batch_size].tolist()
+    batch = np.argpartition(entity_rich * (-1), batch_size - 1)[:batch_size].tolist()
     idx_q = [idx_pool[i] for i in batch]
 
     return idx_q, [i for i in idx_pool if i not in idx_q]
@@ -560,12 +550,9 @@ def mes(cfg, embeddings_ann, embeddings_pool, y_ann, idx_pool, batch_size):
         clusters_pool,
         clusterer,
         count_clusters,
-    ) = umap_.ss_umap_r_hdbscan_c(embeddings_ann,
-                                  embeddings_pool,
-                                  y_ann,
-                                  tag_dict,
-                                  seed=cfg["seed"],
-                                  **kwargs)
+    ) = umap_.ss_umap_r_hdbscan_c(
+        embeddings_ann, embeddings_pool, y_ann, tag_dict, seed=cfg["seed"], **kwargs
+    )
 
     sent_len_pool = [0] + [len(sent) for sent in embeddings_pool]
     sent_idx_pool = list(accumulate(sent_len_pool))
@@ -574,33 +561,27 @@ def mes(cfg, embeddings_ann, embeddings_pool, y_ann, idx_pool, batch_size):
 
     clr = [c for sent in clusters_pool for c in sent]
     coord = np.array([xy for sent in embeddings_pool for xy in sent])
-    ax.scatter(coord[:, 0],
-               coord[:, 1],
-               c=clr,
-               s=0.4,
-               cmap="Spectral",
-               alpha=0.5)
+    ax.scatter(coord[:, 0], coord[:, 1], c=clr, s=0.4, cmap="Spectral", alpha=0.5)
     fig.suptitle(
-        "Semi-supervised UMAP + HDBSCAN, " + str(len(y_ann)) +
-        " sentences labeled.",
+        "Semi-supervised UMAP + HDBSCAN, " + str(len(y_ann)) + " sentences labeled.",
         fontsize=18,
     )
     plt.savefig(
-        os.path.join(experiment_dir + "ss_umap_r_hdbscan_c_" +
-                     str(len(y_ann)) + ".png"),
+        os.path.join(
+            experiment_dir + "ss_umap_r_hdbscan_c_" + str(len(y_ann)) + ".png"
+        ),
         dpi=700,
     )
 
     n_ent = max(count_clusters.items(), key=operator.itemgetter(1))[0]
-    threshold = pd.Series(
-        clusterer.outlier_scores_[len(embeddings_ann):]).quantile(
-            cfg["hdbscan_al"]["mask_outlier"])
-    outliers = np.where(
-        clusterer.outlier_scores_[len(embeddings_ann):] > threshold)[0]
-    mask_out = np.zeros(len(clusterer.outlier_scores_[len(embeddings_ann):]))
+    threshold = pd.Series(clusterer.outlier_scores_[len(embeddings_ann) :]).quantile(
+        cfg["hdbscan_al"]["mask_outlier"]
+    )
+    outliers = np.where(clusterer.outlier_scores_[len(embeddings_ann) :] > threshold)[0]
+    mask_out = np.zeros(len(clusterer.outlier_scores_[len(embeddings_ann) :]))
     mask_out[outliers] = 1
     mask_out = [
-        mask_out[sent_idx_pool[i - 1]:sent_idx_pool[i]]
+        mask_out[sent_idx_pool[i - 1] : sent_idx_pool[i]]
         for i in range(1, len(sent_idx_pool))
     ]
 
@@ -609,13 +590,17 @@ def mes(cfg, embeddings_ann, embeddings_pool, y_ann, idx_pool, batch_size):
 
     for i in range(num_sent):
         len_sent = len(embeddings_pool[i])
-        entity_rich[i] = (sum([
-            1 for j in range(len_sent)
-            if (clusters_pool[i][j] != n_ent) or (mask_out[i][j] == 1)
-        ])) * lenght_prob(PDF, len_sent)
+        entity_rich[i] = (
+            sum(
+                [
+                    1
+                    for j in range(len_sent)
+                    if (clusters_pool[i][j] != n_ent) or (mask_out[i][j] == 1)
+                ]
+            )
+        ) * lenght_prob(PDF, len_sent)
 
-    batch = np.argpartition(entity_rich * (-1),
-                            batch_size - 1)[:batch_size].tolist()
+    batch = np.argpartition(entity_rich * (-1), batch_size - 1)[:batch_size].tolist()
     idx_q = [idx_pool[i] for i in batch]
 
     return idx_q, [i for i in idx_pool if i not in idx_q]
