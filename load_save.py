@@ -70,7 +70,8 @@ def load_config_from(filename="./config.yaml", AL=True):
         results_dir = os.path.join(cfg["main_directory"], "results_passive", "")
     else:
         results_dir = os.path.join(
-            cfg["main_directory"], "results_active" + "_" + str(cfg["seed"]), "")
+            cfg["main_directory"], "results_active" + "_" + str(cfg["seed"]), ""
+        )
 
     if not os.path.exists(results_dir):
         os.mkdir(results_dir)

@@ -11,11 +11,9 @@ from scipy.interpolate import interp1d
 
 INTPLT = False
 
-EXPERIMENTS = [
-   
-]
-CORPUS = "CONLL2003"
-AL_GENUS = "ap"
+EXPERIMENTS = [""]
+CORPUS = "NCBI_disease"
+AL_GENUS = "tp"
 
 BATCH_CONST = 1
 
@@ -125,7 +123,7 @@ cumnum_token_all = []
 for experiment in EXPERIMENTS:
     result_path_all = os.path.join(
         get_parent_dir(os.path.realpath(__file__)),
-        "results_active",
+        "results_active_211",
         experiment,
         CORPUS,
         "",
