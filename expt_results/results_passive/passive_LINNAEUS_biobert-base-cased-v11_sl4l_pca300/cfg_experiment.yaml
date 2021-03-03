@@ -1,0 +1,48 @@
+CRF:
+  algorithm: lbfgs
+  allow_all_states: true
+  allow_all_transitions: true
+  c1: 0.1
+  c2: 0.1
+  max_iterations: 100
+data_directory: /cta/users/aosman/alNER/datasets/tokenized/
+data_set:
+  name: LINNAEUS
+  pos: false
+embedding_type: sl4l
+experiment_directory: /cta/users/aosman/alNER/results_passive/passive_LINNAEUS_biobert-base-cased-v11_sl4l_pca300/
+ft_vec_dim: 300
+generator: true
+init_reduction:
+  pca:
+    dimension: 300
+  type: pca
+main_directory: /cta/users/aosman/alNER/
+method: passive
+method_dict:
+  ap: !!python/name:utils.functions_AL.ap ''
+  lss: !!python/name:utils.functions_AL.lss ''
+  mes: !!python/name:utils.functions_AL.mes ''
+  nap: !!python/name:utils.functions_AL.nap ''
+  nte: !!python/name:utils.functions_AL.nte ''
+  ntm: !!python/name:utils.functions_AL.ntm ''
+  ntp: !!python/name:utils.functions_AL.ntp ''
+  pap: !!python/name:utils.functions_AL.pap ''
+  pte: !!python/name:utils.functions_AL.pte ''
+  ptm: !!python/name:utils.functions_AL.ptm ''
+  ptp: !!python/name:utils.functions_AL.ptp ''
+  rs: !!python/name:utils.functions_AL.rs ''
+  tap: !!python/name:utils.functions_AL.tap ''
+  te: !!python/name:utils.functions_AL.te ''
+  tm: !!python/name:utils.functions_AL.tm ''
+  tp: !!python/name:utils.functions_AL.tp ''
+  tte: !!python/name:utils.functions_AL.tte ''
+  ttm: !!python/name:utils.functions_AL.ttm ''
+  ttp: !!python/name:utils.functions_AL.ttp ''
+pretrained_model: dmis-lab/biobert-base-cased-v1.1
+results_directory: /cta/users/aosman/alNER/results_passive/
+seed: 219
+tag_dict:
+  B-Species: 0
+  I-Species: 1
+  O: 2

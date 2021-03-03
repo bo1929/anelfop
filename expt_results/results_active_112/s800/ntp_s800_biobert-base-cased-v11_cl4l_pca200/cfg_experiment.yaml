@@ -1,0 +1,60 @@
+CRF:
+  algorithm: lbfgs
+  allow_all_states: true
+  allow_all_transitions: true
+  c1: 0.1
+  c2: 0.1
+  max_iterations: 100
+data_directory: /cta/users/aosman/alNER//datasets/tokenized/
+data_set:
+  name: s800
+  pos: false
+embedding_type: cl4l
+experiment_directory: /cta/users/aosman/alNER/results_active_112/ntp_s800_biobert-base-cased-v11_cl4l_pca200/
+ft_vec_dim: 200
+generator: true
+hdbscan_al:
+  c_eps: 0.17
+  mask_outlier: 0.99
+  min_c_size: 1000
+  min_samp: 200
+increment_cons: exp1
+init_reduction:
+  pca:
+    dimension: 200
+  type: pca
+initial_size: 16
+main_directory: /cta/users/aosman/alNER/
+method: ntp
+method_dict:
+  ap: !!python/name:methodsAL.ap ''
+  lss: !!python/name:methodsAL.lss ''
+  mes: !!python/name:methodsAL.mes ''
+  nap: !!python/name:methodsAL.nap ''
+  nte: !!python/name:methodsAL.nte ''
+  ntm: !!python/name:methodsAL.ntm ''
+  ntp: !!python/name:methodsAL.ntp ''
+  pap: !!python/name:methodsAL.pap ''
+  pte: !!python/name:methodsAL.pte ''
+  ptm: !!python/name:methodsAL.ptm ''
+  ptp: !!python/name:methodsAL.ptp ''
+  rs: !!python/name:methodsAL.rs ''
+  tap: !!python/name:methodsAL.tap ''
+  te: !!python/name:methodsAL.te ''
+  tm: !!python/name:methodsAL.tm ''
+  tp: !!python/name:methodsAL.tp ''
+  tte: !!python/name:methodsAL.tte ''
+  ttm: !!python/name:methodsAL.ttm ''
+  ttp: !!python/name:methodsAL.ttp ''
+pretrained_model: dmis-lab/biobert-base-cased-v1.1
+results_directory: /cta/users/aosman/alNER/results_active_112/
+seed: 112
+stopping_criteria: full
+tag_dict:
+  B-Species: 2
+  I-Species: 0
+  O: 1
+umap_al:
+  min_dist: 0.0
+  n_comp: 2
+  neig: 40
