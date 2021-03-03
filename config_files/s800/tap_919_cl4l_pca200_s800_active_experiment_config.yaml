@@ -1,0 +1,44 @@
+seed: 919
+
+increment_cons: exp1
+initial_size: 16
+stopping_criteria: full
+
+generator: True
+method: tap
+
+main_directory: /cta/users/aosman/alNER/
+data_directory: /cta/users/aosman/alNER//datasets/tokenized/
+
+data_set:
+  name: s800
+  pos: False
+
+pretrained_model: dmis-lab/biobert-base-cased-v1.1
+
+embedding_type: cl4l
+
+init_reduction:
+  type: pca
+  pca:
+    dimension: 200
+
+CRF:
+  algorithm: lbfgs
+  c1: 0.1
+  c2: 0.1
+  max_iterations: 100
+  allow_all_states: True
+  allow_all_transitions: True
+
+hdbscan_al:
+  mask_outlier: 0.99
+  min_c_size: 1000
+  min_samp: 200
+  c_eps: 0.17
+
+umap_al:
+  neig: 40
+  min_dist: 0.0
+  n_comp: 2
+

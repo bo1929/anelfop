@@ -7,11 +7,11 @@ rmpost="submission_scripts/"
 job_dir=${curr_dir%"submission_scripts/"}
 echo ${job_dir}
 
-method_all=("ptp" "ptm" "pte" "pap" "rs" "lss" "tp" "ttp" "ntp" "tm" "ttm" "ntm" "te" "tte" "nte" "ap" "tap" "nap")
-seed_all=(121 211 112 919 991 199 722 227 272)
-data="debug_CONLL2003"
+method_all=("ttp")
+seed_all=(211)
+data="CONLL2003"
 embedding_type="cl4l"
-reduction="pca256" #off
+reduction="pca200" #off
 
 increment_size="exp1"
 init_size="16"
@@ -40,18 +40,26 @@ for method_ in ${method_all[@]}; do
         name="${method_}_${seed_}_${embedding_type}_${reduction}_${data}"
         config_path="${job_dir}config_files/${data}/${name}_active_experiment_config.yaml"
 
+        if [ ${method_} = "ptp" ] || [ ${method_} = "ptm" ] || [ ${method_} = "pte" ] || [ ${method_} = "pap" ];
+        then
+          cpu="8"
+          mem_per_cpu="8G"
+        else
+          cpu="2"
+          mem_per_cpu="32G"
+        fi
 
         echo "#!/bin/bash
 # -= Resources =-
 #
 #SBATCH --job-name=${name}
 #SBATCH --account=mdbf
-#SBATCH --ntasks-per-node=8
+#SBATCH --ntasks-per-node=${cpu}
 #SBATCH --qos=mid_mdbf
 #SBATCH --partition=mid_mdbf
 #SBATCH --time=23:59:00
 #SBATCH --output=${curr_dir}${data}_al/${name}.out
-#SBATCH --mem-per-cpu=8G
+#SBATCH --mem-per-cpu=${mem_per_cpu}
 
 # Set stack size to unlimited
 
