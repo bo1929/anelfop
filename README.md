@@ -1,2 +1,2 @@
-# pre_AL4NER
-active learning for NER using transfer learning
+# AL4NER
+Active learning for NER using transfer learning.
