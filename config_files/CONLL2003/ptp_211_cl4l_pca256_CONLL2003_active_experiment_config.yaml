@@ -7,8 +7,8 @@ stopping_criteria: full
 generator: True
 method: ptp
 
-main_directory: /cta/users/aosman/alNER/
-data_directory: /cta/users/aosman/alNER//datasets/tokenized/
+main_directory: /cta/users/aosman/AL4NER/
+data_directory: /cta/users/aosman/AL4NER//datasets/tokenized/
 
 data_set:
   name: CONLL2003
@@ -32,10 +32,10 @@ CRF:
   allow_all_transitions: True
 
 hdbscan_al:
-  mask_outlier: 0.99
+  mask_outlier: 0.995
   min_c_size: 1000
-  min_samp: 200
-  c_eps: 0.17
+  min_samp: 70
+  c_eps: 0.19
 
 umap_al:
   neig: 40

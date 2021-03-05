@@ -1,1 +1,7 @@
+re-conduct:
+    - 112 tp CONLL2003
+    - 211 ptp ttp CONLL2003
+    - 227 pap CONLL2003
+    - 272 tp CONLL2003
+    - 919 tp CONLL2003
 reorganize result-folders

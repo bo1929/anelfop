@@ -5,26 +5,26 @@ CRF:
   c1: 0.1
   c2: 0.1
   max_iterations: 100
-data_directory: /cta/users/aosman/alNER//datasets/tokenized/
+data_directory: /cta/users/aosman/AL4NER//datasets/tokenized/
 data_set:
   name: s800
   pos: false
 embedding_type: cl4l
-experiment_directory: /cta/users/aosman/alNER/results_active_112/te_s800_biobert-base-cased-v11_cl4l_pca200/
+experiment_directory: /cta/users/aosman/AL4NER/results_active_112/te_s800_biobert-base-cased-v11_cl4l_pca200/
 ft_vec_dim: 200
 generator: true
 hdbscan_al:
-  c_eps: 0.17
-  mask_outlier: 0.99
+  c_eps: 0.19
+  mask_outlier: 0.995
   min_c_size: 1000
-  min_samp: 200
+  min_samp: 70
 increment_cons: exp1
 init_reduction:
   pca:
     dimension: 200
   type: pca
 initial_size: 16
-main_directory: /cta/users/aosman/alNER/
+main_directory: /cta/users/aosman/AL4NER/
 method: te
 method_dict:
   ap: !!python/name:methodsAL.ap ''
@@ -47,13 +47,13 @@ method_dict:
   ttm: !!python/name:methodsAL.ttm ''
   ttp: !!python/name:methodsAL.ttp ''
 pretrained_model: dmis-lab/biobert-base-cased-v1.1
-results_directory: /cta/users/aosman/alNER/results_active_112/
+results_directory: /cta/users/aosman/AL4NER/results_active_112/
 seed: 112
 stopping_criteria: full
 tag_dict:
-  B-Species: 2
+  B-Species: 0
   I-Species: 1
-  O: 0
+  O: 2
 umap_al:
   min_dist: 0.0
   n_comp: 2

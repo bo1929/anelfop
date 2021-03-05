@@ -154,7 +154,7 @@ def te(m_pool, idx_pool, batch_size):
 
     for i in range(num_sent):
         len_sent = len(m_pool[i])
-        te[i] = min(
+        te[i] = max(
             [
                 (-1) * sum([p * math.log2(p) for p in m_pool[i][j].values() if p > 0])
                 for j in range(len_sent)

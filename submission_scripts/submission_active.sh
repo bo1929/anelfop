@@ -7,9 +7,9 @@ rmpost="submission_scripts/"
 job_dir=${curr_dir%"submission_scripts/"}
 echo ${job_dir}
 
-method_all=("ttp")
-seed_all=(211)
-data="CONLL2003"
+method_all=("te")
+seed_all=(112 121 199 211 227 272 722 919 991)
+data="s800"
 embedding_type="cl4l"
 reduction="pca200" #off
 

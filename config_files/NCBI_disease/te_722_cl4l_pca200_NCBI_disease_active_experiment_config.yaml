@@ -7,8 +7,8 @@ stopping_criteria: full
 generator: True
 method: te
 
-main_directory: /cta/users/aosman/alNER/
-data_directory: /cta/users/aosman/alNER//datasets/tokenized/
+main_directory: /cta/users/aosman/AL4NER/
+data_directory: /cta/users/aosman/AL4NER//datasets/tokenized/
 
 data_set:
   name: NCBI_disease
