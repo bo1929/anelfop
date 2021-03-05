@@ -32,7 +32,7 @@ for f1path in f1_results_paths:
         temp_details[4],
     )
     details_tuple.append(
-        (f1path, corpus, pre_model, embedding_type, embedding_dimension)
+        [f1path, corpus, pre_model, embedding_type, embedding_dimension]
     )
 
 
@@ -52,8 +52,12 @@ for key, group1 in itertools.groupby(details_tuple, key_func(1)):
             group3 = list(group3)
             group3.sort(key=key_func(4))
             for item in group3:
+                if item[4] == "":
+                    item[4] = "768"
+                else:
+                    item[4] = item[4][:3]+"-"+item[4][3:]
                 with open(item[0], "rb") as openfile:
-                    table.append([key2] + [key3] + [item[4]] + pickle.load(openfile))
+                    table.append([key2, key3, item[4]] + pickle.load(openfile))
     header_ = ["pre-trained model", "embedding type", "embedding dimension", "f1-score"]
     with open("../evaluations/" + key + "_table_passive_model.tex", "w") as file1:
         file1.write(
