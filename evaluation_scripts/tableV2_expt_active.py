@@ -26,6 +26,9 @@ f1_results_paths = glob.glob(
     "../expt_results/results_active*/**/f1_scores", recursive=True
 )
 
+# token_results_paths = glob.glob(
+#     "../expt_results/results_active*/**/query_sent_len", recursive=True
+# )
 details_tuple = []
 for f1path in f1_results_paths:
     model_name = (
@@ -58,6 +61,7 @@ for key, group1 in itertools.groupby(details_tuple, key_func(2)):
     group1.sort(key=key_func(1))
     for key2, group2 in itertools.groupby(group1, key_func(1)):
         temp = []
+        temp1 = []
         for item in group2:
             if item[5] == "":
                 item[5] = "768"
@@ -65,12 +69,16 @@ for key, group1 in itertools.groupby(details_tuple, key_func(2)):
                 item[5] = item[5][:3]+"-"+item[5][3:]
             with open(item[0], "rb") as openfile:
                 temp.append(pickle.load(openfile))
-            f1avg = list(np.mean(np.array(temp),axis=0))
-        table.append([item[1], item[3], item[4], item[5]] + f1avg)    
+            head, _ =  os.path.split(item[0])
+            with open(os.path.join(head, "query_sent_len"), "rb") as openfile:
+                temp1.append([sum(query) for query in pickle.load(openfile)])
+            tokenAvg = list(np.cumsum(np.mean(np.array(temp1), axis=0)).astype(int))
+            f1Avg = list(np.mean(np.array(temp),axis=0))
+        table.append([item[1], item[3], item[4], item[5]] + list(map(str, list(zip(f1Avg, tokenAvg)))))    
     
     table.sort(key=genus_key)
     header_ = ["AL method", "pre-trained model", "embedding type", "embedding dimension"]+["f1-score "+str(i) for i in range(len(table[0])-4)]
-    with open("../evaluations/active_tables/" + key + "_table_active_expt.tex", "w") as file1:
+    with open("../evaluations/active_tables/" + key + "_tableV2_active_expt.tex", "w") as file1:
         file1.write(
             tabulate(
                 table,
@@ -78,7 +86,7 @@ for key, group1 in itertools.groupby(details_tuple, key_func(2)):
                 tablefmt="latex",
             )
         )
-    with open("../evaluations/active_tables/" + key + "_table_active_expt.md", "w") as file2:
+    with open("../evaluations/active_tables/" + key + "_tableV2_active_expt.md", "w") as file2:
         file2.write(
             tabulate(
                 table,

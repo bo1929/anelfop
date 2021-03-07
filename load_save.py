@@ -65,18 +65,22 @@ def cfg_from_file(filename):
 def load_config_from(filename="./config.yaml", AL=True):
     cfg = cfg_from_file(filename)
 
+    expt_dir = cfg["main_directory"] + "expt_results"
+    if not os.path.exists(expt_dir):
+        os.mkdir(expt_dir)
+    
     if AL == False:
         cfg["method"] = "passive"
-        results_dir = os.path.join(cfg["main_directory"], "results_passive", "")
+        results_dir = os.path.join(expt_dir, "results_passive", "")
     else:
         results_dir = os.path.join(
-            cfg["main_directory"], "results_active" + "_" + str(cfg["seed"]), ""
+             expt_dir, "results_active" + "_" + str(cfg["seed"]), ""
         )
 
     if not os.path.exists(results_dir):
         os.mkdir(results_dir)
-    cfg.update({"results_directory": results_dir})
 
+    cfg.update({"results_directory": results_dir})
     cfg_init_reduction = cfg["init_reduction"]
     init_reduction_type = cfg_init_reduction["type"]
 

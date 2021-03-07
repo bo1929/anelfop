@@ -44,6 +44,9 @@ mpl.rcParams["ytick.minor.width"] = 1
 if not os.path.exists("../evaluations/"):
     os.mkdir("../evaluations/")
 
+if not os.path.exists("../evaluations/genus_plots/"):
+    os.mkdir("../evaluations/genus_plots/")
+
 OPT_DICT = {
     "sentence-f1": 0,
     "token-f1": 1,
@@ -236,7 +239,7 @@ def plot_single_genus(
         fig.legend(handles, labels, loc="center right", prop={"size": 18})
 
     fig.savefig(
-        "../evaluations/" + name_output + ".svg", bbox_inches="tight", pad_inches=0.1
+        "../evaluations/genus_plots/" + name_output + ".svg", bbox_inches="tight", pad_inches=0.1
     )
 
 

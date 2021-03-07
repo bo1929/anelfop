@@ -9,6 +9,9 @@ from tabulate import tabulate
 if not os.path.exists("../evaluations/"):
     os.mkdir("../evaluations/")
 
+if not os.path.exists("../evaluations/passive_tables/"):
+    os.mkdir("../evaluations/passive_tables/")
+
 # Read results and group them.
 
 f1_results_paths = glob.glob(
@@ -59,7 +62,7 @@ for key, group1 in itertools.groupby(details_tuple, key_func(1)):
                 with open(item[0], "rb") as openfile:
                     table.append([key2, key3, item[4]] + pickle.load(openfile))
     header_ = ["pre-trained model", "embedding type", "embedding dimension", "f1-score"]
-    with open("../evaluations/" + key + "_table_passive_model.tex", "w") as file1:
+    with open("../evaluations/passive_tables/" + key + "_table_passive_model.tex", "w") as file1:
         file1.write(
             tabulate(
                 table,
@@ -67,7 +70,7 @@ for key, group1 in itertools.groupby(details_tuple, key_func(1)):
                 tablefmt="latex",
             )
         )
-    with open("../evaluations/" + key + "_table_passive_model.md", "w") as file2:
+    with open("../evaluations/passive_tables/" + key + "_table_passive_model.md", "w") as file2:
         file2.write(
             tabulate(
                 table,
