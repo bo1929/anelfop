@@ -1,0 +1,5 @@
+| Corpus       | Partition   |   TotalSentence |   TotalToken |   TotalPToken |   PercentPToken |   AvgSentenceLength |   AvgNumberPTokenPerSentence |   SentWithPToken |   SentWith2PToken |   PercentDisease |
+|--------------|-------------|-----------------|--------------|---------------|-----------------|---------------------|------------------------------|------------------|-------------------|------------------|
+| NCBI-disease | all         |            5432 |       136086 |         11267 |         12.0783 |             25.0527 |                      2.07419 |         0.539396 |          0.401694 |                1 |
+| NCBI-disease | test        |             940 |        24497 |          2047 |         11.9673 |             26.0606 |                      2.17766 |         0.573404 |          0.42234  |                1 |
+| NCBI-disease | train       |            5432 |       136086 |         11267 |         12.0783 |             25.0527 |                      2.07419 |         0.539396 |          0.401694 |                1 |

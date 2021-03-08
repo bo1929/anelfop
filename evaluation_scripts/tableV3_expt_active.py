@@ -1,3 +1,5 @@
+import json
+import operator
 import itertools
 import pickle
 
@@ -14,6 +16,7 @@ if not os.path.exists("../evaluations/"):
 if not os.path.exists("../evaluations/active_tables/"):
     os.mkdir("../evaluations/active_tables/")
 
+tags_corpus_paths = glob.glob("../datasets/tokenized/*train.tags", recursive=True)
 genus_key_dict = {
     "tp": 0,
     "ttp": 1,
@@ -35,14 +38,18 @@ genus_key_dict = {
     "rs": 17,
 }
 
-f1_results_paths = glob.glob(
-    "../expt_results/results_active*/**/f1_scores", recursive=True
+sentences_queried_path = glob.glob(
+    "../expt_results/results_active*/**/query_indexes", recursive=True
 )
 
+# token_results_paths = glob.glob(
+#     "../expt_results/results_active*/**/query_sent_len", recursive=True
+# )
+
 details_tuple = []
-for f1path in f1_results_paths:
+for sentIdxPath in sentences_queried_path:
     model_name = (
-        os.path.normpath(f1path)
+        os.path.normpath(sentIdxPath)
         .split(os.sep)[-2]
         .replace("NCBI_disease", "NCBI-disease")
         .replace("Bio_ClinicalBERT", "Bio-ClinicalBERT")
@@ -56,8 +63,9 @@ for f1path in f1_results_paths:
         temp_details[3],
         temp_details[4],
     )
+
     details_tuple.append(
-        [f1path, method, corpus, pre_model, embedding_type, embedding_dimension]
+        [sentIdxPath, method, corpus, pre_model, embedding_type, embedding_dimension]
     )
 
 
@@ -69,20 +77,48 @@ genus_key = lambda row: genus_key_dict[row[0]]
 
 details_tuple.sort(key=key_func(2))
 for key, group1 in itertools.groupby(details_tuple, key_func(2)):
+    # sometimes you just do this...
+    for tagPath in tags_corpus_paths:
+        if key in tagPath:
+            tagPath_ = tagPath
+
+    with open(tagPath_, "rb") as openfile:
+        tags_ = json.load(openfile)
+    tags_flat = [t for sent in tags_ for t in sent]
+
     table = []
     group1 = list(group1)
     group1.sort(key=key_func(1))
     for key2, group2 in itertools.groupby(group1, key_func(1)):
         temp = []
+        temp1 = []
         for item in group2:
+            numPToken = []
             if item[5] == "":
                 item[5] = "768"
             else:
                 item[5] = item[5][:3] + "-" + item[5][3:]
             with open(item[0], "rb") as openfile:
-                temp.append(pickle.load(openfile))
-        f1avg = list(np.mean(np.array(temp), axis=0))
-        table.append([item[1], item[3], item[4], item[5]] + f1avg)
+                idxes = pickle.load(openfile)
+            for idx in idxes:
+                queried_tag = operator.itemgetter(*idx)(tags_)
+                tags_PN = [
+                    [0 if tag == "O" else 1 for tag in sent] for sent in queried_tag
+                ]
+                sum_PToken = sum([sum(seq) for seq in tags_PN])
+                numPToken.append(sum_PToken)
+
+            temp.append(numPToken)
+
+            head, _ = os.path.split(item[0])
+            with open(os.path.join(head, "query_sent_len"), "rb") as openfile:
+                temp1.append([sum(query) for query in pickle.load(openfile)])
+
+        tokenAvg = np.mean(np.array(temp1), axis=0).astype(int)
+        numPTokenAvg = np.mean(np.array(temp), axis=0).astype(int)
+        table.append(
+            [item[1], item[3], item[4], item[5]] + list(numPTokenAvg / tokenAvg)
+        )
 
     table.sort(key=genus_key)
     header_ = [
@@ -90,9 +126,9 @@ for key, group1 in itertools.groupby(details_tuple, key_func(2)):
         "pre-trained model",
         "embedding type",
         "embedding dimension",
-    ] + ["f1-score " + str(i) for i in range(len(table[0]) - 4)]
+    ] + ["PercentPToken" + str(i) for i in range(len(table[0]) - 4)]
     with open(
-        "../evaluations/active_tables/" + key + "_table_active_expt.tex", "w"
+        "../evaluations/active_tables/" + key + "_tableV3_active_expt.tex", "w"
     ) as file1:
         file1.write(
             tabulate(
@@ -102,7 +138,7 @@ for key, group1 in itertools.groupby(details_tuple, key_func(2)):
             )
         )
     with open(
-        "../evaluations/active_tables/" + key + "_table_active_expt.md", "w"
+        "../evaluations/active_tables/" + key + "_tableV3_active_expt.md", "w"
     ) as file2:
         file2.write(
             tabulate(

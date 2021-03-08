@@ -44,8 +44,8 @@ mpl.rcParams["ytick.minor.width"] = 1
 if not os.path.exists("../evaluations/"):
     os.mkdir("../evaluations/")
 
-if not os.path.exists("../evaluations/genus_plots/"):
-    os.mkdir("../evaluations/genus_plots/")
+if not os.path.exists("../evaluations/pphyly_plots/"):
+    os.mkdir("../evaluations/pphyly_plots/")
 
 OPT_DICT = {
     "sentence-f1": 0,
@@ -66,11 +66,11 @@ EXPERIMENTS = [
     "results_active_722",
 ]
 
-genus_dict = {
-    "tp": ["tp", "ttp", "ntp", "ptp"],
-    "tm": ["tm", "ttm", "ntm", "ptm"],
-    "te": ["te", "tte", "nte", "pte"],
-    "ap": ["ap", "tap", "nap", "pap"],
+pphyly_dict = {
+    "total": ["tap", "ttp", "ttm", "tte"],
+    "single": ["ap", "tp", "tm", "te"],
+    "normalized": ["nap", "ntp", "ntm", "nte"],
+    "positive": ["pap", "ptp", "ptm", "pte"],
 }
 
 DIVIDE = False
@@ -80,12 +80,12 @@ PUT_LEGEND = True
 ERROR_BAR = False
 
 CORPUS = sys.argv[1]
-GENUS = sys.argv[2]
+PPHYLY = sys.argv[2]
 OPTS = sys.argv[3:]
 
 IDX = [OPT_DICT[opt] for opt in OPTS]
 
-NAME = CORPUS + "_" + GENUS
+NAME = CORPUS + "_" + PPHYLY
 for opt in OPTS:
     NAME += "_" + opt
 
@@ -97,7 +97,7 @@ def get_parent_dir(x, depth=2):
     return parent_dir
 
 
-def plot_single_genus(
+def plot_single_pphyly(
     name_output,
     results_name,
     batch_sizes,
@@ -123,20 +123,6 @@ def plot_single_genus(
         cumnum_token_common = []
 
         for i in range(len(cumnum_token)):
-            """
-            f_ctf1 = interp1d(
-                cumnum_token[i],
-                results_f1[i],
-                kind="quadratic",
-            )
-            f_csct = interp1d(
-                cumnum_sent[i],
-                cumnum_token[i],
-                kind="quadratic",
-            )
-            intp_ctf1 = f_ctf1(common_token_count)
-            intp_fsct = f_csct(cumnum_sent[i])
-            """
             intp_ctf1 = pchip_interpolate(
                 cumnum_token[i], results_f1[i], common_token_count
             )
@@ -239,7 +225,7 @@ def plot_single_genus(
         fig.legend(handles, labels, loc="center right", prop={"size": 18})
 
     fig.savefig(
-        "../evaluations/genus_plots/" + name_output + ".svg",
+        "../evaluations/pphyly_plots/" + name_output + ".svg",
         bbox_inches="tight",
         pad_inches=0.1,
     )
@@ -264,7 +250,7 @@ for experiment in EXPERIMENTS:
 
     for name_long in sorted(result_name_method):
         name = name_long.split("_")[0]
-        if GENUS in name:
+        if name in pphyly_dict[PPHYLY]:
             results_name.append(name)
             f1_score_path = os.path.join(result_path_all, name_long, "f1_scores")
             qsent_len_path = os.path.join(result_path_all, name_long, "query_sent_len")
@@ -297,7 +283,7 @@ for j in range(cumnum_token.shape[0]):
     cumnum_token[j] = cumnum_token[j] / len(EXPERIMENTS)
     results_f1[j] = results_f1[j] / len(EXPERIMENTS)
 
-pass_name = genus_dict[GENUS]
+pass_name = pphyly_dict[PPHYLY]
 pass_f1 = np.array([results_f1[results_name.index(mthd)] for mthd in pass_name])
 pass_token = np.array([cumnum_token[results_name.index(mthd)] for mthd in pass_name])
 
@@ -307,11 +293,11 @@ batch_sizes = list(
     itertools.accumulate([16] + [BATCH_CONST * (2 ** i) for i in range(1, L)])
 )
 if DIVIDE == False:
-    plot_single_genus(
+    plot_single_pphyly(
         NAME, pass_name, batch_sizes, pass_f1, pass_token, results_error, INTPLT=INTPLT
     )
 else:
-    plot_single_genus(
+    plot_single_pphyly(
         NAME + "_1",
         pass_name,
         batch_sizes[: len(batch_sizes) // 2],
@@ -320,7 +306,7 @@ else:
         results_error[:, : results_error.shape[1] // 2],
         INTPLT=INTPLT,
     )
-    plot_single_genus(
+    plot_single_pphyly(
         NAME + "_2",
         pass_name,
         batch_sizes[len(batch_sizes) // 2 :],
