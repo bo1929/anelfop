@@ -5,12 +5,12 @@ CRF:
   c1: 0.1
   c2: 0.1
   max_iterations: 100
-data_directory: /cta/users/aosman/alNER//datasets/tokenized/
+data_directory: ${PATH}/AL4NER/datasets/tokenized/
 data_set:
   name: BC5CDR
   pos: false
 embedding_type: cl4l
-experiment_directory: /cta/users/aosman/alNER/results_active_991/ntp_BC5CDR_biobert-base-cased-v11_cl4l_pca256/
+experiment_directory: ${PATH}/AL4NER/results_active_991/ntp_BC5CDR_biobert-base-cased-v11_cl4l_pca256/
 ft_vec_dim: 256
 generator: true
 hdbscan_al:
@@ -24,7 +24,7 @@ init_reduction:
     dimension: 256
   type: pca
 initial_size: 16
-main_directory: /cta/users/aosman/alNER/
+main_directory: ${PATH}/AL4NER/
 method: ntp
 method_dict:
   ap: !!python/name:methodsAL.ap ''
@@ -47,7 +47,7 @@ method_dict:
   ttm: !!python/name:methodsAL.ttm ''
   ttp: !!python/name:methodsAL.ttp ''
 pretrained_model: dmis-lab/biobert-base-cased-v1.1
-results_directory: /cta/users/aosman/alNER/results_active_991/
+results_directory: ${PATH}/AL4NER/results_active_991/
 seed: 991
 stopping_criteria: full
 tag_dict:

@@ -74,7 +74,7 @@ for key, group1 in itertools.groupby(details_tuple, key_func(0)):
                 total_sent,
                 total_token,
                 sum_PToken,
-                total_token / sum_PToken,
+                sum_PToken / total_token,
                 avg_SL,
                 avg_PToken,
                 AC_PToken,
@@ -107,8 +107,8 @@ for key, group1 in itertools.groupby(details_tuple, key_func(0)):
         with open(item[3], "rb") as openfile:
             tags_ = json.load(openfile)
 
-        all_tokenized += tokenized_
-        all_tags += tags_
+        all_tokenized = all_tokenized + tokenized_
+        all_tags = all_tags + tags_
 
         append_table(key, item[1], tags_, table)
 

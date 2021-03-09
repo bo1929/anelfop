@@ -5,19 +5,19 @@ CRF:
   c1: 0.1
   c2: 0.1
   max_iterations: 100
-data_directory: /cta/users/aosman/alNER/datasets/tokenized/
+data_directory: ${PATH}/AL4NER/datasets/tokenized/
 data_set:
   name: BC5CDR
   pos: false
 embedding_type: cl4l
-experiment_directory: /cta/users/aosman/alNER/results_passive/passive_BC5CDR_Bio_ClinicalBERT_cl4l_pca200/
+experiment_directory: ${PATH}/AL4NER/results_passive/passive_BC5CDR_Bio_ClinicalBERT_cl4l_pca200/
 ft_vec_dim: 200
 generator: true
 init_reduction:
   pca:
     dimension: 200
   type: pca
-main_directory: /cta/users/aosman/alNER/
+main_directory: ${PATH}/AL4NER/
 method: passive
 method_dict:
   ap: !!python/name:utils.functions_AL.ap ''
@@ -40,7 +40,7 @@ method_dict:
   ttm: !!python/name:utils.functions_AL.ttm ''
   ttp: !!python/name:utils.functions_AL.ttp ''
 pretrained_model: emilyalsentzer/Bio_ClinicalBERT
-results_directory: /cta/users/aosman/alNER/results_passive/
+results_directory: ${PATH}/AL4NER/results_passive/
 seed: 219
 tag_dict:
   B-Chemical: 2

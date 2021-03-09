@@ -314,18 +314,18 @@ else:
     plot_single_genus(
         NAME + "_1",
         pass_name,
-        batch_sizes[: len(batch_sizes) // 2],
-        pass_f1[:, : pass_f1.shape[1] // 2],
-        pass_token[:, : pass_token.shape[1] // 2],
-        results_error[:, : results_error.shape[1] // 2],
+        batch_sizes[: len(batch_sizes) / 2],
+        pass_f1[:, : pass_f1.shape[1] / 2],
+        pass_token[:, : pass_token.shape[1] / 2],
+        results_error[:, : results_error.shape[1] / 2],
         INTPLT=INTPLT,
     )
     plot_single_genus(
         NAME + "_2",
         pass_name,
-        batch_sizes[len(batch_sizes) // 2 :],
-        pass_f1[:, pass_f1.shape[1] // 2 :],
-        pass_token[:, pass_token.shape[1] // 2 :],
-        results_error[:, results_error.shape[1] // 2 :],
+        batch_sizes[len(batch_sizes) / 2 :],
+        pass_f1[:, pass_f1.shape[1] / 2 :],
+        pass_token[:, pass_token.shape[1] / 2 :],
+        results_error[:, results_error.shape[1] / 2 :],
         INTPLT=INTPLT,
     )

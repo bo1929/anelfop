@@ -5,19 +5,19 @@ CRF:
   c1: 0.1
   c2: 0.1
   max_iterations: 100
-data_directory: /cta/users/aosman/alNER/datasets/tokenized/
+data_directory: ${PATH}/AL4NER/datasets/tokenized/
 data_set:
   name: s800
   pos: false
 embedding_type: cl4l
-experiment_directory: /cta/users/aosman/alNER/results_passive/passive_s800_biobert-base-cased-v11_cl4l_/
+experiment_directory: ${PATH}/AL4NER/results_passive/passive_s800_biobert-base-cased-v11_cl4l_/
 ft_vec_dim: 3072
 generator: true
 init_reduction:
   pca:
     dimension: null
   type: false
-main_directory: /cta/users/aosman/alNER/
+main_directory: ${PATH}/AL4NER/
 method: passive
 method_dict:
   ap: !!python/name:utils.functions_AL.ap ''
@@ -40,7 +40,7 @@ method_dict:
   ttm: !!python/name:utils.functions_AL.ttm ''
   ttp: !!python/name:utils.functions_AL.ttp ''
 pretrained_model: dmis-lab/biobert-base-cased-v1.1
-results_directory: /cta/users/aosman/alNER/results_passive/
+results_directory: ${PATH}/AL4NER/results_passive/
 seed: 219
 tag_dict:
   B-Species: 1
