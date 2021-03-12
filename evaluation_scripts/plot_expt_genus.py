@@ -14,9 +14,9 @@ from scipy.interpolate import pchip_interpolate, interp1d
 
 print(sys.argv)
 
-SMALL_SIZE = 15
-MEDIUM_SIZE = 17
-BIGGER_SIZE = 19
+SMALL_SIZE = 21
+MEDIUM_SIZE = 21
+BIGGER_SIZE = 23
 
 mpl.rc("font", size=SMALL_SIZE)  # controls default text sizes
 mpl.rc("axes", titlesize=SMALL_SIZE)  # fontsize of the axes title
@@ -75,7 +75,7 @@ genus_dict = {
 
 DIVIDE = False
 BATCH_CONST = 1
-INTPLT = False
+INTPLT = True 
 PUT_LEGEND = True
 ERROR_BAR = False
 
@@ -189,7 +189,7 @@ def plot_single_genus(
     palette = itertools.cycle(sns.color_palette("Set2")[:len_])
 
     fig = mpl.figure.Figure(
-        figsize=(12 * len(OPTS), 9), constrained_layout=False, dpi=100
+        figsize=(9 * len(OPTS), 9), constrained_layout=False, dpi=100
     )
     ax_array = fig.subplots(1, len(OPTS), squeeze=False)
     count = 0
@@ -215,33 +215,34 @@ def plot_single_genus(
                     alpha=0.7,
                     color=ctemp,
                 )
+        ax_array[0, count].set_xlabel(x_labels[i])
+        ax_array[0, count].set_ylabel(y_labels[i])
 
-    ax_array[0, count].set_xlabel(x_labels[i])
-    ax_array[0, count].set_ylabel(y_labels[i])
+        ax_array[0, count].set_xscale(x_scales[i], base=basex[i])
+        ax_array[0, count].set_yscale(y_scales[i], base=basey[i])
 
-    ax_array[0, count].set_xscale(x_scales[i], base=basex[i])
-    ax_array[0, count].set_yscale(y_scales[i], base=basey[i])
+        # ax_array[0, count].spines['right'].set_visible(False)
+        # ax_array[0, count].spines['top'].set_visible(False)
 
-    # ax_array[0, count].spines['right'].set_visible(False)
-    # ax_array[0, count].spines['top'].set_visible(False)
+        # if x_scales[i] == "log":
+        #         locmaj = mpl.ticker.LogLocator(base=basex[i], numticks=8)
+        #         ax_array[0, count].xaxis.set_major_locator(locmaj)
+        count = count + 1
 
-    # if x_scales[i] == "log":
-    #         locmaj = mpl.ticker.LogLocator(base=basex[i], numticks=8)
-    #         ax_array[0, count].xaxis.set_major_locator(locmaj)
-
-    count += 1
 
     sns.set_context("paper")
     sns.axes_style("ticks")
 
     if PUT_LEGEND:
         handles, labels = ax_array[0, 0].get_legend_handles_labels()
-        fig.legend(handles, labels, loc="center right", prop={"size": 18})
-
+        fig.legend(handles, labels, loc="center right", prop={"size": 25})
+    
+    if INTPLT:
+        name_output += "_intplt"
     fig.savefig(
         "../evaluations/genus_plots/" + name_output + ".svg",
         bbox_inches="tight",
-        pad_inches=0.1,
+        pad_inches=0.05,
     )
 
 

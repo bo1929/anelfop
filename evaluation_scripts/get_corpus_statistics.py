@@ -47,19 +47,28 @@ for key, group1 in itertools.groupby(details_tuple, key_func(0)):
         total_sent = len(tags)
 
         count_tags_flat = dict(Counter(tags_flat))
-
         b_count = {
+            tag[1:]: 0 
+            for tag in count_tags_flat.keys()
+            if tag[0] in ["B", "I"]
+        }
+        i_count ={
+            tag[1:]: 0 
+            for tag in count_tags_flat.keys()
+            if tag[0] in ["B", "I"]
+        } 
+        b_count.update({
             tag[1:]: count_tags_flat[tag]
             for tag in count_tags_flat.keys()
             if tag[0] == "B"
-        }
-        i_count = {
+        })
+        i_count.update({
             tag[1:]: count_tags_flat[tag]
             for tag in count_tags_flat.keys()
             if tag[0] == "I"
-        }
-        count_tags_flat = {tag: b_count[tag] + i_count[tag] for tag in b_count.keys()}
-
+        })
+        count_tags_flat = {tag: b_count[tag] + i_count[tag] for tag in i_count.keys()}
+        print(count_tags_flat)
         tags_PN = [[0 if tag == "O" else 1 for tag in sent] for sent in tags]
         avg_SL = np.mean([len(seq) for seq in tags_PN])
         avg_PToken = np.mean([sum(seq) for seq in tags_PN])

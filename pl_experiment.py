@@ -86,6 +86,17 @@ report = classification_report(y_test, y_pred)
 print(report)
 end = money.time()
 
+num_sent = len(m_pool)
+ap = np.zeros(num_sent)
+
+mi_pool = crf_trained.predict_marginals(Xi_pool)
+yi_pool = crf_trained.predict(Xi_pool_)
+save_ = []      
+for i in range(num_sent):
+    len_sent = len(m_pool[i])
+    ap[i] = 1 - min([(m_pool[i][j][y_pred[i][j]]) for j in range(len_sent)])
+    save_.append((ap[i],len_sent))
+
 load_save.save_crf_model(cfg, crf_trained, 0)
 load_save.save_results(
     cfg,

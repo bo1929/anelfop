@@ -113,9 +113,11 @@ for key, group1 in itertools.groupby(details_tuple, key_func(2)):
             head, _ = os.path.split(item[0])
             with open(os.path.join(head, "query_sent_len"), "rb") as openfile:
                 temp1.append([sum(query) for query in pickle.load(openfile)])
-
-        tokenAvg = np.mean(np.array(temp1), axis=0).astype(int)
-        numPTokenAvg = np.mean(np.array(temp), axis=0).astype(int)
+        tokenAvg = np.mean(np.array(temp1), axis=0)
+        numPTokenAvg = np.mean(np.array(temp), axis=0)
+        print(item[1])
+        print(tokenAvg)
+        print(numPTokenAvg)
         table.append(
             [item[1], item[3], item[4], item[5]] + list(numPTokenAvg / tokenAvg)
         )
