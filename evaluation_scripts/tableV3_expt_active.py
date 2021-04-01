@@ -13,8 +13,8 @@ from tabulate import tabulate
 if not os.path.exists("../evaluations/"):
     os.mkdir("../evaluations/")
 
-if not os.path.exists("../evaluations/active_tables/"):
-    os.mkdir("../evaluations/active_tables/")
+if not os.path.exists("../evaluations/active_tables_PAratio/"):
+    os.mkdir("../evaluations/active_tables_PAratio/")
 
 tags_corpus_paths = glob.glob("../datasets/tokenized/*train.tags", recursive=True)
 genus_key_dict = {
@@ -107,7 +107,6 @@ for key, group1 in itertools.groupby(details_tuple, key_func(2)):
                 ]
                 sum_PToken = sum([sum(seq) for seq in tags_PN])
                 numPToken.append(sum_PToken)
-
             temp.append(numPToken)
 
             head, _ = os.path.split(item[0])
@@ -115,11 +114,9 @@ for key, group1 in itertools.groupby(details_tuple, key_func(2)):
                 temp1.append([sum(query) for query in pickle.load(openfile)])
         tokenAvg = np.mean(np.array(temp1), axis=0)
         numPTokenAvg = np.mean(np.array(temp), axis=0)
-        print(item[1])
-        print(tokenAvg)
-        print(numPTokenAvg)
         table.append(
-            [item[1], item[3], item[4], item[5]] + list(numPTokenAvg / tokenAvg)
+            [item[1], item[3], item[4], item[5]]
+            + list(np.round(list(numPTokenAvg / tokenAvg), 3))
         )
 
     table.sort(key=genus_key)
@@ -130,7 +127,7 @@ for key, group1 in itertools.groupby(details_tuple, key_func(2)):
         "embedding dimension",
     ] + ["PercentPToken" + str(i) for i in range(len(table[0]) - 4)]
     with open(
-        "../evaluations/active_tables/" + key + "_tableV3_active_expt.tex", "w"
+        "../evaluations/active_tables_PAratio/" + key + "_tableV3_active_expt.tex", "w"
     ) as file1:
         file1.write(
             tabulate(
@@ -140,7 +137,7 @@ for key, group1 in itertools.groupby(details_tuple, key_func(2)):
             )
         )
     with open(
-        "../evaluations/active_tables/" + key + "_tableV3_active_expt.md", "w"
+        "../evaluations/active_tables_PAratio/" + key + "_tableV3_active_expt.md", "w"
     ) as file2:
         file2.write(
             tabulate(

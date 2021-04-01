@@ -73,9 +73,9 @@ genus_dict = {
     "ap": ["ap", "tap", "nap", "pap"],
 }
 
-DIVIDE = False
+DIVIDE = True
 BATCH_CONST = 1
-INTPLT = True 
+INTPLT = True
 PUT_LEGEND = True
 ERROR_BAR = False
 
@@ -86,8 +86,6 @@ OPTS = sys.argv[3:]
 IDX = [OPT_DICT[opt] for opt in OPTS]
 
 NAME = CORPUS + "_" + GENUS
-for opt in OPTS:
-    NAME += "_" + opt
 
 
 def get_parent_dir(x, depth=2):
@@ -229,18 +227,33 @@ def plot_single_genus(
         #         ax_array[0, count].xaxis.set_major_locator(locmaj)
         count = count + 1
 
-
     sns.set_context("paper")
     sns.axes_style("ticks")
 
     if PUT_LEGEND:
         handles, labels = ax_array[0, 0].get_legend_handles_labels()
         fig.legend(handles, labels, loc="center right", prop={"size": 25})
-    
+
+    outdir = "../evaluations/genus_plots/"
+    if not os.path.exists(outdir):
+        os.mkdir(outdir)
+
+    outpath = outdir + "plots"
+    for opt in OPTS:
+        outpath += "_" + opt
+
     if INTPLT:
-        name_output += "_intplt"
+        outpath += "_intplt"
+    if ERROR_BAR:
+        outpath += "_error_bar"
+    if DIVIDE:
+        outpath += "_divided"
+
+    if not os.path.exists(outpath):
+        os.mkdir(outpath)
+
     fig.savefig(
-        "../evaluations/genus_plots/" + name_output + ".svg",
+        os.path.join(outpath, name_output + ".svg"),
         bbox_inches="tight",
         pad_inches=0.05,
     )
@@ -315,18 +328,18 @@ else:
     plot_single_genus(
         NAME + "_1",
         pass_name,
-        batch_sizes[: len(batch_sizes) / 2],
-        pass_f1[:, : pass_f1.shape[1] / 2],
-        pass_token[:, : pass_token.shape[1] / 2],
-        results_error[:, : results_error.shape[1] / 2],
+        batch_sizes[: len(batch_sizes) // 2],
+        pass_f1[:, : pass_f1.shape[1] // 2],
+        pass_token[:, : pass_token.shape[1] // 2],
+        results_error[:, : results_error.shape[1] // 2],
         INTPLT=INTPLT,
     )
     plot_single_genus(
         NAME + "_2",
         pass_name,
-        batch_sizes[len(batch_sizes) / 2 :],
-        pass_f1[:, pass_f1.shape[1] / 2 :],
-        pass_token[:, pass_token.shape[1] / 2 :],
-        results_error[:, results_error.shape[1] / 2 :],
+        batch_sizes[len(batch_sizes) // 2 :],
+        pass_f1[:, pass_f1.shape[1] // 2 :],
+        pass_token[:, pass_token.shape[1] // 2 :],
+        results_error[:, results_error.shape[1] // 2 :],
         INTPLT=INTPLT,
     )

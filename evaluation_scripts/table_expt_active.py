@@ -81,8 +81,8 @@ for key, group1 in itertools.groupby(details_tuple, key_func(2)):
                 item[5] = item[5][:3] + "-" + item[5][3:]
             with open(item[0], "rb") as openfile:
                 temp.append(pickle.load(openfile))
-        f1avg = list(np.mean(np.array(temp), axis=0))
-        table.append([item[1], item[3], item[4], item[5]] + f1avg)
+        f1Avg = list(np.round(np.mean(np.array(temp), axis=0), 3))
+        table.append([item[1], item[3], item[4], item[5]] + f1Avg)
 
     table.sort(key=genus_key)
     header_ = [

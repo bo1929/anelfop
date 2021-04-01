@@ -4,6 +4,7 @@ import pickle
 import glob
 import os
 
+import numpy as np
 from tabulate import tabulate
 
 if not os.path.exists("../evaluations/"):
@@ -60,7 +61,9 @@ for key, group1 in itertools.groupby(details_tuple, key_func(1)):
                 else:
                     item[4] = item[4][:3] + "-" + item[4][3:]
                 with open(item[0], "rb") as openfile:
-                    table.append([key2, key3, item[4]] + pickle.load(openfile))
+                    table.append(
+                        [key2, key3, item[4]] + list(np.round(pickle.load(openfile), 3))
+                    )
     header_ = ["pre-trained model", "embedding type", "embedding dimension", "f1-score"]
     with open(
         "../evaluations/passive_tables/" + key + "_table_passive_model.tex", "w"

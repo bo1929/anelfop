@@ -11,8 +11,8 @@ from tabulate import tabulate
 if not os.path.exists("../evaluations/"):
     os.mkdir("../evaluations/")
 
-if not os.path.exists("../evaluations/active_tables/"):
-    os.mkdir("../evaluations/active_tables/")
+if not os.path.exists("../evaluations/active_tables_withSL/"):
+    os.mkdir("../evaluations/active_tables_withSL/")
 
 genus_key_dict = {
     "tp": 0,
@@ -89,7 +89,7 @@ for key, group1 in itertools.groupby(details_tuple, key_func(2)):
             with open(os.path.join(head, "query_sent_len"), "rb") as openfile:
                 temp1.append([sum(query) for query in pickle.load(openfile)])
         tokenAvg = list(np.cumsum(np.mean(np.array(temp1), axis=0)).astype(int))
-        f1Avg = list(np.mean(np.array(temp), axis=0))
+        f1Avg = list(np.round(np.mean(np.array(temp), axis=0), 3))
         table.append(
             [item[1], item[3], item[4], item[5]]
             + list(map(str, list(zip(f1Avg, tokenAvg))))
@@ -103,7 +103,7 @@ for key, group1 in itertools.groupby(details_tuple, key_func(2)):
         "embedding dimension",
     ] + ["f1-score & sentence length " + str(i) for i in range(len(table[0]) - 4)]
     with open(
-        "../evaluations/active_tables/" + key + "_tableV2_active_expt.tex", "w"
+        "../evaluations/active_tables_withSL/" + key + "_tableV2_active_expt.tex", "w"
     ) as file1:
         file1.write(
             tabulate(
@@ -113,7 +113,7 @@ for key, group1 in itertools.groupby(details_tuple, key_func(2)):
             )
         )
     with open(
-        "../evaluations/active_tables/" + key + "_tableV2_active_expt.md", "w"
+        "../evaluations/active_tables_withSL/" + key + "_tableV2_active_expt.md", "w"
     ) as file2:
         file2.write(
             tabulate(

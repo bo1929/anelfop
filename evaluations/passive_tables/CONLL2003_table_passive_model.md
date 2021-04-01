@@ -1,14 +1,3 @@
 | pre-trained model   | embedding type   | embedding dimension   |   f1-score |
 |---------------------|------------------|-----------------------|------------|
-| bert-base-cased     | cl4l             | 768                   |   0.926607 |
-| bert-base-cased     | cl4l             | pca-200               |   0.931622 |
-| bert-base-cased     | cl4l             | pca-256               |   0.935808 |
-| bert-base-cased     | cl4l             | pca-300               |   0.932918 |
-| bert-base-cased     | ll               | 768                   |   0.927438 |
-| bert-base-cased     | ll               | pca-200               |   0.930079 |
-| bert-base-cased     | ll               | pca-256               |   0.929313 |
-| bert-base-cased     | ll               | pca-300               |   0.926623 |
-| bert-base-cased     | sl4l             | 768                   |   0.921757 |
-| bert-base-cased     | sl4l             | pca-200               |   0.607467 |
-| bert-base-cased     | sl4l             | pca-256               |   0.656257 |
-| bert-base-cased     | sl4l             | pca-300               |   0.716681 |
+| bert-base-cased     | cl4l             | pca-256               |      0.932 |

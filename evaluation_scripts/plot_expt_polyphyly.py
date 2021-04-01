@@ -73,7 +73,7 @@ pphyly_dict = {
     "positive": ["pap", "ptp", "ptm", "pte"],
 }
 
-DIVIDE = False
+DIVIDE = True
 BATCH_CONST = 1
 INTPLT = True
 PUT_LEGEND = True
@@ -86,8 +86,6 @@ OPTS = sys.argv[3:]
 IDX = [OPT_DICT[opt] for opt in OPTS]
 
 NAME = CORPUS + "_" + PPHYLY
-for opt in OPTS:
-    NAME += "_" + opt
 
 
 def get_parent_dir(x, depth=2):
@@ -162,7 +160,7 @@ def plot_single_pphyly(
     ]
 
     x_scales = ["log", "log", "log", "linear"]
-    y_scales = ["linear", "linear", "linear", "linear"]
+    y_scales = ["linear", "linear", "log", "linear"]
 
     basex = [2, 2, 2, 10]
     basey = [10, 10, 2, 10]
@@ -222,10 +220,27 @@ def plot_single_pphyly(
     if PUT_LEGEND:
         handles, labels = ax_array[0, 0].get_legend_handles_labels()
         fig.legend(handles, labels, loc="center right", prop={"size": 18})
+
+    outdir = "../evaluations/pphyly_plots/"
+    if not os.path.exists(outdir):
+        os.mkdir(outdir)
+
+    outpath = outdir + "plots"
+    for opt in OPTS:
+        outpath += "_" + opt
+
     if INTPLT:
-        name_output += "_intplt"
+        outpath += "_intplt"
+    if ERROR_BAR:
+        outpath += "_error_bar"
+    if DIVIDE:
+        outpath += "_divided"
+
+    if not os.path.exists(outpath):
+        os.mkdir(outpath)
+
     fig.savefig(
-        "../evaluations/pphyly_plots/" + name_output + ".svg",
+        os.path.join(outpath, name_output + ".svg"),
         bbox_inches="tight",
         pad_inches=0.05,
     )
@@ -300,18 +315,18 @@ else:
     plot_single_pphyly(
         NAME + "_1",
         pass_name,
-        batch_sizes[: len(batch_sizes) / 2],
-        pass_f1[:, : pass_f1.shape[1] / 2],
-        pass_token[:, : pass_token.shape[1] / 2],
-        results_error[:, : results_error.shape[1] / 2],
+        batch_sizes[: len(batch_sizes) // 2],
+        pass_f1[:, : pass_f1.shape[1] // 2],
+        pass_token[:, : pass_token.shape[1] // 2],
+        results_error[:, : results_error.shape[1] // 2],
         INTPLT=INTPLT,
     )
     plot_single_pphyly(
         NAME + "_2",
         pass_name,
-        batch_sizes[len(batch_sizes) / 2 :],
-        pass_f1[:, pass_f1.shape[1] / 2 :],
-        pass_token[:, pass_token.shape[1] / 2 :],
-        results_error[:, results_error.shape[1] / 2 :],
+        batch_sizes[len(batch_sizes) // 2 :],
+        pass_f1[:, pass_f1.shape[1] // 2 :],
+        pass_token[:, pass_token.shape[1] // 2 :],
+        results_error[:, results_error.shape[1] // 2 :],
         INTPLT=INTPLT,
     )

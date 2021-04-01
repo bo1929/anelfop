@@ -47,28 +47,23 @@ for key, group1 in itertools.groupby(details_tuple, key_func(0)):
         total_sent = len(tags)
 
         count_tags_flat = dict(Counter(tags_flat))
-        b_count = {
-            tag[1:]: 0 
-            for tag in count_tags_flat.keys()
-            if tag[0] in ["B", "I"]
-        }
-        i_count ={
-            tag[1:]: 0 
-            for tag in count_tags_flat.keys()
-            if tag[0] in ["B", "I"]
-        } 
-        b_count.update({
-            tag[1:]: count_tags_flat[tag]
-            for tag in count_tags_flat.keys()
-            if tag[0] == "B"
-        })
-        i_count.update({
-            tag[1:]: count_tags_flat[tag]
-            for tag in count_tags_flat.keys()
-            if tag[0] == "I"
-        })
+        b_count = {tag[1:]: 0 for tag in count_tags_flat.keys() if tag[0] in ["B", "I"]}
+        i_count = {tag[1:]: 0 for tag in count_tags_flat.keys() if tag[0] in ["B", "I"]}
+        b_count.update(
+            {
+                tag[1:]: count_tags_flat[tag]
+                for tag in count_tags_flat.keys()
+                if tag[0] == "B"
+            }
+        )
+        i_count.update(
+            {
+                tag[1:]: count_tags_flat[tag]
+                for tag in count_tags_flat.keys()
+                if tag[0] == "I"
+            }
+        )
         count_tags_flat = {tag: b_count[tag] + i_count[tag] for tag in i_count.keys()}
-        print(count_tags_flat)
         tags_PN = [[0 if tag == "O" else 1 for tag in sent] for sent in tags]
         avg_SL = np.mean([len(seq) for seq in tags_PN])
         avg_PToken = np.mean([sum(seq) for seq in tags_PN])
@@ -77,19 +72,21 @@ for key, group1 in itertools.groupby(details_tuple, key_func(0)):
         DAC_PToken = sum([1 if sum(seq) >= 2 else 0 for seq in tags_PN]) / len(tags_PN)
 
         table.append(
-            [
-                key,
-                type,
-                total_sent,
-                total_token,
-                sum_PToken,
-                sum_PToken / total_token,
-                avg_SL,
-                avg_PToken,
-                AC_PToken,
-                DAC_PToken,
-            ]
-            + [count / sum_PToken for count in list(count_tags_flat.values())]
+            list(
+                [
+                    key,
+                    type,
+                    total_sent,
+                    total_token,
+                    sum_PToken,
+                    sum_PToken / total_token,
+                    avg_SL,
+                    avg_PToken,
+                    AC_PToken,
+                    DAC_PToken,
+                ]
+                + [count / sum_PToken for count in list(count_tags_flat.values())]
+            )
         )
 
         return [
@@ -109,7 +106,6 @@ for key, group1 in itertools.groupby(details_tuple, key_func(0)):
     all_tokenized = []
     all_tags = []
     for item in group1:
-        print(item)
         with open(item[2], "rb") as openfile:
             tokenized_ = json.load(openfile)
 
