@@ -11,9 +11,13 @@ def feature_selector(
     i,
     j,
     conf_switch,
-    pos=[[]],
-    embeddings=[[]],
+    pos=None,
+    embeddings=None,
 ):
+    if pos is None:
+        pos = [[]]
+    if embeddings is None:
+        embeddings = [[]]
     feature_dict_embed = {}
     if embeddings:
         for k in range(0, len(embeddings[i][j])):
