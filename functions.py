@@ -145,8 +145,10 @@ def query(
     Xi_pool,
     embeddings_train,
     y_train,
-    Xi_pool_2nd=[[]],
+    Xi_pool_2nd=None,
 ):
+    if Xi_pool_2nd is None:
+        Xi_pool_2nd = [[]]
     if len(idx_pool) < 2:
         print("Batch size: ", len(idx_pool), "at iteration ", iteration)
         return idx_pool, []
