@@ -78,10 +78,10 @@ def pca_r_embeddings(embeddings_ann, embeddings_pool, n_comp=200, seed=29):
 
     X_ = np.array(embeddings_ann_flat + embeddings_pool_flat)
     if np.isinf(X_).any():
-        print("inf: ", X_[np.isinf(X_) == True])
+        print("inf: ", X_[np.isinf(X_) is True])
 
     if np.isnan(X_).any():
-        print("nan: ", X_[np.isnan(X_) == True])
+        print("nan: ", X_[np.isnan(X_) is True])
 
     from sklearn.decomposition import PCA
 

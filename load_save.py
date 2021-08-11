@@ -69,7 +69,7 @@ def load_config_from(filename="./config.yaml", AL=True):
     if not os.path.exists(expt_dir):
         os.mkdir(expt_dir)
 
-    if AL == False:
+    if AL is False:
         cfg["method"] = "passive"
         results_dir = os.path.join(expt_dir, "results_passive", "")
     else:
