@@ -1,13 +1,9 @@
 import torch
-import json
 import os
 
-from transformers import AutoModel, AutoTokenizer, AutoConfig
-from sklearn.model_selection import train_test_split
-from seqeval.metrics import classification_report
+from transformers import AutoModel, AutoTokenizer
 
 from tqdm import tqdm
-import numpy as np
 import pickle as pkl
 
 
@@ -88,31 +84,22 @@ def get_embeddings(cfg, tknzd_sent, tags, pos, part="train"):
         with open(embedding_path, "wb") as outfile:
             pkl.dump(embeddings, outfile)
 
-    embedding_dim = embeddings[0].shape[1]
-
     # Averaging embeddings of the subwords into a single embedding.
     temp = []
     for i in tqdm(range(len(pretrained_tknzd))):
         temp_sent = [embeddings[i][0]]
-        ##(1) n = 1
         for j in range(1, len(embeddings[i])):
             if (
                 tokenizer_.decode([pretrained_tknzd[i]["input_ids"][0][j + 1]])[0]
                 == "#"
             ):
                 temp_sent[-1] = temp_sent[-1] + embeddings[i][j]
-                ##(1) n = n + 1
             else:
-                ##(1) if (
-                ##(1)     tokenizer_.decode([pretrained_tknzd[i]["input_ids"][0][j - 1]])[0]
-                ##(1)     == "#"
-                ##(1) ):
-                ##(1)     temp_sent[-1] = temp_sent[-1] / n
-                ##(1)     n = 1
                 temp_sent.append(embeddings[i][j])
         temp.append(temp_sent[:])
 
-        # Truncation for tags and actual tokens, truncation can be done explicitly (rather than seperately).
+        # Truncation for tags and actual tokens, truncation can be done
+        # explicitly (rather than seperately).
         tknzd_sent[i] = tknzd_sent[i][: len(temp_sent)]
         tags[i] = tags[i][: len(temp_sent)]
         pos[i] = pos[i][: len(temp_sent)]
@@ -120,4 +107,3 @@ def get_embeddings(cfg, tknzd_sent, tags, pos, part="train"):
     embeddings = temp
 
     return embeddings, pretrained_tknzd, tknzd_sent, tags, pos
-    irint("Tokenization -->")

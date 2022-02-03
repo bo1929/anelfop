@@ -5,7 +5,7 @@ import numpy as np
 import pandas as pd
 
 from itertools import accumulate
-from sklearn.metrics import classification_report
+from seqeval.metrics import classification_report
 
 import functions
 import load_save
@@ -18,7 +18,7 @@ parser.add_argument(
     "--config-path",
     required=True,
     type=str,
-    help="Configuration path to use, \
+    help="Configuration file path to use, \
         seed, UMAP and HDBSCAN parameters",
 )
 parser.add_argument(
@@ -26,8 +26,8 @@ parser.add_argument(
     required=True,
     type=int,
     help="What percentage of tokens \
-                will have  for semi-supervised \
-                dimensionality reduction.",
+        will have  for semi-supervised \
+        dimensionality reduction.",
 )
 
 args = parser.parse_args()
@@ -129,7 +129,7 @@ for i in range(len(embeddings_ann)):
 for i in range(len(embeddings_pool)):
     len_sent = len(embeddings_pool[i])
     for j in range(len_sent):
-        if clusters_pool[i][j] != n_ent  or mask_out_pool[i][j] == 1:
+        if clusters_pool[i][j] != n_ent or mask_out_pool[i][j] == 1:
             y_pred.append(1)
         else:
             y_pred.append(0)

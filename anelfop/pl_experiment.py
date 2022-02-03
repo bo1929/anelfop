@@ -1,34 +1,34 @@
-import torch
-import tqdm
-import json
-import random
+import argparse
 import time as money
-
-import os
-import sys
-
-import numpy as np
 
 import wrappers.wrapper_CRF as crf_
 import wrappers.wrapper_pretrained as pretrained_
-import wrappers.wrapper_UMAP as umap_
-import functions
 
+import functions
 import load_save
-from operator import itemgetter
-from sklearn.model_selection import train_test_split
+
 from seqeval.metrics import classification_report, f1_score
 
-path_config = sys.argv[1]
+parser = argparse.ArgumentParser(prog="PROG")
+parser.add_argument(
+    "--config-path",
+    required=True,
+    type=str,
+    help="Configuration file path to use, \
+        seed, UMAP and HDBSCAN parameters",
+)
 
-cfg = load_save.load_config_from(path_config, AL=False)
+args = parser.parse_args()
+config_path = args.config_path
+
+cfg = load_save.load_config_from(config_path, AL=False)
+random_seed = cfg["seed"]
+
 [tknzd_sent_train, tags_train, pos_train], [
     tknzd_sent_test,
     tags_test,
     pos_test,
 ] = load_save.load_data(cfg)
-
-random_seed = cfg["seed"]
 
 (
     embeddings_train,
@@ -80,7 +80,7 @@ start = money.time()
 print("CRF training.\n")
 crf_trained = crf_.train_crf(cfg, X_train, y_train)
 
-print("CRF testing..\n")
+print("CRF testing.\n")
 y_pred = crf_trained.predict(X_test)
 report = classification_report(y_test, y_pred)
 print(report)

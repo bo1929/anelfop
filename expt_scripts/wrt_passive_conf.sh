@@ -13,27 +13,27 @@ case $key in
     ;;
     -e|--embedding)
     embedding_type="$2"
-    shift # past argument
-    shift # past value
+    shift
+    shift
     ;;
     -r|--reduction)
     reduction="$2"
-    shift # past argument
-    shift # past value
+    shift
+    shift
     ;;
     -m|--meth)
     method="$2"
-    shift # past argument
-    shift # past value
+    shift
+    shift
     ;;
     -p|--path)
     main_dir="$2"
     shift
     shift
     ;;
-    *)    # unknown option
+    *) # unknown option
     POSITIONAL+=("$1") # save it in an array for later
-    shift # past argument
+    shift
     ;;
 esac
 done

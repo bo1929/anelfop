@@ -1,5 +1,3 @@
-import os
-import string
 from tqdm import tqdm
 
 import sklearn_crfsuite

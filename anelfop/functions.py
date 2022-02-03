@@ -1,10 +1,12 @@
+import math
 import copy
 import numpy as np
+
 from itertools import accumulate
 
 import wrappers.wrapper_UMAP as umap_
-from methodsAL import *
-import math
+
+from al_methods import *
 
 
 def get_init_size(cfg, total_num_sent):
@@ -49,8 +51,6 @@ def get_batch_size(cfg, iteration, pool_sent, total_num_sent):
 
 
 def stopping_criteria(cfg, iteration, pool_sent, total_num_sent, f1):
-    # batch_size = get_batch_size(cfg, iteration, pool_sent, total_num_sent)
-    print("pool_sent", pool_sent)
     sc = cfg["stopping_criteria"]
     if sc == "full":
         if pool_sent == 0:

@@ -13,37 +13,37 @@ case $key in
     ;;
     -e|--embedding)
     embedding_type="$2"
-    shift # past argument
-    shift # past value
+    shift
+    shift
     ;;
     -r|--reduction)
     reduction="$2"
-    shift # past argument
-    shift # past value
+    shift
+    shift
     ;;
     -m|--method)
     method="$2"
-    shift # past argument
-    shift # past value
+    shift
+    shift
     ;;
     -c|--inc)
     increment="$2"
-    shift # past argument
-    shift # past value
+    shift
+    shift
     ;;
     -i|--init)
     init_size="$2"
-    shift # past argument
+    shift
     shift #past value
     ;;
     -s|--stop)
     stopping_criteria="$2"
-    shift # past argument
+    shift
     shift #past value
     ;;
     --seed)
     seed="$2"
-    shift # past argument
+    shift
     shift #past value
     ;;
     -p|--path)
@@ -51,9 +51,9 @@ case $key in
     shift
     shift
     ;;
-    *)    # unknown option
+    *) # unknown option
     POSITIONAL+=("$1") # save it in an array for later
-    shift # past argument
+    shift
     ;;
 esac
 done
@@ -65,18 +65,18 @@ then
 elif [ ${dataset} = "BC5CDR" ] || [ ${dataset} = "BC2GM" ] || [ ${dataset} = "Genia4ER" ];
 then
   pos="False"
-#  pre_model="emilyalsentzer/Bio_ClinicalBERT"
+  # pre_model="emilyalsentzer/Bio_ClinicalBERT"
   pre_model="dmis-lab/biobert-base-cased-v1.1"
 elif [ ${dataset} = "NCBI_disease" ]
 then
   pos="False"
   pre_model="dmis-lab/biobert-base-cased-v1.1"
-#  pre_model="emilyalsentzer/Bio_ClinicalBERT"
+  # pre_model="emilyalsentzer/Bio_ClinicalBERT"
 elif [ ${dataset} = "s800" ] || [ ${dataset} = "LINNAEUS" ];
 then
   pos="False"
   pre_model="dmis-lab/biobert-base-cased-v1.1"
-#  pre_model="emilyalsentzer/Bio_ClinicalBERT"
+  # pre_model="emilyalsentzer/Bio_ClinicalBERT"
 elif [ ${dataset:0:5} = "debug" ];
 then
   pos="False"

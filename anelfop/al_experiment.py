@@ -1,5 +1,5 @@
-import sys
 import random
+import argparse
 import time as money
 
 import numpy as np
@@ -11,9 +11,19 @@ import load_save
 
 from seqeval.metrics import classification_report, f1_score
 
-path_config = sys.argv[1]
+parser = argparse.ArgumentParser(prog="PROG")
+parser.add_argument(
+    "--config-path",
+    required=True,
+    type=str,
+    help="Configuration file path to use, \
+        seed, UMAP and HDBSCAN parameters",
+)
 
-cfg = load_save.load_config_from(path_config)
+args = parser.parse_args()
+config_path = args.config_path
+
+cfg = load_save.load_config_from(config_path)
 random_seed = cfg["seed"]
 
 [tknzd_sent_train, tags_train, pos_train], [

@@ -1,14 +1,12 @@
 import os
-import logging
-import pprint
-
-from methodsAL import *
 
 import json
 import yaml
 import joblib
 import itertools
 import pickle as pkl
+
+from al_methods import *
 
 
 def load_data(cfg):
@@ -142,17 +140,11 @@ def load_config_from(filename="./config.yaml", AL=True):
     return cfg
 
 
-################
-
-
 def load_ft_config(cfg):
     experiment_dir = cfg["experiment_directory"]
     with open(os.path.join(experiment_dir, "features_config.yaml"), "r") as f:
         result = yaml.load(f, Loader=yaml.FullLoader)
     return result
-
-
-################
 
 
 def save_crf_model(cfg, model, iteration):
@@ -171,9 +163,6 @@ def save_crf_model(cfg, model, iteration):
         joblib.dump(value=model, filename=outfile)
 
 
-################
-
-
 def load_crf_model(cfg, iteration):
     experiment_dir = cfg["experiment_directory"]
     models_dir = os.path.join(experiment_dir, "updated_models", "")
@@ -186,9 +175,6 @@ def load_crf_model(cfg, iteration):
     ) as outfile:
         model = joblib.load(filename=outfile)
     return model
-
-
-################
 
 
 def write_ft_config(cfg):
