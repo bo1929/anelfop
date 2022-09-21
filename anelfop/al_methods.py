@@ -17,17 +17,16 @@ from itertools import accumulate
 def fit_distribution(lengths):
     dens = sm.nonparametric.KDEUnivariate(lengths)
     dens.fit()
-
     return dens
 
 
 def lenght_prob(dens, len_sent):
     # prob = dens.evaluate(len_sent)
     prob = math.sqrt(dens.evaluate(len_sent))
-
     return prob
 
 
+# Random Selection: RS
 def rs(idx_pool, batch_size, seed):
     random.seed(a=seed, version=2)
 
@@ -35,6 +34,7 @@ def rs(idx_pool, batch_size, seed):
     return idx_q, [s for s in idx_pool if s not in idx_q]
 
 
+# Longest Sentence Selection: LSS
 def lss(sent_lenghts, idx_pool, batch_size):
     batch = np.argpartition(np.array(sent_lenghts) * (-1), batch_size - 1)[
         :batch_size
@@ -44,6 +44,7 @@ def lss(sent_lenghts, idx_pool, batch_size):
     return idx_q, [i for i in idx_pool if i not in idx_q]
 
 
+# Single Token Probability: sTP
 def tp(m_pool, idx_pool, batch_size):
     num_sent = len(m_pool)
     tp = np.zeros(num_sent)
@@ -58,6 +59,7 @@ def tp(m_pool, idx_pool, batch_size):
     return idx_q, [i for i in idx_pool if i not in idx_q]
 
 
+# Total Token Probability: tTP
 def ttp(m_pool, idx_pool, batch_size):
     num_sent = len(m_pool)
     ttp = np.zeros(num_sent)
@@ -72,6 +74,7 @@ def ttp(m_pool, idx_pool, batch_size):
     return idx_q, [i for i in idx_pool if i not in idx_q]
 
 
+# Normalized Token Probability: nTP
 def ntp(m_pool, idx_pool, batch_size):
     num_sent = len(m_pool)
     ntp = np.zeros(num_sent)
@@ -88,7 +91,7 @@ def ntp(m_pool, idx_pool, batch_size):
     return idx_q, [i for i in idx_pool if i not in idx_q]
 
 
-# Minumum Token Margin
+# Single Token Margin: sTM
 def tm(m_pool, idx_pool, batch_size):
     num_sent = len(m_pool)
     tm = np.zeros(num_sent)
@@ -108,6 +111,7 @@ def tm(m_pool, idx_pool, batch_size):
     return idx_q, [i for i in idx_pool if i not in idx_q]
 
 
+# Total Token Margin: tTM
 def ttm(m_pool, idx_pool, batch_size):
     num_sent = len(m_pool)
     ttm = np.zeros(num_sent)
@@ -126,6 +130,7 @@ def ttm(m_pool, idx_pool, batch_size):
     return idx_q, [s for s in idx_pool if s not in idx_q]
 
 
+# Normalized Token Margin: nTM
 def ntm(m_pool, idx_pool, batch_size):
     num_sent = len(m_pool)
     ntm = np.zeros(num_sent)
@@ -148,6 +153,7 @@ def ntm(m_pool, idx_pool, batch_size):
     return idx_q, [s for s in idx_pool if s not in idx_q]
 
 
+# Single Token Entropy: nTE
 def te(m_pool, idx_pool, batch_size):
     num_sent = len(m_pool)
     te = np.zeros(num_sent)
@@ -167,6 +173,7 @@ def te(m_pool, idx_pool, batch_size):
     return idx_q, [s for s in idx_pool if s not in idx_q]
 
 
+# Total Token Entropy: tTE
 def tte(m_pool, idx_pool, batch_size):
     num_sent = len(m_pool)
     tte = np.zeros(num_sent)
@@ -186,6 +193,7 @@ def tte(m_pool, idx_pool, batch_size):
     return idx_q, [i for i in idx_pool if i not in idx_q]
 
 
+# Normalized Token Entropy: nTE
 def nte(m_pool, idx_pool, batch_size):
     num_sent = len(m_pool)
     nte = np.zeros(num_sent)
@@ -209,6 +217,7 @@ def nte(m_pool, idx_pool, batch_size):
     return idx_q, [i for i in idx_pool if i not in idx_q]
 
 
+# Single Assignment Probability: sAP
 def ap(m_pool, y_pred, idx_pool, batch_size):
     num_sent = len(m_pool)
     ap = np.zeros(num_sent)
@@ -223,6 +232,7 @@ def ap(m_pool, y_pred, idx_pool, batch_size):
     return idx_q, [i for i in idx_pool if i not in idx_q]
 
 
+# Total Assignment Probability: tAP
 def tap(m_pool, y_pred, idx_pool, batch_size):
     num_sent = len(m_pool)
     tap = np.zeros(num_sent)
@@ -237,6 +247,7 @@ def tap(m_pool, y_pred, idx_pool, batch_size):
     return idx_q, [i for i in idx_pool if i not in idx_q]
 
 
+# Normalized Assignment Probability: nAP
 def nap(m_pool, y_pred, idx_pool, batch_size):
     num_sent = len(m_pool)
     nap = np.zeros(num_sent)
@@ -253,6 +264,7 @@ def nap(m_pool, y_pred, idx_pool, batch_size):
     return idx_q, [i for i in idx_pool if i not in idx_q]
 
 
+# Density Normalized Positive Token Probability: dpTP
 def ptp(cfg, embeddings_ann, embeddings_pool, y_ann, m_pool, idx_pool, batch_size):
     PDF = fit_distribution([len(sent) for sent in embeddings_pool])
 
@@ -323,6 +335,7 @@ def ptp(cfg, embeddings_ann, embeddings_pool, y_ann, m_pool, idx_pool, batch_siz
     return idx_q, [i for i in idx_pool if i not in idx_q]
 
 
+# Total Positive Token Probability: dP
 def otp(cfg, embeddings_ann, embeddings_pool, y_ann, m_pool, idx_pool, batch_size):
     experiment_dir = cfg["experiment_directory"]
     tag_dict = cfg["tag_dict"]
@@ -389,6 +402,7 @@ def otp(cfg, embeddings_ann, embeddings_pool, y_ann, m_pool, idx_pool, batch_siz
     return idx_q, [i for i in idx_pool if i not in idx_q]
 
 
+# Total Positive Token Margin: tpTM
 def otm(cfg, embeddings_ann, embeddings_pool, y_ann, m_pool, idx_pool, batch_size):
     experiment_dir = cfg["experiment_directory"]
     tag_dict = cfg["tag_dict"]
@@ -455,6 +469,7 @@ def otm(cfg, embeddings_ann, embeddings_pool, y_ann, m_pool, idx_pool, batch_siz
     return idx_q, [i for i in idx_pool if i not in idx_q]
 
 
+# Densitiy Normalized Positive Token Margin: dpTM
 def ptm(cfg, embeddings_ann, embeddings_pool, y_ann, m_pool, idx_pool, batch_size):
     PDF = fit_distribution([len(sent) for sent in embeddings_pool])
 
@@ -525,6 +540,7 @@ def ptm(cfg, embeddings_ann, embeddings_pool, y_ann, m_pool, idx_pool, batch_siz
     return idx_q, [i for i in idx_pool if i not in idx_q]
 
 
+# Densitiy Normalized Positive Token Entropy: dpTE
 def pte(cfg, embeddings_ann, embeddings_pool, y_ann, m_pool, idx_pool, batch_size):
     PDF = fit_distribution([len(sent) for sent in embeddings_pool])
 
@@ -596,6 +612,7 @@ def pte(cfg, embeddings_ann, embeddings_pool, y_ann, m_pool, idx_pool, batch_siz
     return idx_q, [i for i in idx_pool if i not in idx_q]
 
 
+# Total Positive Token Entropy: tpTE
 def ote(cfg, embeddings_ann, embeddings_pool, y_ann, m_pool, idx_pool, batch_size):
     experiment_dir = cfg["experiment_directory"]
     tag_dict = cfg["tag_dict"]
@@ -662,6 +679,7 @@ def ote(cfg, embeddings_ann, embeddings_pool, y_ann, m_pool, idx_pool, batch_siz
     return idx_q, [i for i in idx_pool if i not in idx_q]
 
 
+# Density Normalized Positive Assignment Probability: dpAP
 def pap(
     cfg, embeddings_ann, embeddings_pool, y_ann, y_pred, m_pool, idx_pool, batch_size
 ):
@@ -734,6 +752,7 @@ def pap(
     return idx_q, [i for i in idx_pool if i not in idx_q]
 
 
+# Total Positive Assignment Probability: tpAP
 def oap(
     cfg, embeddings_ann, embeddings_pool, y_ann, y_pred, m_pool, idx_pool, batch_size
 ):
@@ -802,6 +821,7 @@ def oap(
     return idx_q, [i for i in idx_pool if i not in idx_q]
 
 
+# Positive Annotation Selection: PAS
 def pas(cfg, embeddings_ann, embeddings_pool, y_ann, idx_pool, batch_size):
     PDF = fit_distribution([len(sent) for sent in embeddings_pool])
 
