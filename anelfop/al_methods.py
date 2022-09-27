@@ -11,6 +11,8 @@ import wrappers.wrapper_UMAP as umap_
 import matplotlib.pyplot as plt
 import statsmodels.api as sm
 
+from sklearn.neighbors import LocalOutlierFactor
+
 from itertools import accumulate
 
 
@@ -265,7 +267,7 @@ def nap(m_pool, y_pred, idx_pool, batch_size):
 
 
 # Density Normalized Positive Token Probability: dpTP
-def ptp(cfg, embeddings_ann, embeddings_pool, y_ann, m_pool, idx_pool, batch_size):
+def ptp(cfg, embeddings_ann, embeddings_pool, y_ann, m_pool, idx_pool, batch_size, plot=True):
     PDF = fit_distribution([len(sent) for sent in embeddings_pool])
 
     experiment_dir = cfg["experiment_directory"]
@@ -286,33 +288,9 @@ def ptp(cfg, embeddings_ann, embeddings_pool, y_ann, m_pool, idx_pool, batch_siz
     sent_len_pool = [0] + [len(sent) for sent in embeddings_pool]
     sent_idx_pool = list(accumulate(sent_len_pool))
 
-    fig, ax = plt.subplots(1, figsize=(18, 10))
+    if plot: plot_umap_hdbscan(clusters_pool, embeddings_pool, experiment_dir, y_ann)
 
-    clr = [c for sent in clusters_pool for c in sent]
-    coord = np.array([xy for sent in embeddings_pool for xy in sent])
-    ax.scatter(coord[:, 0], coord[:, 1], c=clr, s=0.4, cmap="Spectral", alpha=0.5)
-    fig.suptitle(
-        "Semi-supervised UMAP + HDBSCAN, " + str(len(y_ann)) + " sentences labeled",
-        fontsize=18,
-    )
-    plt.savefig(
-        os.path.join(
-            experiment_dir + "ss_umap_r_hdbscan_c_" + str(len(y_ann)) + ".png"
-        ),
-        dpi=700,
-    )
-
-    n_ent = max(count_clusters.items(), key=operator.itemgetter(1))[0]
-    threshold = pd.Series(clusterer.outlier_scores_[len(embeddings_ann) :]).quantile(
-        cfg["hdbscan_al"]["mask_outlier"]
-    )
-    outliers = np.where(clusterer.outlier_scores_[len(embeddings_ann) :] > threshold)[0]
-    mask_out = np.zeros(len(clusterer.outlier_scores_[len(embeddings_ann) :]))
-    mask_out[outliers] = 1
-    mask_out = [
-        mask_out[sent_idx_pool[i - 1] : sent_idx_pool[i]]
-        for i in range(1, len(sent_idx_pool))
-    ]
+    mask_out, n_ent = compute_outliers(cfg, clusterer, count_clusters, embeddings_ann, sent_idx_pool)
 
     num_sent = len(embeddings_pool)
     entity_rich = np.zeros(num_sent)
@@ -335,8 +313,49 @@ def ptp(cfg, embeddings_ann, embeddings_pool, y_ann, m_pool, idx_pool, batch_siz
     return idx_q, [i for i in idx_pool if i not in idx_q]
 
 
+def plot_umap_hdbscan(clusters_pool, embeddings_pool, experiment_dir, y_ann):
+    fig, ax = plt.subplots(1, figsize=(18, 10))
+    clr = [c for sent in clusters_pool for c in sent]
+    coord = np.array([xy for sent in embeddings_pool for xy in sent])
+    ax.scatter(coord[:, 0], coord[:, 1], c=clr, s=0.4, cmap="Spectral", alpha=0.5)
+    fig.suptitle(
+        "Semi-supervised UMAP + HDBSCAN, " + str(len(y_ann)) + " sentences labeled",
+        fontsize=18,
+    )
+    plt.savefig(
+        os.path.join(
+            experiment_dir + "ss_umap_r_hdbscan_c_" + str(len(y_ann)) + ".png"
+        ),
+        dpi=700,
+    )
+
+
+def compute_outliers(cfg, clusterer, count_clusters, embeddings_ann, sent_idx_pool, outlier_method="GLOSH"):
+    n_ent = max(count_clusters.items(), key=operator.itemgetter(1))[0]
+    if outlier_method == "GLOSH":
+        threshold = pd.Series(clusterer.outlier_scores_[len(embeddings_ann):]).quantile(
+            cfg["hdbscan_al"]["mask_outlier"]
+        )
+        outliers = np.where(clusterer.outlier_scores_[len(embeddings_ann):] > threshold)[0]
+        mask_out = np.zeros(len(clusterer.outlier_scores_[len(embeddings_ann):]))
+        mask_out[outliers] = 1
+        mask_out = [
+            mask_out[sent_idx_pool[i - 1]: sent_idx_pool[i]]
+            for i in range(1, len(sent_idx_pool))
+        ]
+    elif outlier_method == "LOF":
+        clf = LocalOutlierFactor(contamination='auto') # sets threshold to 0.1
+        lof_outliers1 = clf.fit_predict(embeddings_ann)
+        mask_out = [0 if outlier_score==1 in lof_outliers1 else 1 for outlier_score in lof_outliers1]
+    elif outlier_method == None:
+        mask_out = np.zeros(len(clusterer.outlier_scores_[len(embeddings_ann):]))
+    else:
+        raise Exception("An outlier method from the following list must be specified: ['GLOSH','LOF',None]")
+    return mask_out, n_ent
+
+
 # Total Positive Token Probability: dP
-def otp(cfg, embeddings_ann, embeddings_pool, y_ann, m_pool, idx_pool, batch_size):
+def otp(cfg, embeddings_ann, embeddings_pool, y_ann, m_pool, idx_pool, batch_size, plot=True):
     experiment_dir = cfg["experiment_directory"]
     tag_dict = cfg["tag_dict"]
     kwargs = {**cfg["umap_al"], **cfg["hdbscan_al"]}
@@ -355,33 +374,9 @@ def otp(cfg, embeddings_ann, embeddings_pool, y_ann, m_pool, idx_pool, batch_siz
     sent_len_pool = [0] + [len(sent) for sent in embeddings_pool]
     sent_idx_pool = list(accumulate(sent_len_pool))
 
-    fig, ax = plt.subplots(1, figsize=(18, 10))
+    if plot: plot_umap_hdbscan(clusters_pool, embeddings_pool, experiment_dir, y_ann)
 
-    clr = [c for sent in clusters_pool for c in sent]
-    coord = np.array([xy for sent in embeddings_pool for xy in sent])
-    ax.scatter(coord[:, 0], coord[:, 1], c=clr, s=0.4, cmap="Spectral", alpha=0.5)
-    fig.suptitle(
-        "Semi-supervised UMAP + HDBSCAN, " + str(len(y_ann)) + " sentences labeled",
-        fontsize=18,
-    )
-    plt.savefig(
-        os.path.join(
-            experiment_dir + "ss_umap_r_hdbscan_c_" + str(len(y_ann)) + ".png"
-        ),
-        dpi=700,
-    )
-
-    n_ent = max(count_clusters.items(), key=operator.itemgetter(1))[0]
-    threshold = pd.Series(clusterer.outlier_scores_[len(embeddings_ann) :]).quantile(
-        cfg["hdbscan_al"]["mask_outlier"]
-    )
-    outliers = np.where(clusterer.outlier_scores_[len(embeddings_ann) :] > threshold)[0]
-    mask_out = np.zeros(len(clusterer.outlier_scores_[len(embeddings_ann) :]))
-    mask_out[outliers] = 1
-    mask_out = [
-        mask_out[sent_idx_pool[i - 1] : sent_idx_pool[i]]
-        for i in range(1, len(sent_idx_pool))
-    ]
+    mask_out, n_ent = compute_outliers(cfg, clusterer, count_clusters, embeddings_ann, sent_idx_pool)
 
     num_sent = len(embeddings_pool)
     entity_rich = np.zeros(num_sent)
@@ -403,7 +398,7 @@ def otp(cfg, embeddings_ann, embeddings_pool, y_ann, m_pool, idx_pool, batch_siz
 
 
 # Total Positive Token Margin: tpTM
-def otm(cfg, embeddings_ann, embeddings_pool, y_ann, m_pool, idx_pool, batch_size):
+def otm(cfg, embeddings_ann, embeddings_pool, y_ann, m_pool, idx_pool, batch_size, plot=True):
     experiment_dir = cfg["experiment_directory"]
     tag_dict = cfg["tag_dict"]
     kwargs = {**cfg["umap_al"], **cfg["hdbscan_al"]}
@@ -422,33 +417,9 @@ def otm(cfg, embeddings_ann, embeddings_pool, y_ann, m_pool, idx_pool, batch_siz
     sent_len_pool = [0] + [len(sent) for sent in embeddings_pool]
     sent_idx_pool = list(accumulate(sent_len_pool))
 
-    fig, ax = plt.subplots(1, figsize=(18, 10))
+    if plot: plot_umap_hdbscan(clusters_pool, embeddings_pool, experiment_dir, y_ann)
 
-    clr = [c for sent in clusters_pool for c in sent]
-    coord = np.array([xy for sent in embeddings_pool for xy in sent])
-    ax.scatter(coord[:, 0], coord[:, 1], c=clr, s=0.4, cmap="Spectral", alpha=0.5)
-    fig.suptitle(
-        "Semi-supervised UMAP + HDBSCAN, " + str(len(y_ann)) + " sentences labeled",
-        fontsize=18,
-    )
-    plt.savefig(
-        os.path.join(
-            experiment_dir + "ss_umap_r_hdbscan_c_" + str(len(y_ann)) + ".png"
-        ),
-        dpi=700,
-    )
-
-    n_ent = max(count_clusters.items(), key=operator.itemgetter(1))[0]
-    threshold = pd.Series(clusterer.outlier_scores_[len(embeddings_ann) :]).quantile(
-        cfg["hdbscan_al"]["mask_outlier"]
-    )
-    outliers = np.where(clusterer.outlier_scores_[len(embeddings_ann) :] > threshold)[0]
-    mask_out = np.zeros(len(clusterer.outlier_scores_[len(embeddings_ann) :]))
-    mask_out[outliers] = 1
-    mask_out = [
-        mask_out[sent_idx_pool[i - 1] : sent_idx_pool[i]]
-        for i in range(1, len(sent_idx_pool))
-    ]
+    mask_out, n_ent = compute_outliers(cfg, clusterer, count_clusters, embeddings_ann, sent_idx_pool)
 
     num_sent = len(embeddings_pool)
     entity_rich = np.zeros(num_sent)
@@ -470,7 +441,7 @@ def otm(cfg, embeddings_ann, embeddings_pool, y_ann, m_pool, idx_pool, batch_siz
 
 
 # Densitiy Normalized Positive Token Margin: dpTM
-def ptm(cfg, embeddings_ann, embeddings_pool, y_ann, m_pool, idx_pool, batch_size):
+def ptm(cfg, embeddings_ann, embeddings_pool, y_ann, m_pool, idx_pool, batch_size, plot=True):
     PDF = fit_distribution([len(sent) for sent in embeddings_pool])
 
     experiment_dir = cfg["experiment_directory"]
@@ -491,33 +462,9 @@ def ptm(cfg, embeddings_ann, embeddings_pool, y_ann, m_pool, idx_pool, batch_siz
     sent_len_pool = [0] + [len(sent) for sent in embeddings_pool]
     sent_idx_pool = list(accumulate(sent_len_pool))
 
-    fig, ax = plt.subplots(1, figsize=(18, 10))
+    if plot: plot_umap_hdbscan(clusters_pool, embeddings_pool, experiment_dir, y_ann)
 
-    clr = [c for sent in clusters_pool for c in sent]
-    coord = np.array([xy for sent in embeddings_pool for xy in sent])
-    ax.scatter(coord[:, 0], coord[:, 1], c=clr, s=0.4, cmap="Spectral", alpha=0.5)
-    fig.suptitle(
-        "Semi-supervised UMAP + HDBSCAN, " + str(len(y_ann)) + " sentences labeled",
-        fontsize=18,
-    )
-    plt.savefig(
-        os.path.join(
-            experiment_dir + "ss_umap_r_hdbscan_c_" + str(len(y_ann)) + ".png"
-        ),
-        dpi=700,
-    )
-
-    n_ent = max(count_clusters.items(), key=operator.itemgetter(1))[0]
-    threshold = pd.Series(clusterer.outlier_scores_[len(embeddings_ann) :]).quantile(
-        cfg["hdbscan_al"]["mask_outlier"]
-    )
-    outliers = np.where(clusterer.outlier_scores_[len(embeddings_ann) :] > threshold)[0]
-    mask_out = np.zeros(len(clusterer.outlier_scores_[len(embeddings_ann) :]))
-    mask_out[outliers] = 1
-    mask_out = [
-        mask_out[sent_idx_pool[i - 1] : sent_idx_pool[i]]
-        for i in range(1, len(sent_idx_pool))
-    ]
+    mask_out, n_ent = compute_outliers(cfg, clusterer, count_clusters, embeddings_ann, sent_idx_pool)
 
     num_sent = len(embeddings_pool)
     entity_rich = np.zeros(num_sent)
@@ -541,7 +488,7 @@ def ptm(cfg, embeddings_ann, embeddings_pool, y_ann, m_pool, idx_pool, batch_siz
 
 
 # Densitiy Normalized Positive Token Entropy: dpTE
-def pte(cfg, embeddings_ann, embeddings_pool, y_ann, m_pool, idx_pool, batch_size):
+def pte(cfg, embeddings_ann, embeddings_pool, y_ann, m_pool, idx_pool, batch_size, plot=True):
     PDF = fit_distribution([len(sent) for sent in embeddings_pool])
 
     experiment_dir = cfg["experiment_directory"]
@@ -562,33 +509,9 @@ def pte(cfg, embeddings_ann, embeddings_pool, y_ann, m_pool, idx_pool, batch_siz
     sent_len_pool = [0] + [len(sent) for sent in embeddings_pool]
     sent_idx_pool = list(accumulate(sent_len_pool))
 
-    fig, ax = plt.subplots(1, figsize=(18, 10))
+    if plot: plot_umap_hdbscan(clusters_pool, embeddings_pool, experiment_dir, y_ann)
 
-    clr = [c for sent in clusters_pool for c in sent]
-    coord = np.array([xy for sent in embeddings_pool for xy in sent])
-    ax.scatter(coord[:, 0], coord[:, 1], c=clr, s=0.4, cmap="Spectral", alpha=0.5)
-    fig.suptitle(
-        "Semi-supervised UMAP + HDBSCAN, " + str(len(y_ann)) + " sentences labeled.",
-        fontsize=18,
-    )
-    plt.savefig(
-        os.path.join(
-            experiment_dir + "ss_umap_r_hdbscan_c_" + str(len(y_ann)) + ".png"
-        ),
-        dpi=700,
-    )
-
-    n_ent = max(count_clusters.items(), key=operator.itemgetter(1))[0]
-    threshold = pd.Series(clusterer.outlier_scores_[len(embeddings_ann) :]).quantile(
-        cfg["hdbscan_al"]["mask_outlier"]
-    )
-    outliers = np.where(clusterer.outlier_scores_[len(embeddings_ann) :] > threshold)[0]
-    mask_out = np.zeros(len(clusterer.outlier_scores_[len(embeddings_ann) :]))
-    mask_out[outliers] = 1
-    mask_out = [
-        mask_out[sent_idx_pool[i - 1] : sent_idx_pool[i]]
-        for i in range(1, len(sent_idx_pool))
-    ]
+    mask_out, n_ent = compute_outliers(cfg, clusterer, count_clusters, embeddings_ann, sent_idx_pool)
 
     num_sent = len(embeddings_pool)
     entity_rich = np.zeros(num_sent)
@@ -613,7 +536,7 @@ def pte(cfg, embeddings_ann, embeddings_pool, y_ann, m_pool, idx_pool, batch_siz
 
 
 # Total Positive Token Entropy: tpTE
-def ote(cfg, embeddings_ann, embeddings_pool, y_ann, m_pool, idx_pool, batch_size):
+def ote(cfg, embeddings_ann, embeddings_pool, y_ann, m_pool, idx_pool, batch_size, plot=True):
     experiment_dir = cfg["experiment_directory"]
     tag_dict = cfg["tag_dict"]
     kwargs = {**cfg["umap_al"], **cfg["hdbscan_al"]}
@@ -632,33 +555,9 @@ def ote(cfg, embeddings_ann, embeddings_pool, y_ann, m_pool, idx_pool, batch_siz
     sent_len_pool = [0] + [len(sent) for sent in embeddings_pool]
     sent_idx_pool = list(accumulate(sent_len_pool))
 
-    fig, ax = plt.subplots(1, figsize=(18, 10))
+    if plot: plot_umap_hdbscan(clusters_pool, embeddings_pool, experiment_dir, y_ann)
 
-    clr = [c for sent in clusters_pool for c in sent]
-    coord = np.array([xy for sent in embeddings_pool for xy in sent])
-    ax.scatter(coord[:, 0], coord[:, 1], c=clr, s=0.4, cmap="Spectral", alpha=0.5)
-    fig.suptitle(
-        "Semi-supervised UMAP + HDBSCAN, " + str(len(y_ann)) + " sentences labeled.",
-        fontsize=18,
-    )
-    plt.savefig(
-        os.path.join(
-            experiment_dir + "ss_umap_r_hdbscan_c_" + str(len(y_ann)) + ".png"
-        ),
-        dpi=700,
-    )
-
-    n_ent = max(count_clusters.items(), key=operator.itemgetter(1))[0]
-    threshold = pd.Series(clusterer.outlier_scores_[len(embeddings_ann) :]).quantile(
-        cfg["hdbscan_al"]["mask_outlier"]
-    )
-    outliers = np.where(clusterer.outlier_scores_[len(embeddings_ann) :] > threshold)[0]
-    mask_out = np.zeros(len(clusterer.outlier_scores_[len(embeddings_ann) :]))
-    mask_out[outliers] = 1
-    mask_out = [
-        mask_out[sent_idx_pool[i - 1] : sent_idx_pool[i]]
-        for i in range(1, len(sent_idx_pool))
-    ]
+    mask_out, n_ent = compute_outliers(cfg, clusterer, count_clusters, embeddings_ann, sent_idx_pool)
 
     num_sent = len(embeddings_pool)
     entity_rich = np.zeros(num_sent)
@@ -681,7 +580,7 @@ def ote(cfg, embeddings_ann, embeddings_pool, y_ann, m_pool, idx_pool, batch_siz
 
 # Density Normalized Positive Assignment Probability: dpAP
 def pap(
-    cfg, embeddings_ann, embeddings_pool, y_ann, y_pred, m_pool, idx_pool, batch_size
+    cfg, embeddings_ann, embeddings_pool, y_ann, y_pred, m_pool, idx_pool, batch_size, plot=True
 ):
     PDF = fit_distribution([len(sent) for sent in embeddings_pool])
 
@@ -703,33 +602,9 @@ def pap(
     sent_len_pool = [0] + [len(sent) for sent in embeddings_pool]
     sent_idx_pool = list(accumulate(sent_len_pool))
 
-    fig, ax = plt.subplots(1, figsize=(18, 10))
+    if plot: plot_umap_hdbscan(clusters_pool, embeddings_pool, experiment_dir, y_ann)
 
-    clr = [c for sent in clusters_pool for c in sent]
-    coord = np.array([xy for sent in embeddings_pool for xy in sent])
-    ax.scatter(coord[:, 0], coord[:, 1], c=clr, s=0.4, cmap="Spectral", alpha=0.5)
-    fig.suptitle(
-        "Semi-supervised UMAP + HDBSCAN, " + str(len(y_ann)) + " sentences labeled.",
-        fontsize=18,
-    )
-    plt.savefig(
-        os.path.join(
-            experiment_dir + "ss_umap_r_hdbscan_c_" + str(len(y_ann)) + ".png"
-        ),
-        dpi=700,
-    )
-
-    n_ent = max(count_clusters.items(), key=operator.itemgetter(1))[0]
-    threshold = pd.Series(clusterer.outlier_scores_[len(embeddings_ann) :]).quantile(
-        cfg["hdbscan_al"]["mask_outlier"]
-    )
-    outliers = np.where(clusterer.outlier_scores_[len(embeddings_ann) :] > threshold)[0]
-    mask_out = np.zeros(len(clusterer.outlier_scores_[len(embeddings_ann) :]))
-    mask_out[outliers] = 1
-    mask_out = [
-        mask_out[sent_idx_pool[i - 1] : sent_idx_pool[i]]
-        for i in range(1, len(sent_idx_pool))
-    ]
+    mask_out, n_ent = compute_outliers(cfg, clusterer, count_clusters, embeddings_ann, sent_idx_pool)
 
     num_sent = len(embeddings_pool)
     entity_rich = np.zeros(num_sent)
@@ -754,7 +629,7 @@ def pap(
 
 # Total Positive Assignment Probability: tpAP
 def oap(
-    cfg, embeddings_ann, embeddings_pool, y_ann, y_pred, m_pool, idx_pool, batch_size
+    cfg, embeddings_ann, embeddings_pool, y_ann, y_pred, m_pool, idx_pool, batch_size, plot=True
 ):
     experiment_dir = cfg["experiment_directory"]
     tag_dict = cfg["tag_dict"]
@@ -774,33 +649,9 @@ def oap(
     sent_len_pool = [0] + [len(sent) for sent in embeddings_pool]
     sent_idx_pool = list(accumulate(sent_len_pool))
 
-    fig, ax = plt.subplots(1, figsize=(18, 10))
+    if plot: plot_umap_hdbscan(clusters_pool, embeddings_pool, experiment_dir, y_ann)
 
-    clr = [c for sent in clusters_pool for c in sent]
-    coord = np.array([xy for sent in embeddings_pool for xy in sent])
-    ax.scatter(coord[:, 0], coord[:, 1], c=clr, s=0.4, cmap="Spectral", alpha=0.5)
-    fig.suptitle(
-        "Semi-supervised UMAP + HDBSCAN, " + str(len(y_ann)) + " sentences labeled.",
-        fontsize=18,
-    )
-    plt.savefig(
-        os.path.join(
-            experiment_dir + "ss_umap_r_hdbscan_c_" + str(len(y_ann)) + ".png"
-        ),
-        dpi=700,
-    )
-
-    n_ent = max(count_clusters.items(), key=operator.itemgetter(1))[0]
-    threshold = pd.Series(clusterer.outlier_scores_[len(embeddings_ann) :]).quantile(
-        cfg["hdbscan_al"]["mask_outlier"]
-    )
-    outliers = np.where(clusterer.outlier_scores_[len(embeddings_ann) :] > threshold)[0]
-    mask_out = np.zeros(len(clusterer.outlier_scores_[len(embeddings_ann) :]))
-    mask_out[outliers] = 1
-    mask_out = [
-        mask_out[sent_idx_pool[i - 1] : sent_idx_pool[i]]
-        for i in range(1, len(sent_idx_pool))
-    ]
+    mask_out, n_ent = compute_outliers(cfg, clusterer, count_clusters, embeddings_ann, sent_idx_pool)
 
     num_sent = len(embeddings_pool)
     entity_rich = np.zeros(num_sent)
@@ -822,7 +673,7 @@ def oap(
 
 
 # Positive Annotation Selection: PAS
-def pas(cfg, embeddings_ann, embeddings_pool, y_ann, idx_pool, batch_size):
+def pas(cfg, embeddings_ann, embeddings_pool, y_ann, idx_pool, batch_size, plot=True):
     PDF = fit_distribution([len(sent) for sent in embeddings_pool])
 
     experiment_dir = cfg["experiment_directory"]
@@ -843,33 +694,9 @@ def pas(cfg, embeddings_ann, embeddings_pool, y_ann, idx_pool, batch_size):
     sent_len_pool = [0] + [len(sent) for sent in embeddings_pool]
     sent_idx_pool = list(accumulate(sent_len_pool))
 
-    fig, ax = plt.subplots(1, figsize=(18, 10))
+    if plot: plot_umap_hdbscan(clusters_pool, embeddings_pool, experiment_dir, y_ann)
 
-    clr = [c for sent in clusters_pool for c in sent]
-    coord = np.array([xy for sent in embeddings_pool for xy in sent])
-    ax.scatter(coord[:, 0], coord[:, 1], c=clr, s=0.4, cmap="Spectral", alpha=0.5)
-    fig.suptitle(
-        "Semi-supervised UMAP + HDBSCAN, " + str(len(y_ann)) + " sentences labeled.",
-        fontsize=18,
-    )
-    plt.savefig(
-        os.path.join(
-            experiment_dir + "ss_umap_r_hdbscan_c_" + str(len(y_ann)) + ".png"
-        ),
-        dpi=700,
-    )
-
-    n_ent = max(count_clusters.items(), key=operator.itemgetter(1))[0]
-    threshold = pd.Series(clusterer.outlier_scores_[len(embeddings_ann) :]).quantile(
-        cfg["hdbscan_al"]["mask_outlier"]
-    )
-    outliers = np.where(clusterer.outlier_scores_[len(embeddings_ann) :] > threshold)[0]
-    mask_out = np.zeros(len(clusterer.outlier_scores_[len(embeddings_ann) :]))
-    mask_out[outliers] = 1
-    mask_out = [
-        mask_out[sent_idx_pool[i - 1] : sent_idx_pool[i]]
-        for i in range(1, len(sent_idx_pool))
-    ]
+    mask_out, n_ent = compute_outliers(cfg, clusterer, count_clusters, embeddings_ann, sent_idx_pool)
 
     num_sent = len(embeddings_pool)
     entity_rich = np.zeros(num_sent)
