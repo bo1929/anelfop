@@ -6,7 +6,7 @@ import joblib
 import itertools
 import pickle as pkl
 
-from al_methods import *
+import al_methods
 
 
 def load_data(cfg):
@@ -109,29 +109,29 @@ def load_config_from(filename="./config.yaml", AL=True):
         raise ValueError("Given data directory is not found.")
 
     method_dict = {
-        "RS": random_selection,
-        "LSS": longest_sentence_selection,
-        "sTE": single_token_entropy,
-        "sTP": single_token_probability,
-        "sTM": single_token_margin,
-        "sAP": single_assignment_probability,
-        "tTE": total_token_entropy,
-        "tTP": total_token_probability,
-        "tTM": total_token_margin,
-        "nTE": normalized_token_entropy,
-        "nTP": normalized_token_probability,
-        "nTM": normalized_token_margin,
-        "tAP": total_positive_assignment_probability,
-        "nAP": normalized_assignment_probability,
-        "tpTE": total_positive_token_entropy,
-        "tpTP": total_positive_token_probability,
-        "tpTM": total_positive_token_margin,
-        "tpAP": total_positive_assignment_probability,
-        "dpTE": dnorm_positive_token_entropy,
-        "dpTP": dnorm_positive_token_probability,
-        "dpTM": dnorm_positive_token_margin,
-        "dpAP": dnorm_positive_assignment_probability,
-        "PAS": positive_annotation_selection,
+        "RS": al_methods.random_selection,
+        "LSS": al_methods.longest_sentence_selection,
+        "sTE": al_methods.single_token_entropy,
+        "sTP": al_methods.single_token_probability,
+        "sTM": al_methods.single_token_margin,
+        "sAP": al_methods.single_assignment_probability,
+        "tTE": al_methods.total_token_entropy,
+        "tTP": al_methods.total_token_probability,
+        "tTM": al_methods.total_token_margin,
+        "nTE": al_methods.normalized_token_entropy,
+        "nTP": al_methods.normalized_token_probability,
+        "nTM": al_methods.normalized_token_margin,
+        "tAP": al_methods.total_positive_assignment_probability,
+        "nAP": al_methods.normalized_assignment_probability,
+        "tpTE": al_methods.total_positive_token_entropy,
+        "tpTP": al_methods.total_positive_token_probability,
+        "tpTM": al_methods.total_positive_token_margin,
+        "tpAP": al_methods.total_positive_assignment_probability,
+        "dpTE": al_methods.dnorm_positive_token_entropy,
+        "dpTP": al_methods.dnorm_positive_token_probability,
+        "dpTM": al_methods.dnorm_positive_token_margin,
+        "dpAP": al_methods.dnorm_positive_assignment_probability,
+        "PAS": al_methods.positive_annotation_selection,
     }
     cfg.update({"method_dict": method_dict})
 
