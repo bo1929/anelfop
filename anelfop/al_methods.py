@@ -267,7 +267,7 @@ def nap(m_pool, y_pred, idx_pool, batch_size):
 
 
 # Density Normalized Positive Token Probability: dpTP
-def ptp(cfg, embeddings_ann, embeddings_pool, y_ann, m_pool, idx_pool, batch_size, plot=True):
+def ptp(cfg, embeddings_ann, embeddings_pool, y_ann, m_pool, idx_pool, batch_size):
     PDF = fit_distribution([len(sent) for sent in embeddings_pool])
 
     experiment_dir = cfg["experiment_directory"]
@@ -288,7 +288,7 @@ def ptp(cfg, embeddings_ann, embeddings_pool, y_ann, m_pool, idx_pool, batch_siz
     sent_len_pool = [0] + [len(sent) for sent in embeddings_pool]
     sent_idx_pool = list(accumulate(sent_len_pool))
 
-    if plot: plot_umap_hdbscan(clusters_pool, embeddings_pool, experiment_dir, y_ann)
+    if cfg["plot"]: plot_umap_hdbscan(clusters_pool, embeddings_pool, experiment_dir, y_ann)
 
     mask_out, n_ent = compute_outliers(cfg, clusterer, count_clusters, embeddings_ann, sent_idx_pool)
 
@@ -330,11 +330,12 @@ def plot_umap_hdbscan(clusters_pool, embeddings_pool, experiment_dir, y_ann):
     )
 
 
-def compute_outliers(cfg, clusterer, count_clusters, embeddings_ann, sent_idx_pool, outlier_method="GLOSH"):
+def compute_outliers(cfg, clusterer, count_clusters, embeddings_ann, sent_idx_pool):
     n_ent = max(count_clusters.items(), key=operator.itemgetter(1))[0]
-    if outlier_method == "GLOSH":
+    method_name = cfg["outlier_method"].get("method_name", None)
+    if method_name == "GLOSH":
         threshold = pd.Series(clusterer.outlier_scores_[len(embeddings_ann):]).quantile(
-            cfg["hdbscan_al"]["mask_outlier"]
+            **cfg["outlier_method"]["mask_outlier"] # cfg["hdbscan_al"]["mask_outlier"]
         )
         outliers = np.where(clusterer.outlier_scores_[len(embeddings_ann):] > threshold)[0]
         mask_out = np.zeros(len(clusterer.outlier_scores_[len(embeddings_ann):]))
@@ -343,11 +344,11 @@ def compute_outliers(cfg, clusterer, count_clusters, embeddings_ann, sent_idx_po
             mask_out[sent_idx_pool[i - 1]: sent_idx_pool[i]]
             for i in range(1, len(sent_idx_pool))
         ]
-    elif outlier_method == "LOF":
-        clf = LocalOutlierFactor(contamination='auto') # sets threshold to 0.1
+    elif method_name == "LOF":
+        clf = LocalOutlierFactor(**cfg["outlier_method"]["parameters"]) # contamination='auto' sets threshold to 0.1
         lof_outliers1 = clf.fit_predict(embeddings_ann)
         mask_out = [0 if outlier_score==1 in lof_outliers1 else 1 for outlier_score in lof_outliers1]
-    elif outlier_method == None:
+    elif method_name == None:
         mask_out = np.zeros(len(clusterer.outlier_scores_[len(embeddings_ann):]))
     else:
         raise Exception("An outlier method from the following list must be specified: ['GLOSH','LOF',None]")
@@ -355,7 +356,7 @@ def compute_outliers(cfg, clusterer, count_clusters, embeddings_ann, sent_idx_po
 
 
 # Total Positive Token Probability: dP
-def otp(cfg, embeddings_ann, embeddings_pool, y_ann, m_pool, idx_pool, batch_size, plot=True):
+def otp(cfg, embeddings_ann, embeddings_pool, y_ann, m_pool, idx_pool, batch_size):
     experiment_dir = cfg["experiment_directory"]
     tag_dict = cfg["tag_dict"]
     kwargs = {**cfg["umap_al"], **cfg["hdbscan_al"]}
@@ -374,7 +375,7 @@ def otp(cfg, embeddings_ann, embeddings_pool, y_ann, m_pool, idx_pool, batch_siz
     sent_len_pool = [0] + [len(sent) for sent in embeddings_pool]
     sent_idx_pool = list(accumulate(sent_len_pool))
 
-    if plot: plot_umap_hdbscan(clusters_pool, embeddings_pool, experiment_dir, y_ann)
+    if cfg["plot"]: plot_umap_hdbscan(clusters_pool, embeddings_pool, experiment_dir, y_ann)
 
     mask_out, n_ent = compute_outliers(cfg, clusterer, count_clusters, embeddings_ann, sent_idx_pool)
 
@@ -398,7 +399,7 @@ def otp(cfg, embeddings_ann, embeddings_pool, y_ann, m_pool, idx_pool, batch_siz
 
 
 # Total Positive Token Margin: tpTM
-def otm(cfg, embeddings_ann, embeddings_pool, y_ann, m_pool, idx_pool, batch_size, plot=True):
+def otm(cfg, embeddings_ann, embeddings_pool, y_ann, m_pool, idx_pool, batch_size):
     experiment_dir = cfg["experiment_directory"]
     tag_dict = cfg["tag_dict"]
     kwargs = {**cfg["umap_al"], **cfg["hdbscan_al"]}
@@ -417,7 +418,7 @@ def otm(cfg, embeddings_ann, embeddings_pool, y_ann, m_pool, idx_pool, batch_siz
     sent_len_pool = [0] + [len(sent) for sent in embeddings_pool]
     sent_idx_pool = list(accumulate(sent_len_pool))
 
-    if plot: plot_umap_hdbscan(clusters_pool, embeddings_pool, experiment_dir, y_ann)
+    if cfg["plot"]: plot_umap_hdbscan(clusters_pool, embeddings_pool, experiment_dir, y_ann)
 
     mask_out, n_ent = compute_outliers(cfg, clusterer, count_clusters, embeddings_ann, sent_idx_pool)
 
@@ -441,7 +442,7 @@ def otm(cfg, embeddings_ann, embeddings_pool, y_ann, m_pool, idx_pool, batch_siz
 
 
 # Densitiy Normalized Positive Token Margin: dpTM
-def ptm(cfg, embeddings_ann, embeddings_pool, y_ann, m_pool, idx_pool, batch_size, plot=True):
+def ptm(cfg, embeddings_ann, embeddings_pool, y_ann, m_pool, idx_pool, batch_size):
     PDF = fit_distribution([len(sent) for sent in embeddings_pool])
 
     experiment_dir = cfg["experiment_directory"]
@@ -462,7 +463,7 @@ def ptm(cfg, embeddings_ann, embeddings_pool, y_ann, m_pool, idx_pool, batch_siz
     sent_len_pool = [0] + [len(sent) for sent in embeddings_pool]
     sent_idx_pool = list(accumulate(sent_len_pool))
 
-    if plot: plot_umap_hdbscan(clusters_pool, embeddings_pool, experiment_dir, y_ann)
+    if cfg["plot"]: plot_umap_hdbscan(clusters_pool, embeddings_pool, experiment_dir, y_ann)
 
     mask_out, n_ent = compute_outliers(cfg, clusterer, count_clusters, embeddings_ann, sent_idx_pool)
 
@@ -488,7 +489,7 @@ def ptm(cfg, embeddings_ann, embeddings_pool, y_ann, m_pool, idx_pool, batch_siz
 
 
 # Densitiy Normalized Positive Token Entropy: dpTE
-def pte(cfg, embeddings_ann, embeddings_pool, y_ann, m_pool, idx_pool, batch_size, plot=True):
+def pte(cfg, embeddings_ann, embeddings_pool, y_ann, m_pool, idx_pool, batch_size):
     PDF = fit_distribution([len(sent) for sent in embeddings_pool])
 
     experiment_dir = cfg["experiment_directory"]
@@ -509,7 +510,7 @@ def pte(cfg, embeddings_ann, embeddings_pool, y_ann, m_pool, idx_pool, batch_siz
     sent_len_pool = [0] + [len(sent) for sent in embeddings_pool]
     sent_idx_pool = list(accumulate(sent_len_pool))
 
-    if plot: plot_umap_hdbscan(clusters_pool, embeddings_pool, experiment_dir, y_ann)
+    if cfg["plot"]: plot_umap_hdbscan(clusters_pool, embeddings_pool, experiment_dir, y_ann)
 
     mask_out, n_ent = compute_outliers(cfg, clusterer, count_clusters, embeddings_ann, sent_idx_pool)
 
@@ -536,7 +537,7 @@ def pte(cfg, embeddings_ann, embeddings_pool, y_ann, m_pool, idx_pool, batch_siz
 
 
 # Total Positive Token Entropy: tpTE
-def ote(cfg, embeddings_ann, embeddings_pool, y_ann, m_pool, idx_pool, batch_size, plot=True):
+def ote(cfg, embeddings_ann, embeddings_pool, y_ann, m_pool, idx_pool, batch_size):
     experiment_dir = cfg["experiment_directory"]
     tag_dict = cfg["tag_dict"]
     kwargs = {**cfg["umap_al"], **cfg["hdbscan_al"]}
@@ -555,7 +556,7 @@ def ote(cfg, embeddings_ann, embeddings_pool, y_ann, m_pool, idx_pool, batch_siz
     sent_len_pool = [0] + [len(sent) for sent in embeddings_pool]
     sent_idx_pool = list(accumulate(sent_len_pool))
 
-    if plot: plot_umap_hdbscan(clusters_pool, embeddings_pool, experiment_dir, y_ann)
+    if cfg["plot"]: plot_umap_hdbscan(clusters_pool, embeddings_pool, experiment_dir, y_ann)
 
     mask_out, n_ent = compute_outliers(cfg, clusterer, count_clusters, embeddings_ann, sent_idx_pool)
 
@@ -580,7 +581,7 @@ def ote(cfg, embeddings_ann, embeddings_pool, y_ann, m_pool, idx_pool, batch_siz
 
 # Density Normalized Positive Assignment Probability: dpAP
 def pap(
-    cfg, embeddings_ann, embeddings_pool, y_ann, y_pred, m_pool, idx_pool, batch_size, plot=True
+    cfg, embeddings_ann, embeddings_pool, y_ann, y_pred, m_pool, idx_pool, batch_size
 ):
     PDF = fit_distribution([len(sent) for sent in embeddings_pool])
 
@@ -602,7 +603,7 @@ def pap(
     sent_len_pool = [0] + [len(sent) for sent in embeddings_pool]
     sent_idx_pool = list(accumulate(sent_len_pool))
 
-    if plot: plot_umap_hdbscan(clusters_pool, embeddings_pool, experiment_dir, y_ann)
+    if cfg["plot"]: plot_umap_hdbscan(clusters_pool, embeddings_pool, experiment_dir, y_ann)
 
     mask_out, n_ent = compute_outliers(cfg, clusterer, count_clusters, embeddings_ann, sent_idx_pool)
 
@@ -629,7 +630,7 @@ def pap(
 
 # Total Positive Assignment Probability: tpAP
 def oap(
-    cfg, embeddings_ann, embeddings_pool, y_ann, y_pred, m_pool, idx_pool, batch_size, plot=True
+    cfg, embeddings_ann, embeddings_pool, y_ann, y_pred, m_pool, idx_pool, batch_size
 ):
     experiment_dir = cfg["experiment_directory"]
     tag_dict = cfg["tag_dict"]
@@ -649,7 +650,7 @@ def oap(
     sent_len_pool = [0] + [len(sent) for sent in embeddings_pool]
     sent_idx_pool = list(accumulate(sent_len_pool))
 
-    if plot: plot_umap_hdbscan(clusters_pool, embeddings_pool, experiment_dir, y_ann)
+    if cfg["plot"]: plot_umap_hdbscan(clusters_pool, embeddings_pool, experiment_dir, y_ann)
 
     mask_out, n_ent = compute_outliers(cfg, clusterer, count_clusters, embeddings_ann, sent_idx_pool)
 
@@ -673,7 +674,7 @@ def oap(
 
 
 # Positive Annotation Selection: PAS
-def pas(cfg, embeddings_ann, embeddings_pool, y_ann, idx_pool, batch_size, plot=True):
+def pas(cfg, embeddings_ann, embeddings_pool, y_ann, idx_pool, batch_size):
     PDF = fit_distribution([len(sent) for sent in embeddings_pool])
 
     experiment_dir = cfg["experiment_directory"]
@@ -694,7 +695,7 @@ def pas(cfg, embeddings_ann, embeddings_pool, y_ann, idx_pool, batch_size, plot=
     sent_len_pool = [0] + [len(sent) for sent in embeddings_pool]
     sent_idx_pool = list(accumulate(sent_len_pool))
 
-    if plot: plot_umap_hdbscan(clusters_pool, embeddings_pool, experiment_dir, y_ann)
+    if cfg["plot"]: plot_umap_hdbscan(clusters_pool, embeddings_pool, experiment_dir, y_ann)
 
     mask_out, n_ent = compute_outliers(cfg, clusterer, count_clusters, embeddings_ann, sent_idx_pool)
 
