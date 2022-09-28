@@ -96,7 +96,7 @@ sent_idx_ann = list(accumulate(sent_len_ann))
 
 n_ent = max(count_clusters.items(), key=operator.itemgetter(1))[0]
 threshold = pd.Series(clusterer.outlier_scores_[:]).quantile(
-    cfg["hdbscan_al"]["mask_outlier"]
+    cfg["outlier_method"]["mask_outlier"]
 )
 outliers = np.where(clusterer.outlier_scores_[:] > threshold)[0]
 mask_out = np.zeros(len(clusterer.outlier_scores_[:]))
