@@ -22,124 +22,106 @@ def fit_distribution(lengths):
     return dens
 
 
-def lenght_prob(dens, len_sent):
+def get_dnorm_val(dens, len_sent):
     # prob = dens.evaluate(len_sent)
     prob = math.sqrt(dens.evaluate(len_sent))
     return prob
 
 
-# Random Selection: RS
-def rs(idx_pool, batch_size, seed):
-    random.seed(a=seed, version=2)
-
-    idx_q = random.sample(idx_pool, batch_size)
-    return idx_q, [s for s in idx_pool if s not in idx_q]
-
-
-# Longest Sentence Selection: LSS
-def lss(sent_lenghts, idx_pool, batch_size):
-    batch = np.argpartition(np.array(sent_lenghts) * (-1), batch_size - 1)[
-        :batch_size
-    ].tolist()
-    idx_q = [idx_pool[i] for i in batch]
-
-    return idx_q, [i for i in idx_pool if i not in idx_q]
-
-
 # Single Token Probability: sTP
-def tp(m_pool, idx_pool, batch_size):
+def single_token_probability(m_pool, idx_pool, batch_size):
     num_sent = len(m_pool)
-    tp = np.zeros(num_sent)
+    arr_sTP = np.zeros(num_sent)
 
     for i in range(num_sent):
         len_sent = len(m_pool[i])
-        tp[i] = 1 - min([(max(m_pool[i][j].values())) for j in range(len_sent)])
+        arr_sTP[i] = 1 - min([(max(m_pool[i][j].values())) for j in range(len_sent)])
 
-    batch = np.argpartition(tp * (-1), batch_size - 1)[:batch_size].tolist()
+    batch = np.argpartition(arr_sTP * (-1), batch_size - 1)[:batch_size].tolist()
     idx_q = [idx_pool[i] for i in batch]
 
     return idx_q, [i for i in idx_pool if i not in idx_q]
 
 
 # Total Token Probability: tTP
-def ttp(m_pool, idx_pool, batch_size):
+def total_token_probability(m_pool, idx_pool, batch_size):
     num_sent = len(m_pool)
-    ttp = np.zeros(num_sent)
+    arr_tTP = np.zeros(num_sent)
 
     for i in range(num_sent):
         len_sent = len(m_pool[i])
-        ttp[i] = sum([1 - (max(m_pool[i][j].values())) for j in range(len_sent)])
+        arr_tTP[i] = sum([1 - (max(m_pool[i][j].values())) for j in range(len_sent)])
 
-    batch = np.argpartition(ttp * (-1), batch_size - 1)[:batch_size].tolist()
+    batch = np.argpartition(arr_tTP * (-1), batch_size - 1)[:batch_size].tolist()
     idx_q = [idx_pool[i] for i in batch]
 
     return idx_q, [i for i in idx_pool if i not in idx_q]
 
 
 # Normalized Token Probability: nTP
-def ntp(m_pool, idx_pool, batch_size):
+def normalized_token_probability(m_pool, idx_pool, batch_size):
     num_sent = len(m_pool)
-    ntp = np.zeros(num_sent)
+    arr_nTP = np.zeros(num_sent)
 
     for i in range(num_sent):
         len_sent = len(m_pool[i])
-        ntp[i] = (
+        arr_nTP[i] = (
             sum([1 - (max(m_pool[i][j].values())) for j in range(len_sent)]) / len_sent
         )
 
-    batch = np.argpartition(ntp * (-1), batch_size - 1)[:batch_size].tolist()
+    batch = np.argpartition(arr_nTP * (-1), batch_size - 1)[:batch_size].tolist()
     idx_q = [idx_pool[i] for i in batch]
 
     return idx_q, [i for i in idx_pool if i not in idx_q]
 
 
 # Single Token Margin: sTM
-def tm(m_pool, idx_pool, batch_size):
+def single_token_margin(m_pool, idx_pool, batch_size):
     num_sent = len(m_pool)
-    tm = np.zeros(num_sent)
+    arr_sTM = np.zeros(num_sent)
 
     for i in range(num_sent):
         len_sent = len(m_pool[i])
-        tm[i] = 1 - min(
+        arr_sTM[i] = 1 - min(
             [
                 max(m_pool[i][j].values()) - sorted(m_pool[i][j].values())[-2]
                 for j in range(len_sent)
             ]
         )
 
-    batch = np.argpartition(tm * (-1), batch_size - 1)[:batch_size].tolist()
+    batch = np.argpartition(arr_sTM * (-1), batch_size - 1)[:batch_size].tolist()
     idx_q = [idx_pool[i] for i in batch]
 
     return idx_q, [i for i in idx_pool if i not in idx_q]
 
 
 # Total Token Margin: tTM
-def ttm(m_pool, idx_pool, batch_size):
+def total_token_margin(m_pool, idx_pool, batch_size):
     num_sent = len(m_pool)
-    ttm = np.zeros(num_sent)
+    arr_tTM = np.zeros(num_sent)
 
     for i in range(num_sent):
         len_sent = len(m_pool[i])
-        ttm[i] = sum(
+        arr_tTM[i] = sum(
             [
                 1 - (max(m_pool[i][j].values()) - sorted(m_pool[i][j].values())[-2])
                 for j in range(len_sent)
             ]
         )
-    batch = np.argpartition(ttm * (-1), batch_size - 1)[:batch_size].tolist()
+    batch = np.argpartition(arr_tTM * (-1), batch_size - 1)[:batch_size].tolist()
     idx_q = [idx_pool[i] for i in batch]
 
     return idx_q, [s for s in idx_pool if s not in idx_q]
 
 
 # Normalized Token Margin: nTM
-def ntm(m_pool, idx_pool, batch_size):
+def normalized_token_margin(m_pool, idx_pool, batch_size):
     num_sent = len(m_pool)
-    ntm = np.zeros(num_sent)
+    arr_nTM = np.zeros(num_sent)
 
     for i in range(num_sent):
         len_sent = len(m_pool[i])
-        ntm[i] = (
+        arr_nTM[i] = (
             sum(
                 [
                     1 - (max(m_pool[i][j].values()) - sorted(m_pool[i][j].values())[-2])
@@ -149,60 +131,60 @@ def ntm(m_pool, idx_pool, batch_size):
             / len_sent
         )
 
-    batch = np.argpartition(ntm * (-1), batch_size - 1)[:batch_size].tolist()
+    batch = np.argpartition(arr_nTM * (-1), batch_size - 1)[:batch_size].tolist()
     idx_q = [idx_pool[i] for i in batch]
 
     return idx_q, [s for s in idx_pool if s not in idx_q]
 
 
 # Single Token Entropy: nTE
-def te(m_pool, idx_pool, batch_size):
+def single_token_entropy(m_pool, idx_pool, batch_size):
     num_sent = len(m_pool)
-    te = np.zeros(num_sent)
+    arr_NTE = np.zeros(num_sent)
 
     for i in range(num_sent):
         len_sent = len(m_pool[i])
-        te[i] = max(
+        arr_NTE[i] = max(
             [
                 (-1) * sum([p * math.log2(p) for p in m_pool[i][j].values() if p > 0])
                 for j in range(len_sent)
             ]
         )
 
-    batch = np.argpartition(te * (-1), batch_size - 1)[:batch_size].tolist()
+    batch = np.argpartition(arr_NTE * (-1), batch_size - 1)[:batch_size].tolist()
     idx_q = [idx_pool[i] for i in batch]
 
     return idx_q, [s for s in idx_pool if s not in idx_q]
 
 
 # Total Token Entropy: tTE
-def tte(m_pool, idx_pool, batch_size):
+def total_token_entropy(m_pool, idx_pool, batch_size):
     num_sent = len(m_pool)
-    tte = np.zeros(num_sent)
+    arr_tTE = np.zeros(num_sent)
 
     for i in range(num_sent):
         len_sent = len(m_pool[i])
-        tte[i] = sum(
+        arr_tTE[i] = sum(
             [
                 (-1) * sum([p * math.log2(p) for p in m_pool[i][j].values() if p > 0])
                 for j in range(len_sent)
             ]
         )
 
-    batch = np.argpartition(tte * (-1), batch_size - 1)[:batch_size].tolist()
+    batch = np.argpartition(arr_tTE * (-1), batch_size - 1)[:batch_size].tolist()
     idx_q = [idx_pool[i] for i in batch]
 
     return idx_q, [i for i in idx_pool if i not in idx_q]
 
 
 # Normalized Token Entropy: nTE
-def nte(m_pool, idx_pool, batch_size):
+def normalized_token_entropy(m_pool, idx_pool, batch_size):
     num_sent = len(m_pool)
-    nte = np.zeros(num_sent)
+    arr_nTE = np.zeros(num_sent)
 
     for i in range(num_sent):
         len_sent = len(m_pool[i])
-        nte[i] = (
+        arr_nTE[i] = (
             sum(
                 [
                     (-1)
@@ -213,101 +195,54 @@ def nte(m_pool, idx_pool, batch_size):
             / len_sent
         )
 
-    batch = np.argpartition(nte * (-1), batch_size - 1)[:batch_size].tolist()
+    batch = np.argpartition(arr_nTE * (-1), batch_size - 1)[:batch_size].tolist()
     idx_q = [idx_pool[i] for i in batch]
 
     return idx_q, [i for i in idx_pool if i not in idx_q]
 
 
 # Single Assignment Probability: sAP
-def ap(m_pool, y_pred, idx_pool, batch_size):
+def single_assignment_probability(m_pool, y_pred, idx_pool, batch_size):
     num_sent = len(m_pool)
-    ap = np.zeros(num_sent)
+    arr_sAP = np.zeros(num_sent)
 
     for i in range(num_sent):
         len_sent = len(m_pool[i])
-        ap[i] = 1 - min([(m_pool[i][j][y_pred[i][j]]) for j in range(len_sent)])
+        arr_sAP[i] = 1 - min([(m_pool[i][j][y_pred[i][j]]) for j in range(len_sent)])
 
-    batch = np.argpartition(ap * (-1), batch_size - 1)[:batch_size].tolist()
+    batch = np.argpartition(arr_sAP * (-1), batch_size - 1)[:batch_size].tolist()
     idx_q = [idx_pool[i] for i in batch]
 
     return idx_q, [i for i in idx_pool if i not in idx_q]
 
 
 # Total Assignment Probability: tAP
-def tap(m_pool, y_pred, idx_pool, batch_size):
+def total_assignemnt_probability(m_pool, y_pred, idx_pool, batch_size):
     num_sent = len(m_pool)
-    tap = np.zeros(num_sent)
+    arr_tAP = np.zeros(num_sent)
 
     for i in range(num_sent):
         len_sent = len(m_pool[i])
-        tap[i] = sum([1 - m_pool[i][j][y_pred[i][j]] for j in range(len_sent)])
+        arr_tAP[i] = sum([1 - m_pool[i][j][y_pred[i][j]] for j in range(len_sent)])
 
-    batch = np.argpartition(tap * (-1), batch_size - 1)[:batch_size].tolist()
+    batch = np.argpartition(arr_tAP * (-1), batch_size - 1)[:batch_size].tolist()
     idx_q = [idx_pool[i] for i in batch]
 
     return idx_q, [i for i in idx_pool if i not in idx_q]
 
 
 # Normalized Assignment Probability: nAP
-def nap(m_pool, y_pred, idx_pool, batch_size):
+def normalized_assignment_probability(m_pool, y_pred, idx_pool, batch_size):
     num_sent = len(m_pool)
-    nap = np.zeros(num_sent)
+    arr_nAP = np.zeros(num_sent)
 
     for i in range(num_sent):
         len_sent = len(m_pool[i])
-        nap[i] = (
+        arr_nAP[i] = (
             sum([1 - m_pool[i][j][y_pred[i][j]] for j in range(len_sent)]) / len_sent
         )
 
-    batch = np.argpartition(nap * (-1), batch_size - 1)[:batch_size].tolist()
-    idx_q = [idx_pool[i] for i in batch]
-
-    return idx_q, [i for i in idx_pool if i not in idx_q]
-
-
-# Density Normalized Positive Token Probability: dpTP
-def ptp(cfg, embeddings_ann, embeddings_pool, y_ann, m_pool, idx_pool, batch_size):
-    PDF = fit_distribution([len(sent) for sent in embeddings_pool])
-
-    experiment_dir = cfg["experiment_directory"]
-    tag_dict = cfg["tag_dict"]
-    kwargs = {**cfg["umap_al"], **cfg["hdbscan_al"]}
-
-    (
-        embeddings_ann,
-        embeddings_pool,
-        clusters_ann,
-        clusters_pool,
-        clusterer,
-        count_clusters,
-    ) = umap_.ss_umap_r_hdbscan_c(
-        embeddings_ann, embeddings_pool, y_ann, tag_dict, seed=cfg["seed"], **kwargs
-    )
-
-    sent_len_pool = [0] + [len(sent) for sent in embeddings_pool]
-    sent_idx_pool = list(accumulate(sent_len_pool))
-
-    if cfg["plot"]: plot_umap_hdbscan(clusters_pool, embeddings_pool, experiment_dir, y_ann)
-
-    mask_out, n_ent = compute_outliers(cfg, clusterer, count_clusters, embeddings_ann, sent_idx_pool)
-
-    num_sent = len(embeddings_pool)
-    entity_rich = np.zeros(num_sent)
-
-    for i in range(num_sent):
-        len_sent = len(embeddings_pool[i])
-        entity_rich[i] = (
-            sum(
-                [
-                    1 - max(m_pool[i][j].values())
-                    for j in range(len_sent)
-                    if (clusters_pool[i][j] != n_ent) or (mask_out[i][j] == 1)
-                ]
-            )
-        ) * lenght_prob(PDF, len_sent)
-
-    batch = np.argpartition(entity_rich * (-1), batch_size - 1)[:batch_size].tolist()
+    batch = np.argpartition(arr_nAP * (-1), batch_size - 1)[:batch_size].tolist()
     idx_q = [idx_pool[i] for i in batch]
 
     return idx_q, [i for i in idx_pool if i not in idx_q]
@@ -330,33 +265,50 @@ def plot_umap_hdbscan(clusters_pool, embeddings_pool, experiment_dir, y_ann):
     )
 
 
-def compute_outliers(cfg, clusterer, count_clusters, embeddings_ann, sent_idx_pool):
-    n_ent = max(count_clusters.items(), key=operator.itemgetter(1))[0]
+def get_outlier_mask(cfg, clusterer, embeddings_ann, embeddings_pool, sent_idx_pool):
     method_name = cfg["outlier_method"].get("method_name", None)
+    mask_out_token = np.zeros(len(embeddings_pool))
+
+    def get_mask(scores, mask_quantile):
+        threshold = pd.Series(scores).quantile(mask_quantile)
+        outliers = np.where(scores > threshold)[0]
+        mask_out_token = np.zeros(len(scores))
+        mask_out_token[outliers] = 1
+        return mask_out_token
+
     if method_name == "GLOSH":
-        threshold = pd.Series(clusterer.outlier_scores_[len(embeddings_ann):]).quantile(
-            **cfg["outlier_method"]["mask_outlier"] # cfg["hdbscan_al"]["mask_outlier"]
+        mask_out_token = get_mask(
+            clusterer.outlier_scores_[-len(embeddings_pool) :],
+            cfg["outlier_method"]["mask_quantile"],
         )
-        outliers = np.where(clusterer.outlier_scores_[len(embeddings_ann):] > threshold)[0]
-        mask_out = np.zeros(len(clusterer.outlier_scores_[len(embeddings_ann):]))
-        mask_out[outliers] = 1
-        mask_out = [
-            mask_out[sent_idx_pool[i - 1]: sent_idx_pool[i]]
-            for i in range(1, len(sent_idx_pool))
-        ]
     elif method_name == "LOF":
-        clf = LocalOutlierFactor(**cfg["outlier_method"]["parameters"]) # contamination='auto' sets threshold to 0.1
-        lof_outliers1 = clf.fit_predict(embeddings_ann)
-        mask_out = [0 if outlier_score==1 in lof_outliers1 else 1 for outlier_score in lof_outliers1]
-    elif method_name == None:
-        mask_out = np.zeros(len(clusterer.outlier_scores_[len(embeddings_ann):]))
+        clf = LocalOutlierFactor(  # contamination='auto' sets threshold to 0.1
+            **cfg["outlier_method"]["parameters"]
+        ).fit(embeddings_pool)
+        mask_out_token = get_mask(
+            clf.negative_outlier_factor_,
+            cfg["outlier_method"]["mask_quantile"],
+        )
+    elif method_name is None:
+        pass
     else:
-        raise Exception("An outlier method from the following list must be specified: ['GLOSH','LOF',None]")
-    return mask_out, n_ent
+        raise ValueError(
+            "An outlier method from the following list must be specified: ['GLOSH','LOF',None]"
+        )
+
+    mask_out_sentence = [
+        mask_out_token[sent_idx_pool[i - 1] : sent_idx_pool[i]]
+        for i in range(1, len(sent_idx_pool))
+    ]
+    return mask_out_sentence
 
 
-# Total Positive Token Probability: dP
-def otp(cfg, embeddings_ann, embeddings_pool, y_ann, m_pool, idx_pool, batch_size):
+# Density Normalized Positive Token Probability: dpTP
+def dnorm_positive_token_probability(
+    cfg, embeddings_ann, embeddings_pool, y_ann, m_pool, idx_pool, batch_size
+):
+    PDF = fit_distribution([len(sent) for sent in embeddings_pool])
+
     experiment_dir = cfg["experiment_directory"]
     tag_dict = cfg["tag_dict"]
     kwargs = {**cfg["umap_al"], **cfg["hdbscan_al"]}
@@ -375,31 +327,88 @@ def otp(cfg, embeddings_ann, embeddings_pool, y_ann, m_pool, idx_pool, batch_siz
     sent_len_pool = [0] + [len(sent) for sent in embeddings_pool]
     sent_idx_pool = list(accumulate(sent_len_pool))
 
-    if cfg["plot"]: plot_umap_hdbscan(clusters_pool, embeddings_pool, experiment_dir, y_ann)
+    if cfg["plot"]:
+        plot_umap_hdbscan(clusters_pool, embeddings_pool, experiment_dir, y_ann)
 
-    mask_out, n_ent = compute_outliers(cfg, clusterer, count_clusters, embeddings_ann, sent_idx_pool)
+    mask_out_sentence = get_outlier_mask(
+        cfg, clusterer, embeddings_ann, embeddings_pool, sent_idx_pool
+    )
 
+    n_ent = max(count_clusters.items(), key=operator.itemgetter(1))[0]
     num_sent = len(embeddings_pool)
-    entity_rich = np.zeros(num_sent)
+    arr_dpTP = np.zeros(num_sent)
 
     for i in range(num_sent):
         len_sent = len(embeddings_pool[i])
-        entity_rich[i] = sum(
+        arr_dpTP[i] = (
+            sum(
+                [
+                    1 - max(m_pool[i][j].values())
+                    for j in range(len_sent)
+                    if (clusters_pool[i][j] != n_ent) or (mask_out_sentence[i][j] == 1)
+                ]
+            )
+        ) * get_dnorm_val(PDF, len_sent)
+
+    batch = np.argpartition(arr_dpTP * (-1), batch_size - 1)[:batch_size].tolist()
+    idx_q = [idx_pool[i] for i in batch]
+
+    return idx_q, [i for i in idx_pool if i not in idx_q]
+
+
+# Total Positive Token Probability: tpTP
+def total_positive_token_probability(
+    cfg, embeddings_ann, embeddings_pool, y_ann, m_pool, idx_pool, batch_size
+):
+    experiment_dir = cfg["experiment_directory"]
+    tag_dict = cfg["tag_dict"]
+    kwargs = {**cfg["umap_al"], **cfg["hdbscan_al"]}
+
+    (
+        embeddings_ann,
+        embeddings_pool,
+        clusters_ann,
+        clusters_pool,
+        clusterer,
+        count_clusters,
+    ) = umap_.ss_umap_r_hdbscan_c(
+        embeddings_ann, embeddings_pool, y_ann, tag_dict, seed=cfg["seed"], **kwargs
+    )
+
+    sent_len_pool = [0] + [len(sent) for sent in embeddings_pool]
+    sent_idx_pool = list(accumulate(sent_len_pool))
+
+    if cfg["plot"]:
+        plot_umap_hdbscan(clusters_pool, embeddings_pool, experiment_dir, y_ann)
+
+    mask_out_sentence = get_outlier_mask(
+        cfg, clusterer, embeddings_ann, embeddings_pool, sent_idx_pool
+    )
+
+    n_ent = max(count_clusters.items(), key=operator.itemgetter(1))[0]
+    num_sent = len(embeddings_pool)
+    arr_tpTP = np.zeros(num_sent)
+
+    for i in range(num_sent):
+        len_sent = len(embeddings_pool[i])
+        arr_tpTP[i] = sum(
             [
                 1 - max(m_pool[i][j].values())
                 for j in range(len_sent)
-                if (clusters_pool[i][j] != n_ent) or (mask_out[i][j] == 1)
+                if (clusters_pool[i][j] != n_ent) or (mask_out_sentence[i][j] == 1)
             ]
         )
 
-    batch = np.argpartition(entity_rich * (-1), batch_size - 1)[:batch_size].tolist()
+    batch = np.argpartition(arr_tpTP * (-1), batch_size - 1)[:batch_size].tolist()
     idx_q = [idx_pool[i] for i in batch]
 
     return idx_q, [i for i in idx_pool if i not in idx_q]
 
 
 # Total Positive Token Margin: tpTM
-def otm(cfg, embeddings_ann, embeddings_pool, y_ann, m_pool, idx_pool, batch_size):
+def total_positive_token_margin(
+    cfg, embeddings_ann, embeddings_pool, y_ann, m_pool, idx_pool, batch_size
+):
     experiment_dir = cfg["experiment_directory"]
     tag_dict = cfg["tag_dict"]
     kwargs = {**cfg["umap_al"], **cfg["hdbscan_al"]}
@@ -418,31 +427,37 @@ def otm(cfg, embeddings_ann, embeddings_pool, y_ann, m_pool, idx_pool, batch_siz
     sent_len_pool = [0] + [len(sent) for sent in embeddings_pool]
     sent_idx_pool = list(accumulate(sent_len_pool))
 
-    if cfg["plot"]: plot_umap_hdbscan(clusters_pool, embeddings_pool, experiment_dir, y_ann)
+    if cfg["plot"]:
+        plot_umap_hdbscan(clusters_pool, embeddings_pool, experiment_dir, y_ann)
 
-    mask_out, n_ent = compute_outliers(cfg, clusterer, count_clusters, embeddings_ann, sent_idx_pool)
+    mask_out_sentence = get_outlier_mask(
+        cfg, clusterer, embeddings_ann, embeddings_pool, sent_idx_pool
+    )
 
+    n_ent = max(count_clusters.items(), key=operator.itemgetter(1))[0]
     num_sent = len(embeddings_pool)
-    entity_rich = np.zeros(num_sent)
+    arr_tpTM = np.zeros(num_sent)
 
     for i in range(num_sent):
         len_sent = len(embeddings_pool[i])
-        entity_rich[i] = sum(
+        arr_tpTM[i] = sum(
             [
                 1 - max(m_pool[i][j].values()) - sorted(m_pool[i][j].values())[-2]
                 for j in range(len_sent)
-                if (clusters_pool[i][j] != n_ent) or (mask_out[i][j] == 1)
+                if (clusters_pool[i][j] != n_ent) or (mask_out_sentence[i][j] == 1)
             ]
         )
 
-    batch = np.argpartition(entity_rich * (-1), batch_size - 1)[:batch_size].tolist()
+    batch = np.argpartition(arr_tpTM * (-1), batch_size - 1)[:batch_size].tolist()
     idx_q = [idx_pool[i] for i in batch]
 
     return idx_q, [i for i in idx_pool if i not in idx_q]
 
 
 # Densitiy Normalized Positive Token Margin: dpTM
-def ptm(cfg, embeddings_ann, embeddings_pool, y_ann, m_pool, idx_pool, batch_size):
+def dnorm_positive_token_margin(
+    cfg, embeddings_ann, embeddings_pool, y_ann, m_pool, idx_pool, batch_size
+):
     PDF = fit_distribution([len(sent) for sent in embeddings_pool])
 
     experiment_dir = cfg["experiment_directory"]
@@ -463,33 +478,39 @@ def ptm(cfg, embeddings_ann, embeddings_pool, y_ann, m_pool, idx_pool, batch_siz
     sent_len_pool = [0] + [len(sent) for sent in embeddings_pool]
     sent_idx_pool = list(accumulate(sent_len_pool))
 
-    if cfg["plot"]: plot_umap_hdbscan(clusters_pool, embeddings_pool, experiment_dir, y_ann)
+    if cfg["plot"]:
+        plot_umap_hdbscan(clusters_pool, embeddings_pool, experiment_dir, y_ann)
 
-    mask_out, n_ent = compute_outliers(cfg, clusterer, count_clusters, embeddings_ann, sent_idx_pool)
+    mask_out_sentence = get_outlier_mask(
+        cfg, clusterer, embeddings_ann, embeddings_pool, sent_idx_pool
+    )
 
+    n_ent = max(count_clusters.items(), key=operator.itemgetter(1))[0]
     num_sent = len(embeddings_pool)
-    entity_rich = np.zeros(num_sent)
+    arr_dpTM = np.zeros(num_sent)
 
     for i in range(num_sent):
         len_sent = len(embeddings_pool[i])
-        entity_rich[i] = (
+        arr_dpTM[i] = (
             sum(
                 [
                     1 - max(m_pool[i][j].values()) - sorted(m_pool[i][j].values())[-2]
                     for j in range(len_sent)
-                    if (clusters_pool[i][j] != n_ent) or (mask_out[i][j] == 1)
+                    if (clusters_pool[i][j] != n_ent) or (mask_out_sentence[i][j] == 1)
                 ]
             )
-        ) * lenght_prob(PDF, len_sent)
+        ) * get_dnorm_val(PDF, len_sent)
 
-    batch = np.argpartition(entity_rich * (-1), batch_size - 1)[:batch_size].tolist()
+    batch = np.argpartition(arr_dpTM * (-1), batch_size - 1)[:batch_size].tolist()
     idx_q = [idx_pool[i] for i in batch]
 
     return idx_q, [i for i in idx_pool if i not in idx_q]
 
 
 # Densitiy Normalized Positive Token Entropy: dpTE
-def pte(cfg, embeddings_ann, embeddings_pool, y_ann, m_pool, idx_pool, batch_size):
+def dnorm_positive_token_entropy(
+    cfg, embeddings_ann, embeddings_pool, y_ann, m_pool, idx_pool, batch_size
+):
     PDF = fit_distribution([len(sent) for sent in embeddings_pool])
 
     experiment_dir = cfg["experiment_directory"]
@@ -510,34 +531,40 @@ def pte(cfg, embeddings_ann, embeddings_pool, y_ann, m_pool, idx_pool, batch_siz
     sent_len_pool = [0] + [len(sent) for sent in embeddings_pool]
     sent_idx_pool = list(accumulate(sent_len_pool))
 
-    if cfg["plot"]: plot_umap_hdbscan(clusters_pool, embeddings_pool, experiment_dir, y_ann)
+    if cfg["plot"]:
+        plot_umap_hdbscan(clusters_pool, embeddings_pool, experiment_dir, y_ann)
 
-    mask_out, n_ent = compute_outliers(cfg, clusterer, count_clusters, embeddings_ann, sent_idx_pool)
+    mask_out_sentence = get_outlier_mask(
+        cfg, clusterer, embeddings_ann, embeddings_pool, sent_idx_pool
+    )
 
+    n_ent = max(count_clusters.items(), key=operator.itemgetter(1))[0]
     num_sent = len(embeddings_pool)
-    entity_rich = np.zeros(num_sent)
+    arr_dpTE = np.zeros(num_sent)
 
     for i in range(num_sent):
         len_sent = len(embeddings_pool[i])
-        entity_rich[i] = (
+        arr_dpTE[i] = (
             sum(
                 [
                     (-1)
                     * sum([p * math.log2(p) for p in m_pool[i][j].values() if p > 0])
                     for j in range(len_sent)
-                    if (clusters_pool[i][j] != n_ent) or (mask_out[i][j] == 1)
+                    if (clusters_pool[i][j] != n_ent) or (mask_out_sentence[i][j] == 1)
                 ]
             )
-        ) * lenght_prob(PDF, len_sent)
+        ) * get_dnorm_val(PDF, len_sent)
 
-    batch = np.argpartition(entity_rich * (-1), batch_size - 1)[:batch_size].tolist()
+    batch = np.argpartition(arr_dpTE * (-1), batch_size - 1)[:batch_size].tolist()
     idx_q = [idx_pool[i] for i in batch]
 
     return idx_q, [i for i in idx_pool if i not in idx_q]
 
 
 # Total Positive Token Entropy: tpTE
-def ote(cfg, embeddings_ann, embeddings_pool, y_ann, m_pool, idx_pool, batch_size):
+def total_positive_token_entropy(
+    cfg, embeddings_ann, embeddings_pool, y_ann, m_pool, idx_pool, batch_size
+):
     experiment_dir = cfg["experiment_directory"]
     tag_dict = cfg["tag_dict"]
     kwargs = {**cfg["umap_al"], **cfg["hdbscan_al"]}
@@ -556,31 +583,35 @@ def ote(cfg, embeddings_ann, embeddings_pool, y_ann, m_pool, idx_pool, batch_siz
     sent_len_pool = [0] + [len(sent) for sent in embeddings_pool]
     sent_idx_pool = list(accumulate(sent_len_pool))
 
-    if cfg["plot"]: plot_umap_hdbscan(clusters_pool, embeddings_pool, experiment_dir, y_ann)
+    if cfg["plot"]:
+        plot_umap_hdbscan(clusters_pool, embeddings_pool, experiment_dir, y_ann)
 
-    mask_out, n_ent = compute_outliers(cfg, clusterer, count_clusters, embeddings_ann, sent_idx_pool)
+    mask_out_sentence = get_outlier_mask(
+        cfg, clusterer, embeddings_ann, embeddings_pool, sent_idx_pool
+    )
 
+    n_ent = max(count_clusters.items(), key=operator.itemgetter(1))[0]
     num_sent = len(embeddings_pool)
-    entity_rich = np.zeros(num_sent)
+    arr_tpTE = np.zeros(num_sent)
 
     for i in range(num_sent):
         len_sent = len(embeddings_pool[i])
-        entity_rich[i] = sum(
+        arr_tpTE[i] = sum(
             [
                 (-1) * sum([p * math.log2(p) for p in m_pool[i][j].values() if p > 0])
                 for j in range(len_sent)
-                if (clusters_pool[i][j] != n_ent) or (mask_out[i][j] == 1)
+                if (clusters_pool[i][j] != n_ent) or (mask_out_sentence[i][j] == 1)
             ]
         )
 
-    batch = np.argpartition(entity_rich * (-1), batch_size - 1)[:batch_size].tolist()
+    batch = np.argpartition(arr_tpTE * (-1), batch_size - 1)[:batch_size].tolist()
     idx_q = [idx_pool[i] for i in batch]
 
     return idx_q, [i for i in idx_pool if i not in idx_q]
 
 
 # Density Normalized Positive Assignment Probability: dpAP
-def pap(
+def dnorm_positive_assignment_probability(
     cfg, embeddings_ann, embeddings_pool, y_ann, y_pred, m_pool, idx_pool, batch_size
 ):
     PDF = fit_distribution([len(sent) for sent in embeddings_pool])
@@ -603,33 +634,37 @@ def pap(
     sent_len_pool = [0] + [len(sent) for sent in embeddings_pool]
     sent_idx_pool = list(accumulate(sent_len_pool))
 
-    if cfg["plot"]: plot_umap_hdbscan(clusters_pool, embeddings_pool, experiment_dir, y_ann)
+    if cfg["plot"]:
+        plot_umap_hdbscan(clusters_pool, embeddings_pool, experiment_dir, y_ann)
 
-    mask_out, n_ent = compute_outliers(cfg, clusterer, count_clusters, embeddings_ann, sent_idx_pool)
+    mask_out_sentence = get_outlier_mask(
+        cfg, clusterer, embeddings_ann, embeddings_pool, sent_idx_pool
+    )
 
+    n_ent = max(count_clusters.items(), key=operator.itemgetter(1))[0]
     num_sent = len(embeddings_pool)
-    entity_rich = np.zeros(num_sent)
+    arr_dpAP = np.zeros(num_sent)
 
     for i in range(num_sent):
         len_sent = len(embeddings_pool[i])
-        entity_rich[i] = (
+        arr_dpAP[i] = (
             sum(
                 [
                     1 - m_pool[i][j][y_pred[i][j]]
                     for j in range(len_sent)
-                    if (clusters_pool[i][j] != n_ent) or (mask_out[i][j] == 1)
+                    if (clusters_pool[i][j] != n_ent) or (mask_out_sentence[i][j] == 1)
                 ]
             )
-        ) * lenght_prob(PDF, len_sent)
+        ) * get_dnorm_val(PDF, len_sent)
 
-    batch = np.argpartition(entity_rich * (-1), batch_size - 1)[:batch_size].tolist()
+    batch = np.argpartition(arr_dpAP * (-1), batch_size - 1)[:batch_size].tolist()
     idx_q = [idx_pool[i] for i in batch]
 
     return idx_q, [i for i in idx_pool if i not in idx_q]
 
 
 # Total Positive Assignment Probability: tpAP
-def oap(
+def total_positive_assignment_probability(
     cfg, embeddings_ann, embeddings_pool, y_ann, y_pred, m_pool, idx_pool, batch_size
 ):
     experiment_dir = cfg["experiment_directory"]
@@ -650,31 +685,37 @@ def oap(
     sent_len_pool = [0] + [len(sent) for sent in embeddings_pool]
     sent_idx_pool = list(accumulate(sent_len_pool))
 
-    if cfg["plot"]: plot_umap_hdbscan(clusters_pool, embeddings_pool, experiment_dir, y_ann)
+    if cfg["plot"]:
+        plot_umap_hdbscan(clusters_pool, embeddings_pool, experiment_dir, y_ann)
 
-    mask_out, n_ent = compute_outliers(cfg, clusterer, count_clusters, embeddings_ann, sent_idx_pool)
+    mask_out_sentence = get_outlier_mask(
+        cfg, clusterer, embeddings_ann, embeddings_pool, sent_idx_pool
+    )
 
+    n_ent = max(count_clusters.items(), key=operator.itemgetter(1))[0]
     num_sent = len(embeddings_pool)
-    entity_rich = np.zeros(num_sent)
+    arr_tpAP = np.zeros(num_sent)
 
     for i in range(num_sent):
         len_sent = len(embeddings_pool[i])
-        entity_rich[i] = sum(
+        arr_tpAP[i] = sum(
             [
                 1 - m_pool[i][j][y_pred[i][j]]
                 for j in range(len_sent)
-                if (clusters_pool[i][j] != n_ent) or (mask_out[i][j] == 1)
+                if (clusters_pool[i][j] != n_ent) or (mask_out_sentence[i][j] == 1)
             ]
         )
 
-    batch = np.argpartition(entity_rich * (-1), batch_size - 1)[:batch_size].tolist()
+    batch = np.argpartition(arr_tpAP * (-1), batch_size - 1)[:batch_size].tolist()
     idx_q = [idx_pool[i] for i in batch]
 
     return idx_q, [i for i in idx_pool if i not in idx_q]
 
 
 # Positive Annotation Selection: PAS
-def pas(cfg, embeddings_ann, embeddings_pool, y_ann, idx_pool, batch_size):
+def positive_annotation_selection(
+    cfg, embeddings_ann, embeddings_pool, y_ann, idx_pool, batch_size
+):
     PDF = fit_distribution([len(sent) for sent in embeddings_pool])
 
     experiment_dir = cfg["experiment_directory"]
@@ -695,26 +736,48 @@ def pas(cfg, embeddings_ann, embeddings_pool, y_ann, idx_pool, batch_size):
     sent_len_pool = [0] + [len(sent) for sent in embeddings_pool]
     sent_idx_pool = list(accumulate(sent_len_pool))
 
-    if cfg["plot"]: plot_umap_hdbscan(clusters_pool, embeddings_pool, experiment_dir, y_ann)
+    if cfg["plot"]:
+        plot_umap_hdbscan(clusters_pool, embeddings_pool, experiment_dir, y_ann)
 
-    mask_out, n_ent = compute_outliers(cfg, clusterer, count_clusters, embeddings_ann, sent_idx_pool)
+    mask_out_sentence = get_outlier_mask(
+        cfg, clusterer, embeddings_ann, embeddings_pool, sent_idx_pool
+    )
 
+    n_ent = max(count_clusters.items(), key=operator.itemgetter(1))[0]
     num_sent = len(embeddings_pool)
-    entity_rich = np.zeros(num_sent)
+    arr_PAS = np.zeros(num_sent)
 
     for i in range(num_sent):
         len_sent = len(embeddings_pool[i])
-        entity_rich[i] = (
+        arr_PAS[i] = (
             sum(
                 [
                     1
                     for j in range(len_sent)
-                    if (clusters_pool[i][j] != n_ent) or (mask_out[i][j] == 1)
+                    if (clusters_pool[i][j] != n_ent) or (mask_out_sentence[i][j] == 1)
                 ]
             )
-        ) * lenght_prob(PDF, len_sent)
+        ) * get_dnorm_val(PDF, len_sent)
 
-    batch = np.argpartition(entity_rich * (-1), batch_size - 1)[:batch_size].tolist()
+    batch = np.argpartition(arr_PAS * (-1), batch_size - 1)[:batch_size].tolist()
+    idx_q = [idx_pool[i] for i in batch]
+
+    return idx_q, [i for i in idx_pool if i not in idx_q]
+
+
+# Random Selection: RS
+def random_selection(idx_pool, batch_size, seed):
+    random.seed(a=seed, version=2)
+
+    idx_q = random.sample(idx_pool, batch_size)
+    return idx_q, [s for s in idx_pool if s not in idx_q]
+
+
+# Longest Sentence Selection: LSS
+def longest_sentence_selection(sent_lenghts, idx_pool, batch_size):
+    batch = np.argpartition(np.array(sent_lenghts) * (-1), batch_size - 1)[
+        :batch_size
+    ].tolist()
     idx_q = [idx_pool[i] for i in batch]
 
     return idx_q, [i for i in idx_pool if i not in idx_q]

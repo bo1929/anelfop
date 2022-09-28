@@ -10,7 +10,6 @@ from al_methods import *
 
 
 def load_data(cfg):
-    a = 1
     name = cfg["data_set"]["name"]
 
     tknzd_sent = []
@@ -64,7 +63,7 @@ def load_config_from(filename="./config.yaml", AL=True):
     if not os.path.exists(expt_dir):
         os.mkdir(expt_dir)
 
-    if AL == False:
+    if AL is False:
         cfg["method"] = "passive"
         results_dir = os.path.join(expt_dir, "results_passive", "")
     else:
@@ -110,33 +109,32 @@ def load_config_from(filename="./config.yaml", AL=True):
         raise ValueError("Given data directory is not found.")
 
     method_dict = {
-        "rs": rs,
-        "te": te,
-        "tp": tp,
-        "tm": tm,
-        "tte": tte,
-        "ttp": ttp,
-        "ttm": ttm,
-        "nte": nte,
-        "ntp": ntp,
-        "ntm": ntm,
-        "ap": ap,
-        "tap": tap,
-        "nap": nap,
-        "ote": ote,
-        "otp": otp,
-        "otm": otm,
-        "oap": oap,
-        "pte": pte,
-        "ptp": ptp,
-        "ptm": ptm,
-        "pap": pap,
-        "pas": pas,
-        "lss": lss,
+        "RS": random_selection,
+        "LSS": longest_sentence_selection,
+        "sTE": single_token_entropy,
+        "sTP": single_token_probability,
+        "sTM": single_token_margin,
+        "sAP": single_assignment_probability,
+        "tTE": total_token_entropy,
+        "tTP": total_token_probability,
+        "tTM": total_token_margin,
+        "nTE": normalized_token_entropy,
+        "nTP": normalized_token_probability,
+        "nTM": normalized_token_margin,
+        "tAP": total_positive_assignment_probability,
+        "nAP": normalized_assignment_probability,
+        "tpTE": total_positive_token_entropy,
+        "tpTP": total_positive_token_probability,
+        "tpTM": total_positive_token_margin,
+        "tpAP": total_positive_assignment_probability,
+        "dpTE": dnorm_positive_token_entropy,
+        "dpTP": dnorm_positive_token_probability,
+        "dpTM": dnorm_positive_token_margin,
+        "dpAP": dnorm_positive_assignment_probability,
+        "PAS": positive_annotation_selection,
     }
     cfg.update({"method_dict": method_dict})
 
-    print(cfg["data_set"]["name"])
     return cfg
 
 
@@ -181,8 +179,6 @@ def write_ft_config(cfg):
     experiment_dir = cfg["experiment_directory"]
     dim = cfg["ft_vec_dim"]
     have_pos = cfg["data_set"]["pos"]
-
-    print("embeddings vector dimension:", dim)
 
     span = ["-1", "0", "+1"]
 

@@ -119,8 +119,12 @@ CRF:
   allow_all_states: True
   allow_all_transitions: True
 
+outlier_method:
+  method_name: GLOSH
+  outlier_quantile: 0.995
+  parameters: {}
+
 hdbscan_al:
-  mask_outlier: 0.995
   min_c_size: 1000
   min_samp: 70
   c_eps: 0.19

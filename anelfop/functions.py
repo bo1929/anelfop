@@ -31,7 +31,7 @@ def get_batch_size(cfg, iteration, pool_sent, total_num_sent):
 
     if isinstance(increment, str):
         if increment[:3] == "exp":
-            batch_size = int(math.ceil(float(increment[3:]) * (2 ** iteration)))
+            batch_size = int(math.ceil(float(increment[3:]) * (2**iteration)))
         elif increment[0] == "p":
             batch_size = int(
                 iteration * math.ceil(float(increment[1:]) * (total_num_sent / 100))
@@ -156,24 +156,24 @@ def query(
         active_learner = cfg["method"]
         batch_size = get_batch_size(cfg, iteration, len(idx_pool), len(y_train))
         print("Batch size: ", batch_size, "at iteration ", iteration)
-        if active_learner == "rs":
+        if active_learner == "random_selection":
             idx_q, idx_pool = f_dict[active_learner](idx_pool, batch_size, cfg["seed"])
 
         elif active_learner in [
-            "te",
-            "tp",
-            "tm",
-            "tte",
-            "ttp",
-            "ttm",
-            "nte",
-            "ntp",
-            "ntm",
+            "sTE",
+            "sTP",
+            "sTm",
+            "tTE",
+            "tTP",
+            "tTM",
+            "nTE",
+            "nTP",
+            "nTM",
         ]:
             mi_pool = crf_trained.predict_marginals(Xi_pool)
             idx_q, idx_pool = f_dict[active_learner](mi_pool, idx_pool, batch_size)
 
-        elif active_learner in ["ap", "tap", "nap"]:
+        elif active_learner in ["sAP", "tAP", "nAP"]:
             if cfg["generator"]:
                 Xi_pool_ = Xi_pool_2nd
             else:
@@ -185,11 +185,20 @@ def query(
                 mi_pool, yi_pool, idx_pool, batch_size
             )
 
-        elif active_learner in ["pte", "ptp", "ptm", "pap", "ote", "otp", "otm", "oap"]:
+        elif active_learner in [
+            "dpTE",
+            "dpTP",
+            "dpTM",
+            "dpAP",
+            "tpTE",
+            "tpTP",
+            "tpTM",
+            "tpAP",
+        ]:
             embeddings_ann = [embeddings_train[x] for x in idx_ann]
             embeddings_pool = [embeddings_train[x] for x in idx_pool]
             y_ann = [y_train[x] for x in idx_ann]
-            if active_learner in ["pap", "oap"]:
+            if active_learner in ["dpAP", "tpAP"]:
                 if cfg["generator"]:
                     Xi_pool_ = Xi_pool_2nd
                 else:
@@ -218,7 +227,7 @@ def query(
                     idx_pool,
                     batch_size,
                 )
-        elif active_learner == "pas":
+        elif active_learner == "PAS":
             embeddings_ann = [embeddings_train[x] for x in idx_ann]
             embeddings_pool = [embeddings_train[x] for x in idx_pool]
             y_ann = [y_train[x] for x in idx_ann]
@@ -231,7 +240,7 @@ def query(
                 idx_pool,
                 batch_size,
             )
-        elif active_learner == "lss":
+        elif active_learner == "LSS":
             embeddings_pool = [embeddings_train[x] for x in idx_pool]
             idx_q, idx_pool = f_dict[active_learner](
                 [len(sent) for sent in embeddings_pool],

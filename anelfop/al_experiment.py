@@ -147,7 +147,7 @@ while not (stop_condition):
         pos=pos_pool_i,
     )
 
-    if cfg["generator"] and active_learner in ["ap", "tap", "nap", "pap"]:
+    if cfg["generator"] and (active_learner in ["sAP", "tAP", "nAP", "tpAP", "dpAP"]):
         Xi_pool_ = crf_.sent2features(
             feature_cfg,
             sents_pool_i,
