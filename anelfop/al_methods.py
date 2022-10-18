@@ -266,7 +266,7 @@ def plot_umap_hdbscan(clusters_pool, embeddings_pool, experiment_dir, y_ann):
 
 def get_outlier_mask(cfg, clusterer, embeddings_ann, embeddings_pool, sent_idx_pool):
     method_name = cfg["outlier_method"].get("method_name", None)
-    mask_out_token = np.zeros(len(embeddings_pool))
+    mask_out_token = np.zeros(len(np.concatenate(embeddings_pool)))
 
     def get_mask(scores, mask_quantile):
         threshold = np.quantile(scores, mask_quantile)
@@ -277,7 +277,7 @@ def get_outlier_mask(cfg, clusterer, embeddings_ann, embeddings_pool, sent_idx_p
 
     if method_name == "GLOSH":
         mask_out_token = get_mask(
-            clusterer.outlier_scores_[-len(embeddings_pool) :],
+            clusterer.outlier_scores_[-len(np.concatenate(embeddings_pool)) :],
             cfg["outlier_method"]["mask_quantile"],
         )
     elif method_name == "LOF":
