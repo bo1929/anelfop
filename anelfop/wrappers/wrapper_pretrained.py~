@@ -12,8 +12,6 @@ def get_embeddings(cfg, tknzd_sent, tags, pos, part="train"):
     pretrained_model = cfg["pretrained_model"]
     embedding_type = cfg["embedding_type"]
 
-    print(pretrained_model)
-
     tokenizer_ = AutoTokenizer.from_pretrained(
         pretrained_model, do_basic_tokenize=False
     )

@@ -4,7 +4,6 @@ import random
 import operator
 
 import numpy as np
-import pandas as pd
 
 import wrappers.wrapper_UMAP as umap_
 
@@ -270,7 +269,7 @@ def get_outlier_mask(cfg, clusterer, embeddings_ann, embeddings_pool, sent_idx_p
     mask_out_token = np.zeros(len(embeddings_pool))
 
     def get_mask(scores, mask_quantile):
-        threshold = pd.Series(scores).quantile(mask_quantile)
+        threshold = np.quantile(scores, mask_quantile)
         outliers = np.where(scores > threshold)[0]
         mask_out_token = np.zeros(len(scores))
         mask_out_token[outliers] = 1
@@ -284,7 +283,7 @@ def get_outlier_mask(cfg, clusterer, embeddings_ann, embeddings_pool, sent_idx_p
     elif method_name == "LOF":
         clf = LocalOutlierFactor(  # contamination='auto' sets threshold to 0.1
             **cfg["outlier_method"]["parameters"]
-        ).fit(embeddings_pool)
+        ).fit(np.concatenate(embeddings_pool))
         mask_out_token = get_mask(
             clf.negative_outlier_factor_,
             cfg["outlier_method"]["mask_quantile"],
@@ -327,7 +326,7 @@ def dnorm_positive_token_probability(
     sent_len_pool = [0] + [len(sent) for sent in embeddings_pool]
     sent_idx_pool = list(accumulate(sent_len_pool))
 
-    if cfg["plot"]:
+    if cfg.get("plot", False):
         plot_umap_hdbscan(clusters_pool, embeddings_pool, experiment_dir, y_ann)
 
     mask_out_sentence = get_outlier_mask(
@@ -378,7 +377,7 @@ def total_positive_token_probability(
     sent_len_pool = [0] + [len(sent) for sent in embeddings_pool]
     sent_idx_pool = list(accumulate(sent_len_pool))
 
-    if cfg["plot"]:
+    if cfg.get("plot", False):
         plot_umap_hdbscan(clusters_pool, embeddings_pool, experiment_dir, y_ann)
 
     mask_out_sentence = get_outlier_mask(
@@ -427,7 +426,7 @@ def total_positive_token_margin(
     sent_len_pool = [0] + [len(sent) for sent in embeddings_pool]
     sent_idx_pool = list(accumulate(sent_len_pool))
 
-    if cfg["plot"]:
+    if cfg.get("plot", False):
         plot_umap_hdbscan(clusters_pool, embeddings_pool, experiment_dir, y_ann)
 
     mask_out_sentence = get_outlier_mask(
@@ -478,7 +477,7 @@ def dnorm_positive_token_margin(
     sent_len_pool = [0] + [len(sent) for sent in embeddings_pool]
     sent_idx_pool = list(accumulate(sent_len_pool))
 
-    if cfg["plot"]:
+    if cfg.get("plot", False):
         plot_umap_hdbscan(clusters_pool, embeddings_pool, experiment_dir, y_ann)
 
     mask_out_sentence = get_outlier_mask(
@@ -531,7 +530,7 @@ def dnorm_positive_token_entropy(
     sent_len_pool = [0] + [len(sent) for sent in embeddings_pool]
     sent_idx_pool = list(accumulate(sent_len_pool))
 
-    if cfg["plot"]:
+    if cfg.get("plot", False):
         plot_umap_hdbscan(clusters_pool, embeddings_pool, experiment_dir, y_ann)
 
     mask_out_sentence = get_outlier_mask(
@@ -583,7 +582,7 @@ def total_positive_token_entropy(
     sent_len_pool = [0] + [len(sent) for sent in embeddings_pool]
     sent_idx_pool = list(accumulate(sent_len_pool))
 
-    if cfg["plot"]:
+    if cfg.get("plot", False):
         plot_umap_hdbscan(clusters_pool, embeddings_pool, experiment_dir, y_ann)
 
     mask_out_sentence = get_outlier_mask(
@@ -634,7 +633,7 @@ def dnorm_positive_assignment_probability(
     sent_len_pool = [0] + [len(sent) for sent in embeddings_pool]
     sent_idx_pool = list(accumulate(sent_len_pool))
 
-    if cfg["plot"]:
+    if cfg.get("plot", False):
         plot_umap_hdbscan(clusters_pool, embeddings_pool, experiment_dir, y_ann)
 
     mask_out_sentence = get_outlier_mask(
@@ -685,7 +684,7 @@ def total_positive_assignment_probability(
     sent_len_pool = [0] + [len(sent) for sent in embeddings_pool]
     sent_idx_pool = list(accumulate(sent_len_pool))
 
-    if cfg["plot"]:
+    if cfg.get("plot", False):
         plot_umap_hdbscan(clusters_pool, embeddings_pool, experiment_dir, y_ann)
 
     mask_out_sentence = get_outlier_mask(
@@ -736,7 +735,7 @@ def positive_annotation_selection(
     sent_len_pool = [0] + [len(sent) for sent in embeddings_pool]
     sent_idx_pool = list(accumulate(sent_len_pool))
 
-    if cfg["plot"]:
+    if cfg.get("plot", False):
         plot_umap_hdbscan(clusters_pool, embeddings_pool, experiment_dir, y_ann)
 
     mask_out_sentence = get_outlier_mask(

@@ -26,6 +26,8 @@ config_path = args.config_path
 cfg = load_save.load_config_from(config_path)
 random_seed = cfg["seed"]
 
+print("...")
+
 [tknzd_sent_train, tags_train, pos_train], [
     tknzd_sent_test,
     tags_test,
