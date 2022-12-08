@@ -13,7 +13,7 @@ Then install the required packages with `pip install requirements.txt`.
 You can use `python anelfop/al_experiment.py`
 
 You can use the following config file:
-```json
+```yaml
 seed: seed
 increment_cons: increment
 initial_size: init_size
@@ -56,7 +56,7 @@ umap_al:
 You can use `python anelfop/pl_experiment.py`
 
 You can use the following config file:
-```json
+```yaml
 seed: 219
 generator: True
 method: method
