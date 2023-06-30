@@ -51,11 +51,9 @@ elif [ ${dataset} = "NCBI_disease" ]
 then
   pos="False"
   pre_model="dmis-lab/biobert-base-cased-v1.1"
-#  pre_model="emilyalsentzer/Bio_ClinicalBERT"
 elif [ ${dataset} = "s800" ] || [ ${dataset} = "LINNAEUS" ];
 then
   pos="False"
-#  pre_model="dmis-lab/biobert-base-cased-v1.1"
   pre_model="emilyalsentzer/Bio_ClinicalBERT"
 else
   exit 128

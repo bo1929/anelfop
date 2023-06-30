@@ -65,18 +65,15 @@ then
 elif [ ${dataset} = "BC5CDR" ] || [ ${dataset} = "BC2GM" ] || [ ${dataset} = "Genia4ER" ];
 then
   pos="False"
-  # pre_model="emilyalsentzer/Bio_ClinicalBERT"
   pre_model="dmis-lab/biobert-base-cased-v1.1"
 elif [ ${dataset} = "NCBI_disease" ]
 then
   pos="False"
   pre_model="dmis-lab/biobert-base-cased-v1.1"
-  # pre_model="emilyalsentzer/Bio_ClinicalBERT"
 elif [ ${dataset} = "s800" ] || [ ${dataset} = "LINNAEUS" ];
 then
   pos="False"
   pre_model="dmis-lab/biobert-base-cased-v1.1"
-  # pre_model="emilyalsentzer/Bio_ClinicalBERT"
 elif [ ${dataset:0:5} = "debug" ];
 then
   pos="False"

@@ -97,7 +97,6 @@ def pca_r_embeddings(embeddings_ann, embeddings_pool, n_comp=200, seed=29):
         c_embeddings_pool[sent_idx_pool[i - 1] : sent_idx_pool[i]]
         for i in range(1, len(sent_idx_pool))
     ]
-    # print(f"Variance Explained: {list(accumulate(pca.explained_variance_ratio_))}")
 
     return pca_r_embeddings_ann, pca_r_embeddings_pool
 

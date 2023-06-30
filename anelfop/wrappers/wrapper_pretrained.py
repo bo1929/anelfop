@@ -8,7 +8,6 @@ import pickle as pkl
 
 
 def get_embeddings(cfg, tknzd_sent, tags, pos, part="train"):
-
     pretrained_model = cfg["pretrained_model"]
     embedding_type = cfg["embedding_type"]
 

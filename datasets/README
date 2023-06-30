@@ -1,6 +1,0 @@
-mkdir raw
-mkdir tokenized
-
-
-# Input raw/untokenized corpus filesi will be read from directory raw.
-# Output tokenized corpus will be saved into directory tokenized.

@@ -12,7 +12,6 @@ LOW_MEM = False
 def umap_r_embeddings(
     embeddings_ann, embeddings_pool, n_comp=200, neig=20, min_dist=0.1, seed=29
 ):
-
     umap_embedding = umap.UMAP(
         n_neighbors=neig,
         min_dist=min_dist,
@@ -112,7 +111,6 @@ def ss_umap_r_hdbscan_c(
     c_eps=0.2,
     **kwargs
 ):
-
     umap_embedding = umap.UMAP(
         n_components=n_comp,
         n_neighbors=neig,
