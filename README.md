@@ -1,18 +1,27 @@
-# ANELFOP
-Active Named Entity Learning by Focusing on Possible Named Entities
+# Focusing on potential named entities during active label acquisition
+Implementation of the method (`anelfop`) described in *Şapcı, A., Kemik, H., Yeniterzi, R., & Tastan, O. (2023). Focusing on potential named entities during active label acquisition. Natural Language Engineering, 1-23*[^1], together scripts used for experiments discussed in the paper.
 
-Please do not forget to edit the config files. Also, if you do not want to use them from scratch, you can use the `expt_scripts` for ease of usage.
+[^1]: doi:10.1017/S1351324923000165
 
-## For Reproducing
+## About the method
+Named entity recognition (NER) aims to identify mentions of named entities in an unstructured text and classify them into predefined named entity classes.
+While deep learning-based pre-trained language models help to achieve good predictive performances in NER, many domain-specific NER applications still call for a substantial amount of labeled data.
+Active learning (AL), a general framework for the label acquisition problem, has been used for NER tasks to minimize the annotation cost without sacrificing model performance.
+However, the heavily imbalanced class distribution of tokens introduces challenges in designing effective AL querying methods for NER.
+We propose several AL sentence query evaluation functions that pay more attention to potential positive tokens and evaluate these proposed functions with both sentence-based and token-based cost evaluation strategies.
+We also propose a better data-driven normalization approach to penalize sentences that are too long or too short.
+Our experiments on three datasets from different domains reveal that the proposed approach reduces the number of annotated tokens while achieving better or comparable prediction performance with conventional methods.
+
+## Reproducing the results
+If you would like to re-produce the experiments, see `expt_scripts`.
+Do not forget to edit the config files.
 
 First create a virtual environment based on `python 3.7`.
 
 Then install the required packages with `pip install requirements.txt`.
 
-### For Active Learning
-You can use `python anelfop/al_experiment.py`
-
-You can use the following config file:
+### For active learning
+You can use `python anelfop/al_experiment.py`, and the following configuration file:
 ```yaml
 seed: seed
 increment_cons: increment
@@ -52,10 +61,8 @@ umap_al:
   n_comp: 2
 ```
 
-### For Passive Learning
-You can use `python anelfop/pl_experiment.py`
-
-You can use the following config file:
+### For passive learning
+You can use `python anelfop/pl_experiment.py`, and the following configuration file:
 ```yaml
 seed: 219
 generator: True
@@ -79,6 +86,3 @@ CRF:
   allow_all_states: True
   allow_all_transitions: True
 ```
-
-### For Clustering
-You can use `python anelfop/ss_clustering.py`
