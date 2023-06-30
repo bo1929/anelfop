@@ -60,6 +60,7 @@ umap_al:
   min_dist: 0.0
   n_comp: 2
 ```
+Simple write this to a file, e.g., `al-cfg.yaml`, and then run `python al_experiment --config-path /path/to/al-cfg.yaml`.
 
 ### For passive learning
 You can use `python anelfop/pl_experiment.py`, and the following configuration file:
@@ -86,3 +87,4 @@ CRF:
   allow_all_states: True
   allow_all_transitions: True
 ```
+Again, write this to a file, e.g., `pl-cfg.yaml`, and then run `python pl_experiment --config-path /path/to/al-cfg.yaml`.
