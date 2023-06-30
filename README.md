@@ -23,23 +23,23 @@ Then install the required packages with `pip install requirements.txt`.
 ### For active learning
 You can use `python anelfop/al_experiment.py`, and the following configuration file:
 ```yaml
-seed: seed
-increment_cons: increment
-initial_size: init_size
-stopping_criteria: stopping_criteria
+seed: 0 # random seed
+increment_cons: exp1 # exponentıally increasing labeled training set size
+initial_size: 16 # initial size of the training set
+stopping_criteria: full # do not stop active learning until all dataset is labeled
 generator: False
-method: method
-main_directory: main_dir
-data_directory: main_dir/datasets/tokenized/
+method: dpAP # see al_methods.py to choose the active learning method
+main_directory: /path/to/results
+data_directory: /path/to/dataset
 data_set:
-  name: dataset
-  pos: pos
-pretrained_model: pre_model
-embedding_type: embedding_type
+  name: CONLL2003
+  pos: True
+pretrained_model: bert-base-cased
+embedding_type: cl4l
 init_reduction:
-  type: reduction:0:3
+  type: pca
   pca:
-    dimension: reduction:3
+    dimension:256
 CRF:
   algorithm: lbfgs
   c1: 0.1
@@ -65,20 +65,20 @@ Simple write this to a file, e.g., `al-cfg.yaml`, and then run `python al_experi
 ### For passive learning
 You can use `python anelfop/pl_experiment.py`, and the following configuration file:
 ```yaml
-seed: 219
+seed: 0
 generator: True
-method: method
-main_directory: main_dir
-data_directory: main_dir/datasets/tokenized/
+method: dpAP
+main_directory: /path/to/results
+data_directory: /path/to/dataset
 data_set:
-  name: dataset
-  pos: pos
-pretrained_model: pre_model
-embedding_type: embedding_type
+  name: CONLL2003
+  pos: True
+pretrained_model: bert-base-cased
+embedding_type: cl4l
 init_reduction:
-  type: reduction:0:3
+  type: pca
   pca:
-    dimension: reduction:3
+    dimension:256
 CRF:
   algorithm: lbfgs
   c1: 0.1
@@ -87,4 +87,4 @@ CRF:
   allow_all_states: True
   allow_all_transitions: True
 ```
-Again, write this to a file, e.g., `pl-cfg.yaml`, and then run `python pl_experiment --config-path /path/to/al-cfg.yaml`.
+Again, write this to a file, e.g., `pl-cfg.yaml`, and then run `python pl_experiment --config-path /path/to/pl-cfg.yaml`.
