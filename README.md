@@ -1,5 +1,5 @@
 # Focusing on potential named entities during active label acquisition
-Implementation of the method (`anelfop`) described in *Şapcı, A., Kemik, H., Yeniterzi, R., & Tastan, O. (2023). Focusing on potential named entities during active label acquisition. Natural Language Engineering, 1-23*[^1], together scripts used for experiments discussed in the paper.
+Implementation of the method (`anelfop`) described in *Şapcı, A., Kemik, H., Yeniterzi, R., & Tastan, O. (2023). Focusing on potential named entities during active label acquisition. Natural Language Engineering, 1-23*[^1], together with scripts used for experiments discussed in the paper.
 
 [^1]: doi:10.1017/S1351324923000165
 
@@ -61,9 +61,10 @@ umap_al:
   n_comp: 2
 ```
 Simple write this to a file, e.g., `al-cfg.yaml`, and then run `python al_experiment --config-path /path/to/al-cfg.yaml`.
+Many standard active learning methods and proposed methods for querying sentences from the unlabeled corpus are implemented in `al_methods.py`. The abbreviations of methods can be found in the source file, use those in the configuration.
 
 ### For passive learning
-You can use `python anelfop/pl_experiment.py`, and the following configuration file:
+You can use `python anelfop/pl_experiment.py`, and the following example configuration file:
 ```yaml
 seed: 0
 generator: True
